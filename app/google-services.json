@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "14190482556",
+    "project_id": "eventity-9487e",
+    "storage_bucket": "eventity-9487e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14190482556:android:2aafe00c6d3ec1feaae5f9",
+        "android_client_info": {
+          "package_name": "com.unipi.chrisavg.eventity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14190482556-c6h2u2g3ge629k3bd285g748fo4b10oo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKQ_nbQKLuL8DsL6ByxtCLBHysYj74-Lk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14190482556-c6h2u2g3ge629k3bd285g748fo4b10oo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
