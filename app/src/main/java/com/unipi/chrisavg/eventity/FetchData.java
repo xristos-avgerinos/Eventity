@@ -2,9 +2,7 @@ package com.unipi.chrisavg.eventity;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -14,11 +12,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class FetchData extends AsyncTask<Object, String, String> {
     String googleNearByPlacesData;
     GoogleMap googleMap;
     String url;
+
 
     @Override
     protected void onPostExecute(String s) {
@@ -37,9 +39,12 @@ public class FetchData extends AsyncTask<Object, String, String> {
                 markerOptions.title(name);
                 markerOptions.position(latlng);
                 googleMap.addMarker(markerOptions);
+
                 //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,15));
 
+
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

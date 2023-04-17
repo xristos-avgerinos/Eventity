@@ -30,6 +30,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.ktx.Firebase;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
@@ -55,13 +57,23 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString())
                 .addOnCompleteListener((task)->{
                     if(task.isSuccessful()){
-                       Toast.makeText(this, "logged in", Toast.LENGTH_SHORT).show();
-                       User user = new User("chris");
+
+                       /*User user = new User("1234567");
+                       user.setAge(13);
+                       user.setName("chris");
+                        HashMap<String, Boolean> preferences = new HashMap<String, Boolean>();
+                        preferences.put("music",true);
+                        preferences.put("travel",false);
+                        preferences.put("arts",true);
+                        preferences.put("sports",true);
+                       user.setPreferences(preferences);
+
                         users.document(mAuth.getUid())
                                 .set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        Toast.makeText(getApplicationContext(), "written to db"+ user.getToken(), Toast.LENGTH_SHORT).show();
 
                                     }
                                 })
@@ -70,10 +82,26 @@ public class MainActivity extends AppCompatActivity {
                                     public void onFailure(@NonNull Exception e) {
                                         Log.w(TAG, "Error writing document", e);
                                     }
-                                });
+                                });*/
+
+                        users.document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()){
+                                    User user = documentSnapshot.toObject(User.class);
+                                    Toast.makeText(getApplicationContext(), "logged in"+ user.getName() + user.getPreferences().get("arts"), Toast.LENGTH_SHORT).show();
+
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "failed to find userId", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+
+                        });
+
 
                     }else{
-                        Toast.makeText(this, "notttt", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "notttt found on auth", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -1,6 +1,7 @@
 package com.unipi.chrisavg.eventity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.provider.Telephony;
 import android.util.Log;
 import androidx.appcompat.widget.SearchView;
+
+import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -36,10 +39,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.ClusterManager;
 import com.unipi.chrisavg.eventity.databinding.ActivityMapsBinding;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,6 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     double latitude;
     double longitude;
     SearchView searchView;
+
+    ClusterManager clusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 sb.append("&radius=10000");
                 sb.append("&types="+ search);//types=hospital|health
                 sb.append("&sensor=true");
-                sb.append("&key=" +"AIzaSyDeymNueHgieMsY90ebBi90u5wV_Cgxpsg");
+                sb.append("&key=" +BuildConfig.MAPS_API_KEY);
 
                 String url=sb.toString();
                 Object dataFetch[] = new Object[2];
@@ -91,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 fetchData.execute(dataFetch);
 
                 float currentZoom =mMap.getCameraPosition().zoom; // Get the current zoom level
-                float newZoom = currentZoom / 1.3f; // Calculate the new zoom level by dividing the current zoom by 1.5
+                float newZoom = currentZoom / 1.3f; // Calculate the new zoom level by dividing the current zoom by 1.3
                 CameraUpdate zoomOut = CameraUpdateFactory.zoomTo(newZoom); // Create a CameraUpdate object with the new zoom level
                 mMap.animateCamera(zoomOut,2000,null); // Animate the camera to the new zoom leVEL
 
@@ -169,6 +179,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getCurrentLocation();
 
 
+
+       /*clusterManager = new ClusterManager<MyItem>(this,mMap);
+        // Set some lat/lng coordinates to start with.
+        double lat = 51.5145160;
+        double lng = -0.1270060;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyItem offsetItem = new MyItem(lat, lng, "Title " + i, "Snippet " + i);
+            clusterManager.addItem(offsetItem);
+        }
+
+        mMap.setOnMarkerClickListener(clusterManager);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.5145160,-0.1270060),13));
+        mMap.setOnCameraIdleListener(clusterManager);*/
+
+
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+       // clusterManager.setAnimation(false);
 
 
     }
