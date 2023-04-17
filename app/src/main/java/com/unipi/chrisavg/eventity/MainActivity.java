@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
     EditText email,password;
+    FirebaseUser mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
 
+        mUser = mAuth.getCurrentUser();
     }
 
     public void go(View view){
@@ -108,5 +112,11 @@ public class MainActivity extends AppCompatActivity {
     public void maps(View view){
         Intent maps = new Intent(this,MapsActivity.class);
         startActivity(maps);
+    }
+
+    public void SignOut(View view){
+        mAuth.signOut();
+        LoginManager.getInstance().logOut();
+        finish();
     }
 }

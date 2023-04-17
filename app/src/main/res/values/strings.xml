@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Eventity</string>
     <string name="title_activity_maps">MapsActivity</string>
+
+    <!--for facebook login-->
+    <string name="facebook_app_id">1207133706629949</string>
+    <string name="fb_login_protocol_scheme">fb1234</string>
+    <string name="facebook_client_token">bb3e4d63a61dbfe46e3addd64feb5d7f</string>
 </resources>

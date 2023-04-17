@@ -101,12 +101,13 @@
                         android:backgroundTint="#F6F4F4"
                         android:drawableLeft="@drawable/facebook_logo"
                         android:fontFamily="sans-serif"
+                        android:onClick="FacebookSignUpButton"
                         android:paddingLeft="60dp"
                         android:text="Continue with Facebook"
                         android:textAlignment="viewStart"
                         android:textAllCaps="false"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
 
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="#000000"
                         android:textSize="19sp" />
 
@@ -130,6 +131,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="#070707"
                         android:textSize="19sp" />
+
 
 
                 </RelativeLayout>

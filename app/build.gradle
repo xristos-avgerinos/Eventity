@@ -65,5 +65,6 @@ dependencies {
     // Also add the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
-
+    //for facebook login
+    implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
 }
