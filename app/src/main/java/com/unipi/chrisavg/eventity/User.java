@@ -14,7 +14,6 @@ public class User {
         this.token = token;
     }
     public User() {
-        this.token = token;
     }
 
     public User(String name, String surname, int age, String phoneNumber, String token, HashMap<String, Boolean> preferences) {
