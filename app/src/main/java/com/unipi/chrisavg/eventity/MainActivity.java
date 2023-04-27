@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
     public void SignOut(View view){
         mAuth.signOut();
         LoginManager.getInstance().logOut();
+        Intent intent = new Intent(MainActivity.this,WelcomeActivity.class);
+        startActivity(intent);
         finish();
     }
 }

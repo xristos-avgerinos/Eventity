@@ -10,9 +10,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -31,8 +36,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +52,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 import java.security.Permission;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -57,6 +65,11 @@ public class WelcomeActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
     CallbackManager mCallbackManager;
+
+    RelativeLayout RL_email;
+    Button btn_email_login;
+    Button continue_btn;
+    TextInputEditText email_editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +127,78 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void ContinueWithEmailButton(View view){
+        RL_email = findViewById(R.id.RL_email);
+        btn_email_login = findViewById(R.id.btn_email_login);
+        continue_btn = findViewById(R.id.Continue_btn);
+        email_editText = findViewById(R.id.et_email);
 
+        RL_email.setVisibility(View.VISIBLE);
+        btn_email_login.setVisibility(View.GONE);
+        continue_btn.setClickable(false);
+
+
+        email_editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!TextUtils.isEmpty(s) && Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+                    continue_btn.setClickable(true);
+                    continue_btn.setBackgroundColor(getResources().getColor(R.color.custom_red_for_buttons));
+                }else{
+                    continue_btn.setClickable(false);
+                    continue_btn.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
+                }
+            }
+        });
+
+        continue_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = email_editText.getText().toString();
+                auth.fetchSignInMethodsForEmail(email)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+
+                                List<String> signInMethods = task.getResult().getSignInMethods();
+                                if (signInMethods != null && !signInMethods.isEmpty()) {
+                                    // email address exists and has a sign-in method associated with it
+                                    for (String signInMethod : signInMethods) {
+                                        switch (signInMethod) {
+                                            case EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD:
+                                                //Toast.makeText(WelcomeActivity.this, "Email and password authentication", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
+                                                startActivity(intent);
+                                                break;
+                                            case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
+                                                Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
+                                                break;
+                                            case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
+                                                Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
+                                                break;
+                                        }
+                                    }
+                                } else {
+                                    // email address does not exist or has no sign-in method associated with it
+                                    Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
+                                    startActivity(intent);
+                                }
+                            } else {
+                                Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+
+            }
+        });
     }
 
     public void ContinueWithGoogleButton(View view){
@@ -161,6 +245,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "written to db"+ user.getToken(), Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
                                             startActivity(intent);
+                                            finish();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -220,6 +305,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "written to db"+ user.getToken(), Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
