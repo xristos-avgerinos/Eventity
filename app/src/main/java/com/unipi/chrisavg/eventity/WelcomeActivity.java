@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -134,13 +135,15 @@ public class WelcomeActivity extends AppCompatActivity {
 
         RL_email.setVisibility(View.VISIBLE);
         btn_email_login.setVisibility(View.GONE);
+
+
         continue_btn.setClickable(false);
 
 
         email_editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                continue_btn.setClickable(false);
             }
 
             @Override
@@ -160,47 +163,46 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        continue_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = email_editText.getText().toString();
-                auth.fetchSignInMethodsForEmail(email)
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-
-                                List<String> signInMethods = task.getResult().getSignInMethods();
-                                if (signInMethods != null && !signInMethods.isEmpty()) {
-                                    // email address exists and has a sign-in method associated with it
-                                    for (String signInMethod : signInMethods) {
-                                        switch (signInMethod) {
-                                            case EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD:
-                                                //Toast.makeText(WelcomeActivity.this, "Email and password authentication", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
-                                                startActivity(intent);
-                                                break;
-                                            case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
-                                                Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
-                                                break;
-                                            case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
-                                                Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
-                                                break;
-                                        }
-                                    }
-                                } else {
-                                    // email address does not exist or has no sign-in method associated with it
-                                    Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
-                                    startActivity(intent);
-                                }
-                            } else {
-                                Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
-                            }
-                        });
 
 
-            }
-        });
+
     }
 
+    public  void ContinueButton(View view){
+        String email = email_editText.getText().toString();
+        auth.fetchSignInMethodsForEmail(email)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        List<String> signInMethods = task.getResult().getSignInMethods();
+                        if (signInMethods != null && !signInMethods.isEmpty()) {
+                            // email address exists and has a sign-in method associated with it
+                            for (String signInMethod : signInMethods) {
+                                switch (signInMethod) {
+                                    case EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD:
+                                        //Toast.makeText(WelcomeActivity.this, "Email and password authentication", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
+                                        intent.putExtra("Email", email);
+                                        startActivity(intent);
+                                        break;
+                                    case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
+                                        Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
+                                        Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                            }
+                        } else {
+                            // email address does not exist or has no sign-in method associated with it
+                            Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
     public void ContinueWithGoogleButton(View view){
         Intent intent =  mGoogleSignInClient.getSignInIntent();
         startActivityForResult(intent,RC_SIGN_IN);

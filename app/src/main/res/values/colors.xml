@@ -10,5 +10,5 @@
 
     <color name="custom_red_for_buttons">#A8C1502C</color>
     <color name="underline_color">#345DDA</color>
-
+    <color name="colorTextInputBackground">#F7F7F7</color>
 </resources>

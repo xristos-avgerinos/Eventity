@@ -122,7 +122,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="50dp"
                             android:backgroundTint="@color/material_dynamic_neutral80"
-                            android:onClick="ContinueWithEmailButton"
+                            android:onClick="ContinueButton"
                             android:text="Continue"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textSize="19sp" />
