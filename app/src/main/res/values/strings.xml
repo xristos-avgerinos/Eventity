@@ -2,8 +2,44 @@
     <string name="app_name">Eventity</string>
     <string name="title_activity_maps">MapsActivity</string>
 
+    <!-- for login-signUp-forgetPassword-->
+    <string name="hint_fullname">Fullname</string>
+    <string name="hint_password">Password</string>
+    <string name="button_sign_in">Sign in</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="button_send">Send</string>
+    <string name="text_forgot_password">Forgot password?</string>
+    <string name="text_signin_message">Hello, sign in to your account</string>
+    <string name="text_signin_social_media">Or Sign in using social media</string>
+    <string name="text_signup_social_media">Or Sign up using social media</string>
+    <string name="text_signin_signup">Don\'t have an account? <b>Sign up</b></string>
+    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
+    <string name="text_signup_message">Hello, let\'s set up your account</string>
+    <string name="text_forgot_password_title">Forgot password? No worries</string>
+    <string name="text_forgot_password_message">We will send you a link to reset your password</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+
     <!--for facebook login-->
     <string name="facebook_app_id">1207133706629949</string>
     <string name="fb_login_protocol_scheme">fb1234</string>
     <string name="facebook_client_token">bb3e4d63a61dbfe46e3addd64feb5d7f</string>
+
+    <!-- for Signup Activity -->
+    <string name="fullname_required">Full name is required</string>
+    <string name="mobile_required">Mobile phone number is required</string>
+    <string name="mobile_length">Mobile phone number must be 10 digits</string>
+    <string name="password_min_length">Password must be at least 6 characters</string>
+    <string name="password_confirmation">Password confirmation is required</string>
+    <string name="passwords_dont_match">The passwords do not match</string>
+    <string name="user_registered">User registered successfully</string>
+    <string name="gps_necessary">GPS is necessary for signing up. Do you want to go to settings menu?</string>
+
+    <!-- for ForgotPasswordActivity -->
+    <string name="email_required">Email is required</string>
+    <string name="valid_email">Please enter a valid email</string>
+    <string name="reset_password">Open your emails and reset your password</string>
+    <string name="error">Error</string>
+
 </resources>

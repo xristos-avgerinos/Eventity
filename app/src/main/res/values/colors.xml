@@ -10,5 +10,17 @@
 
     <color name="custom_red_for_buttons">#A8C1502C</color>
     <color name="underline_color">#345DDA</color>
+
+    <!-- for login-signUp-forgetPassword-->
+    <color name="colorPrimary">#26C6DA</color>
+    <color name="colorPrimaryDark">#26C6DA</color>
+    <color name="colorAccent">#EF5350</color>
+    <color name="colorBackground">#fff</color>
+    <color name="colorIcon">#cccccc</color>
     <color name="colorTextInputBackground">#F7F7F7</color>
+    <color name="actionbarOpacity">#00000000</color>
+    <color name="md_cyan_A700">#00B8D4</color>
+    <color name="md_black_1000">#000000</color>
+
+
 </resources>

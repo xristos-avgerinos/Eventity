@@ -67,4 +67,7 @@ dependencies {
 
     //for facebook login
     implementation 'com.facebook.android:facebook-android-sdk:13.0.0'
+
+    //Circular ImageView Library dependency
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }

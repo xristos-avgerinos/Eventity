@@ -28,7 +28,8 @@
         <activity
             android:name=".SignUpActivity"
             android:exported="false"
-            android:parentActivityName=".WelcomeActivity">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
