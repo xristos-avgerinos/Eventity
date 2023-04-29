@@ -1,5 +1,7 @@
 package com.unipi.chrisavg.eventity;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
@@ -75,7 +79,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         finish();
 
                     }else{
-                        showMessage(getString(R.string.error),task.getException().getLocalizedMessage());
+                        if(task.getException() instanceof FirebaseNetworkException){
+                            // No internet connection
+                            DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
+                        }
+                        else {
+                            Log.e(TAG, task.getException().getLocalizedMessage());
+                            DisplaySnackbar(view,"Error occurred while checking email address");
+                        }
                     }
                 }
             });

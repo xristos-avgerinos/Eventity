@@ -1,5 +1,7 @@
 package com.unipi.chrisavg.eventity;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -41,6 +43,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -202,8 +206,16 @@ public class WelcomeActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
-                       // Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
-                    DisplaySnackbar(view,"error occurred while checking email address");
+
+
+                        if(task.getException() instanceof FirebaseNetworkException){
+                            // No internet connection
+                            DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
+                        }
+                        else {
+                            Log.e(TAG, task.getException().getLocalizedMessage());
+                            DisplaySnackbar(view,"Error occurred while checking email address");
+                        }
                     }
                 });
     }
@@ -226,6 +238,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
+                DisplaySnackbar(view,error.getLocalizedMessage());
             }
         });
     }
@@ -256,13 +269,13 @@ public class WelcomeActivity extends AppCompatActivity {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), "Error writing document", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            showMessage("Authentication Failed",task.getException().getLocalizedMessage());
+                            Toast.makeText(WelcomeActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -315,20 +328,17 @@ public class WelcomeActivity extends AppCompatActivity {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "Error writing document", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }else{
                     // If sign in fails, display a message to the user.
-                    showMessage("Authentication Failed",task.getException().getLocalizedMessage());
+                    Toast.makeText(WelcomeActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    void showMessage(String title, String message){
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
     void DisplaySnackbar(View view,String message){
 

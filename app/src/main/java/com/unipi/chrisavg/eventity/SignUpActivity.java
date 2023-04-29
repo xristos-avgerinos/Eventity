@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // getSupportActionBar().hide(); //hide the title bar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -82,9 +83,6 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
-
-
-
 
     }
 
@@ -155,12 +153,19 @@ public class SignUpActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                DisplaySnackbar(view,e.getLocalizedMessage());
                                             }
                                         });
 
                             }else {
-                                showMessage(getString(R.string.error),task.getException().getLocalizedMessage());
+                                if(task.getException() instanceof FirebaseNetworkException){
+                                    // No internet connection
+                                    DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again.");
+                                }
+                                else {
+                                    Log.e(TAG, task.getException().getLocalizedMessage());
+                                    DisplaySnackbar(view,"Error occurred while signing you up.");
+                                }
                             }
                         }
                     });

@@ -15,11 +15,30 @@
         android:scrollbarThumbHorizontal="@null"
         android:scrollbarThumbVertical="@null">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:backgroundTintMode="src_over"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="Log In"
+            app:titleTextAppearance="@style/ToolbarTitleStyle"
+            android:elevation="4dp"/>
+
+        <View
+            android:id="@+id/underline_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/toolbar"
+            android:background="#8ACCCCCC" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_below="@id/underline_toolbar">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -145,7 +164,8 @@
                         android:text="Log In"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="#FFFFFF"
-                        android:textSize="19sp" />
+                        android:textSize="19sp"
+                        android:onClick="GoMainActivity"/>
 
                 </RelativeLayout>
 
