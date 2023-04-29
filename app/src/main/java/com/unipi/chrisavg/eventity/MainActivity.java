@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if(documentSnapshot.exists()){
                                     User user = documentSnapshot.toObject(User.class);
-                                    Toast.makeText(getApplicationContext(), "logged in"+ user.getName() + user.getPreferences().get("arts"), Toast.LENGTH_SHORT).show();
 
                                 }else{
                                     Toast.makeText(getApplicationContext(), "failed to find userId", Toast.LENGTH_SHORT).show();

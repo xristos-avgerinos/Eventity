@@ -4,15 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".SignUpActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:background="@android:color/transparent"
-        app:navigationIcon="@drawable/ic_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:title="title">
-    </androidx.appcompat.widget.Toolbar>
+        android:background="@android:color/transparent"
+        android:backgroundTintMode="src_over"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Sign Up"
+        app:titleTextAppearance="@style/ToolbarTitleStyle"
+
+        android:elevation="4dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/toolbar"
+        android:background="#8ACCCCCC" />
 
     <ScrollView
         android:layout_below="@id/toolbar"
@@ -42,7 +53,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:orientation="vertical"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="20dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/image"
@@ -60,7 +71,7 @@
                     android:text="@string/text_signup_message"
                     android:textColor="#696969"
                     android:textSize="16sp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="34dp"
                     android:textStyle="bold" />
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -70,6 +81,7 @@
                     android:layout_margin="4dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp">
+
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_email"
                         android:layout_width="wrap_content"
@@ -81,12 +93,18 @@
                         android:drawableStart="@drawable/ic_mail"
                         android:drawableLeft="@drawable/ic_mail"
                         android:drawablePadding="12dp"
+                        android:enabled="false"
+                        android:fontFamily="sans-serif-black"
                         android:hint="@string/hint_email"
-                        android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
                         android:minWidth="320dp"
                         android:minHeight="45dp"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textAlignment="viewStart"
+                        android:textAllCaps="false"
+                        android:textSize="18sp"
+                        android:textStyle="italic" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -195,15 +213,17 @@
                 </androidx.cardview.widget.CardView>
 
                 <Button
-                    android:id="@+id/button_signin"
+                    android:id="@+id/button_signup"
                     style="@style/Button1"
                     android:layout_width="342dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/button1_bg"
                     android:onClick="signUp"
-                    android:text="@string/button_sign_up" />
+                    android:text="@string/button_sign_up"
+                    />
+
 
                 <LinearLayout
                     android:id="@+id/social_layout"
@@ -241,7 +261,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/button_signup"
+                    android:id="@+id/textview_terms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -7,14 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="custom_red_for_buttons">#A8C1502C</color>
     <color name="underline_color">#345DDA</color>
 
     <!-- for login-signUp-forgetPassword-->
-    <color name="colorPrimary">#26C6DA</color>
+ <!--   <color name="colorPrimary">#26C6DA</color>
     <color name="colorPrimaryDark">#26C6DA</color>
-    <color name="colorAccent">#EF5350</color>
+    <color name="colorAccent">#EF5350</color>-->
     <color name="colorBackground">#fff</color>
     <color name="colorIcon">#cccccc</color>
     <color name="colorTextInputBackground">#F7F7F7</color>

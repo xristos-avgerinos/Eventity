@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -37,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -186,20 +189,24 @@ public class WelcomeActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         break;
                                     case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
-                                        Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
+                                        DisplaySnackbar(view,"Use Google authentication");
                                         break;
                                     case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
-                                        Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
+                                        DisplaySnackbar(view,"Use Facebook authentication");
                                         break;
                                 }
                             }
                         } else {
                             // email address does not exist or has no sign-in method associated with it
                             Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
+                            intent.putExtra("Email", email);
                             startActivity(intent);
                         }
                     } else {
-                        Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(WelcomeActivity.this, "error occurred while checking email address", Toast.LENGTH_LONG).show();
+                    DisplaySnackbar(view,"error occurred while checking email address");
                     }
                 });
     }
@@ -236,8 +243,7 @@ public class WelcomeActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser u = auth.getCurrentUser();
 
-                            User user = new User("token");
-                            user.setName(u.getDisplayName());
+                            User user = new User(u.getDisplayName());
 
                             users.document(auth.getUid())
                                     .set(user)
@@ -296,8 +302,7 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     FirebaseUser u = auth.getCurrentUser();
-                    User user = new User("token");
-                    user.setName(u.getDisplayName());
+                    User user = new User(u.getDisplayName());
 
                     users.document(auth.getUid())
                             .set(user)
@@ -326,5 +331,15 @@ public class WelcomeActivity extends AppCompatActivity {
 
     void showMessage(String title, String message){
         new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+
+    void DisplaySnackbar(View view,String message){
+
+        Snackbar snackbar =  Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        View v = snackbar.getView();
+        TextView tv = (TextView) v.findViewById(com.google.android.material.R.id.snackbar_text);
+        tv.setTypeface(Typeface.DEFAULT_BOLD);
+        tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        snackbar.show();
     }
 }

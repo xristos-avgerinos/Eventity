@@ -42,4 +42,9 @@
     <string name="reset_password">Open your emails and reset your password</string>
     <string name="error">Error</string>
 
+    <!-- for LoginActivity -->
+    <string name="password_required">Password is required</string>
+    <string name="no_role">This user does not have a role.</string>
+    <string name="user_not_exists">User does not exist or is no longer valid.</string>
+
 </resources>

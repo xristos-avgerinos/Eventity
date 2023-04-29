@@ -3,42 +3,32 @@ package com.unipi.chrisavg.eventity;
 import java.util.HashMap;
 
 public class User {
-    private String name;
-    private String surname;
+    private String fullname;
     private int age;
     private String phoneNumber;
     private String token;
     HashMap<String, Boolean> preferences = new HashMap<String, Boolean>();
 
-    public User( String token) {
-        this.token = token;
+    public User( String fullname) {
+        this.fullname = fullname;
     }
     public User() {
     }
 
-    public User(String name, String surname, int age, String phoneNumber, String token, HashMap<String, Boolean> preferences) {
-        this.name = name;
-        this.surname = surname;
+    public User(String fullname, int age, String phoneNumber, String token, HashMap<String, Boolean> preferences) {
+        this.fullname = fullname;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.token = token;
         this.preferences = preferences;
     }
 
-    public String getName() {
-        return name;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public int getAge() {
