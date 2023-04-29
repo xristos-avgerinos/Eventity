@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".LoginActivity">
 
 
@@ -153,14 +154,15 @@
                     style="@style/TextyButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/RL_password"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="22dp"
                     android:onClick="GoForgetPasswordActivity"
                     android:padding="18dp"
                     android:text="I forgot my password"
                     android:textColor="@color/underline_color"
-                    android:layout_below="@id/RL_password"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp" />
 
 
             </RelativeLayout>

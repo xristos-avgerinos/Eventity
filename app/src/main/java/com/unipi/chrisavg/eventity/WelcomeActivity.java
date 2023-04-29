@@ -52,9 +52,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
-import java.security.Permission;
 import java.util.Arrays;
 import java.util.List;
 

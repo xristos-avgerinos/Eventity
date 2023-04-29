@@ -14,9 +14,8 @@
         android:background="@android:color/transparent"
         android:backgroundTintMode="src_over"
         app:navigationIcon="@drawable/ic_back"
-        app:title="Sign Up"
+        app:title="New Account"
         app:titleTextAppearance="@style/ToolbarTitleStyle"
-
         android:elevation="4dp"/>
 
     <View

@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        setStatusBarWhite(LoginActivity.this);
 
         logInBtn = findViewById(R.id.LogIn);
         password_editText = findViewById(R.id.et_password);
@@ -126,6 +127,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void GoForgetPasswordActivity(View view){
+        Intent intent = new Intent(this,ForgotPasswordActivity.class);
+        startActivity(intent);
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){

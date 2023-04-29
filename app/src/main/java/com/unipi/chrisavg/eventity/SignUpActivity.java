@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // getSupportActionBar().hide(); //hide the title bar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -101,18 +101,23 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         if(TextUtils.isEmpty(fullname.getText().toString())){
+            fullname.requestFocus();
             DisplaySnackbar(view,getString(R.string.fullname_required));
         }
         else if(TextUtils.isEmpty(password.getText().toString())){
+            password.requestFocus();
             DisplaySnackbar(view,getString(R.string.password_required));
         }
         else if(password.getText().toString().length() < 6){
+            password.requestFocus();
             DisplaySnackbar(view,getString(R.string.password_min_length));
         }
         else if(TextUtils.isEmpty(confirmPassword.getText().toString())){
+            confirmPassword.requestFocus();
             DisplaySnackbar(view,getString(R.string.password_confirmation));
 
         }else if(!(password.getText().toString()).equals(confirmPassword.getText().toString())){
+            confirmPassword.requestFocus();
             DisplaySnackbar(view,getString(R.string.passwords_dont_match));
 
             //Clear the entered passwords
