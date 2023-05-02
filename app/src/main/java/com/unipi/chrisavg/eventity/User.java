@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class User {
     private String fullname;
     private int age;
-    private String phoneNumber;
+    private String phoneNumber; //για τις κρατησεις-επικοινωνια με τους organizers
     private String token;
     HashMap<String, Boolean> preferences = new HashMap<String, Boolean>();
 
