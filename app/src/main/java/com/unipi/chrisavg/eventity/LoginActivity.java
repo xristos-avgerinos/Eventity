@@ -164,12 +164,27 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener((task)->{
                     if(task.isSuccessful()){
 
-                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        //To prevent User from returning back to LOGIN Activity on pressing back button
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
+                        users.document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if(documentSnapshot.exists()){
+                                    User user = documentSnapshot.toObject(User.class);
+                                    if (user.getPreferences().size()==0){
+                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
+                                    }else{
+                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
+                                    }
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    //To prevent User from returning back to LOGIN Activity on pressing back button
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+
+
                     }else {
 
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {

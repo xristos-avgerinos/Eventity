@@ -1,13 +1,15 @@
 package com.unipi.chrisavg.eventity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class User {
     private String fullname;
     private int age;
     private String phoneNumber; //για τις κρατησεις-επικοινωνια με τους organizers
     private String token;
-    HashMap<String, Boolean> preferences = new HashMap<String, Boolean>();
+    List<String> preferences = new ArrayList<>();
 
     public User( String fullname) {
         this.fullname = fullname;
@@ -15,11 +17,19 @@ public class User {
     public User() {
     }
 
-    public User(String fullname, int age, String phoneNumber, String token, HashMap<String, Boolean> preferences) {
+    public User(String fullname, int age, String phoneNumber, String token, List<String> preferences) {
         this.fullname = fullname;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.token = token;
+        this.preferences = preferences;
+    }
+
+    public List<String> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<String> preferences) {
         this.preferences = preferences;
     }
 
@@ -55,11 +65,5 @@ public class User {
         this.token = token;
     }
 
-    public HashMap<String, Boolean> getPreferences() {
-        return preferences;
-    }
 
-    public void setPreferences(HashMap<String, Boolean> preferences) {
-        this.preferences = preferences;
-    }
 }

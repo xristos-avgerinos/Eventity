@@ -116,8 +116,44 @@ public class MainActivity extends AppCompatActivity {
     public void SignOut(View view){
         mAuth.signOut();
         LoginManager.getInstance().logOut();
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().remove("preferencesSelected").apply();
         Intent intent = new Intent(MainActivity.this,WelcomeActivity.class);
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String preferencesSelected = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("preferencesSelected",null);
+
+        if(currentUser!= null && preferencesSelected!=null ){
+           /* users.document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if(documentSnapshot.exists()){
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user.getPreferences().size()==0){
+                            Intent intent = new Intent(MainActivity.this,HobbySelection.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+            });*/
+
+            if (preferencesSelected.equals("False")){
+                Intent intent = new Intent(MainActivity.this,HobbySelection.class);
+                startActivity(intent);
+                finish();
+            }
+
+
+
+        }
+
+    }
+
 }

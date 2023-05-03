@@ -11,8 +11,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.wifi.hotspot2.pps.Credential;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -50,9 +52,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.facebook.FacebookSdk;
@@ -63,7 +67,6 @@ import java.util.List;
 public class WelcomeActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
-    ProgressDialog progressDialog;
     int RC_SIGN_IN = 40;
     FirebaseAuth auth;
     CollectionReference users;
@@ -91,11 +94,6 @@ public class WelcomeActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
 
-
-        /*progressDialog = new ProgressDialog(WelcomeActivity.this);
-        progressDialog.setTitle(("Creating account"));
-        progressDialog.setMessage("We are creating your account");*/
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken((getString(R.string.default_web_client_id)))
                 .requestEmail()
@@ -116,9 +114,11 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = auth.getCurrentUser();
+
         if(currentUser!= null){
             Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
     }
@@ -167,9 +167,6 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     public  void ContinueButton(View view){
@@ -191,11 +188,11 @@ public class WelcomeActivity extends AppCompatActivity {
                                         break;
                                     case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
                                         //Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
-                                        DisplaySnackbar(view,"Use Google authentication");
+                                        DisplaySnackbar(view,"Sign in using Google provider which is associated with this email address.");
                                         break;
                                     case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
                                         //Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
-                                        DisplaySnackbar(view,"Use Facebook authentication");
+                                        DisplaySnackbar(view,"Sign in using Facebook provider which is associated with this email address.");
                                         break;
                                 }
                             }
@@ -206,7 +203,6 @@ public class WelcomeActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     } else {
-
 
                         if(task.getException() instanceof FirebaseNetworkException){
                             // No internet connection
@@ -219,6 +215,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public void ContinueWithGoogleButton(View view){
         Intent intent =  mGoogleSignInClient.getSignInIntent();
         startActivityForResult(intent,RC_SIGN_IN);
@@ -245,37 +242,78 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        SignInOrSignUpUser(credential);
+    }
+
+
+    private void googleFirebaseAuth(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken,null);
+        SignInOrSignUpUser(credential);
+    }
+
+    void SignInOrSignUpUser(AuthCredential credential){
+
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser u = auth.getCurrentUser();
 
-                            User user = new User(u.getDisplayName());
+                            users.document(auth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if(documentSnapshot.exists()){
+                                        //αν ο συγκεκριμενος χρηστης με το συγκεκριμενο Uid υπαρχει ηδη στη βαση
+                                        // σημαινει οτι εχει γινει signup ηδη οποτε κανουμε απλο login
+                                        //οποτε απλα ενημερωνουμε τα shared Preferences αναλογα με το αν εχει
+                                        // γινει επιλογη ενδιαφεροντων και τον στελνουμε στην MainActivity
+                                        User user = documentSnapshot.toObject(User.class);
+                                        if (user.getPreferences().size()==0){
+                                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
+                                        }else{
+                                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
+                                        }
+                                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
 
-                            users.document(auth.getUid())
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Toast.makeText(getApplicationContext(), "written to db"+ user.getToken(), Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    }else{
+                                        //διαφορετικα αν ο χρηστης αυτος κανει πρωτη φορα signup με facebook η google provider πρεπει να
+                                        // γραφτει και στη βαση με fullname το ονομα που εχει και στο Google η Facebook. Κανονικο sign up.
+                                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                                        User user = new User(firebaseUser.getDisplayName());
+                                        users.document(auth.getUid())
+                                                .set(user)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
+                                                        Toast.makeText(WelcomeActivity.this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+                                }
+                            });
 
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(WelcomeActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            if(task.getException() instanceof FirebaseAuthUserCollisionException){
+                                // User have been signed in with another auth provider
+                                DisplaySnackbar(findViewById(android.R.id.content),"An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.");
+                            }
+                            else {
+                                // If sign in fails, display a message to the user.
+                                DisplaySnackbar(findViewById(android.R.id.content),task.getException().getLocalizedMessage());
+                            }
+
                         }
                     }
                 });
@@ -298,55 +336,22 @@ public class WelcomeActivity extends AppCompatActivity {
                     throw new RuntimeException();
                 }
             }else if(requestCode == FacebookSdk.getCallbackRequestCodeOffset()){
+
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
             }
         }
 
     }
 
-    private void googleFirebaseAuth(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken,null);
-
-        auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    FirebaseUser u = auth.getCurrentUser();
-                    User user = new User(u.getDisplayName());
-
-                    users.document(auth.getUid())
-                            .set(user)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getApplicationContext(), "written to db"+ user.getToken(), Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }else{
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(WelcomeActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-
     void DisplaySnackbar(View view,String message){
 
-        Snackbar snackbar =  Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
+        Snackbar snackbar =  Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         View v = snackbar.getView();
         TextView tv = (TextView) v.findViewById(com.google.android.material.R.id.snackbar_text);
         tv.setTypeface(Typeface.DEFAULT_BOLD);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        // Set the maximum number of lines for the Snackbar message to display all the text
+        tv.setMaxLines(Integer.MAX_VALUE);
         snackbar.show();
     }
 }
