@@ -102,23 +102,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (hasFocus) {
-                    // The EditText has gained focus, change the color of the underline and the height
+                    // Το EditText έχει αποκτήσει εστίαση, οποτε αλλάζουμε το χρώμα της υπογράμμισης και το ύψος του
                     underline.setBackgroundColor(getResources().getColor(R.color.underline_color));
                     ViewGroup.LayoutParams layoutParams = underline.getLayoutParams();
-                    int heightInDp = 2; // set the desired height in dp
+                    int heightInDp = 2; // θετουμε το επιθυμητό ύψος σε dp
                     int heightInPixels = (int) TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
-                    layoutParams.height = heightInPixels; // set the height to 2dp
+                    layoutParams.height = heightInPixels;
                     underline.setLayoutParams(layoutParams);
                 } else {
-                    // The EditText has lost focus, do something here
-                    // For example, change the color of the underline and height back to normal
+                    // Το EditText έχει χάσει την εστίαση, οποτε αλλάζουμε το χρώμα της υπογράμμισης και το ύψος πίσω στο κανονικό
                     underline.setBackgroundColor(getResources().getColor(R.color.black));
                     ViewGroup.LayoutParams layoutParams = underline.getLayoutParams();
-                    int heightInDp = 1; // set the desired height in dp
+                    int heightInDp = 1;  // θετουμε το επιθυμητό ύψος σε dp
                     int heightInPixels = (int) TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP, heightInDp, getResources().getDisplayMetrics());
-                    layoutParams.height = heightInPixels; // set the height to 2dp
+                    layoutParams.height = heightInPixels;
                     underline.setLayoutParams(layoutParams);
                 }
             }
@@ -195,23 +194,22 @@ public class LoginActivity extends AppCompatActivity {
 
                     }else {
                         //αν πηγε κατι λαθος με την συνδεση του χρηστη(με το authentication δηλ
-                        // οχι την βαση )ανιχνευουμε το exception και εμφανιζουμε καταλληλο μηνυμα.
+                        // οχι την βαση) ανιχνευουμε το exception και εμφανιζουμε καταλληλο μηνυμα.
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             DisplaySnackbar(view,"The password is invalid or the user does not have a password");
 
                         } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                             if (((FirebaseAuthInvalidUserException) task.getException()).getErrorCode().equals("ERROR_USER_DISABLED")) {
-                                // User account is blocked
+                                // Ο λογαριασμός χρήστη είναι αποκλεισμένος
                                 DisplaySnackbar(view,"User account is blocked");
                             }
                         }
                         else if(task.getException() instanceof FirebaseNetworkException){
-                            // No internet connection
+                            // Δεν υπάρχει σύνδεση στο διαδίκτυο
                             DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
                         }
                         else if(task.getException() instanceof FirebaseTooManyRequestsException){
-                            // All requests from this device have been blocked
-                            // Show an appropriate message to the user
+                            // Όλα τα αιτήματα από αυτήν τη συσκευή έχουν αποκλειστε. Εμφάνιση κατάλληλου μηνύματος στον χρήστη
                             DisplaySnackbar(view,"The account has been blocked due to unusual activity.You may entered wrong password too many times.Try again later or reset your password.");
 
                         }
@@ -241,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView tv = (TextView) v.findViewById(com.google.android.material.R.id.snackbar_text);
         tv.setTypeface(Typeface.DEFAULT_BOLD);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        // Set the maximum number of lines for the Snackbar message to display all the text
+        // θετουμε τον μέγιστο αριθμό γραμμών για το μήνυμα Snackbar ώστε να εμφανίζεται όλο το κείμενο
         tv.setMaxLines(Integer.MAX_VALUE);
         snackbar.show();
     }

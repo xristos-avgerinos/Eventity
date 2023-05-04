@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
     EditText email,password;
-    FirebaseUser mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
 
-        mUser = mAuth.getCurrentUser();
+
     }
 
     public void go(View view){
@@ -125,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String preferencesSelected = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("preferencesSelected",null);
 
@@ -144,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });*/
 
+            //Αν ο χρηστης δεν εχει επιλεξει τα ενδιαφεροντα του τον ανακατευθυνουμε στο HobbySelection activity για να επιλεξει
             if (preferencesSelected.equals("False")){
                 Intent intent = new Intent(MainActivity.this,HobbySelection.class);
                 startActivity(intent);

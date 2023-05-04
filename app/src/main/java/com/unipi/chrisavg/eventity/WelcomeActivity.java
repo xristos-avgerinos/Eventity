@@ -88,19 +88,19 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportActionBar().hide(); //hide the title bar
         setStatusBarWhite(this);
 
-
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
 
+
+        //για την συνεδεση του χρηστη μεσω google provider
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken((getString(R.string.default_web_client_id)))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this,gso);
-
 
         FacebookSdk.sdkInitialize(WelcomeActivity.this);
        // AppEventsLogger.activateApp(this);
@@ -112,7 +112,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Αν ο χρηστης ειναι ηδη συνδεμενος τον στελνουμε απευθειας στην MainActivity
         FirebaseUser currentUser = auth.getCurrentUser();
 
         if(currentUser!= null){
@@ -140,9 +140,7 @@ public class WelcomeActivity extends AppCompatActivity {
         RL_email.setVisibility(View.VISIBLE);
         btn_email_login.setVisibility(View.GONE);
 
-
-        continue_btn.setClickable(false);
-
+        continue_btn.setClickable(false); //να ειναι γκρι και να μην μπορει να τον πατησει μεχρι να δωσει εγκυρο email
 
         email_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -158,9 +156,11 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(s) && Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
+                    //αν το email ειναι εγκυρο τοτε ξανα κανουμε clickable το κουμπι για να ειναι αλληλεπιδρασιμο με τον χρηστη και αλλαζουμε το χρωμα του σε κοκκινο
                     continue_btn.setClickable(true);
                     continue_btn.setBackgroundColor(getResources().getColor(R.color.custom_red_for_buttons));
                 }else{
+                    //αν το email δεν ειναι εγκυρο τοτε ξανα κανουμε το κουμπι μη αλληλεπιδρασιμο με τον χρηστη και αλλαζουμε το χρωμα του σε γκρι παλι
                     continue_btn.setClickable(false);
                     continue_btn.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
                 }
@@ -171,33 +171,31 @@ public class WelcomeActivity extends AppCompatActivity {
 
     public  void ContinueButton(View view){
         String email = email_editText.getText().toString();
-        auth.fetchSignInMethodsForEmail(email)
+        auth.fetchSignInMethodsForEmail(email) //ελεγχουμε με ποιον provider εχει γινει signed up ο χρηστης
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
 
                         List<String> signInMethods = task.getResult().getSignInMethods();
                         if (signInMethods != null && !signInMethods.isEmpty()) {
-                            // email address exists and has a sign-in method associated with it
+                            // Η διευθυνση email υπαρχει και ειναι συνδεμενη με καποιο provider
                             for (String signInMethod : signInMethods) {
                                 switch (signInMethod) {
                                     case EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD:
-                                        //Toast.makeText(WelcomeActivity.this, "Email and password authentication", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
                                         intent.putExtra("Email", email);
                                         startActivity(intent);
                                         break;
                                     case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
-                                        //Toast.makeText(WelcomeActivity.this, "Use Google authentication", Toast.LENGTH_SHORT).show();
                                         DisplaySnackbar(view,"Sign in using Google provider which is associated with this email address.");
                                         break;
                                     case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
-                                        //Toast.makeText(WelcomeActivity.this, "Use Facebook authentication", Toast.LENGTH_SHORT).show();
                                         DisplaySnackbar(view,"Sign in using Facebook provider which is associated with this email address.");
                                         break;
                                 }
                             }
                         } else {
-                            // email address does not exist or has no sign-in method associated with it
+                            // Η διεύθυνση email δεν υπάρχει ή δεν έχει συσχετιστεί με καποια μέθοδος σύνδεσης οποτε πρεπει
+                            // να στειλουμε τον χρηστη για sign up με email-password με βαση το email αυτο που εχει δβσει
                             Intent intent = new Intent(WelcomeActivity.this,SignUpActivity.class);
                             intent.putExtra("Email", email);
                             startActivity(intent);
@@ -253,6 +251,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     void SignInOrSignUpUser(AuthCredential credential){
 
+        //μεθοδος που θα εκτελεστει οταν ο χρηστης παει να κανει log in η sign up με google η facebook Provider με βαση τα credentials
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -308,11 +307,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
                         } else {
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
-                                // User have been signed in with another auth provider
+                                // Ο χρήστης έχει συνδεθεί με άλλο provider
                                 DisplaySnackbar(findViewById(android.R.id.content),"An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.");
                             }
                             else {
-                                // If sign in fails, display a message to the user.
+                                // Εάν η σύνδεση αποτύχει, εμφανίζουμε ένα μήνυμα στον χρήστη.
                                 DisplaySnackbar(findViewById(android.R.id.content),task.getException().getLocalizedMessage());
                             }
 
@@ -352,7 +351,7 @@ public class WelcomeActivity extends AppCompatActivity {
         TextView tv = (TextView) v.findViewById(com.google.android.material.R.id.snackbar_text);
         tv.setTypeface(Typeface.DEFAULT_BOLD);
         tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        // Set the maximum number of lines for the Snackbar message to display all the text
+        // Ορίζουμε τον μέγιστο αριθμό γραμμών για το μήνυμα Snackbar ώστε να εμφανίζεται όλο το κείμενο
         tv.setMaxLines(Integer.MAX_VALUE);
         snackbar.show();
     }

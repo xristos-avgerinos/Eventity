@@ -60,18 +60,14 @@ public class SignUpActivity extends AppCompatActivity {
         password=findViewById(R.id.et_password);
         confirmPassword=findViewById(R.id.et_confirm_password);
 
+
+        //Βαζουμε το email του user που δοθηκε απο την welcomeActivity
         Intent intent = getIntent();
         String user_email = intent.getStringExtra("Email");
-
         email.setText(user_email);
-
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // getSupportActionBar().hide(); //hide the title bar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,8 +93,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void signUp(View view){
 
-
-
         if(TextUtils.isEmpty(fullname.getText().toString())){
             fullname.requestFocus();
             DisplaySnackbar(view,getString(R.string.fullname_required));
@@ -122,11 +116,11 @@ public class SignUpActivity extends AppCompatActivity {
             //Clear the entered passwords
             password.clearComposingText();
             confirmPassword.clearComposingText();
-
         }
         else{
+            //κανουμε ολους τους ελεγχους σε αυτον τον listener.γινεται και ελεγχος αν το email ειναι μοναδικο
             mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString())
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() { //κανουμε ολους τους ελεγχους σε αυτον τον listener.γινεται και ελεγχος αν το email ειναι μοναδικο
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
@@ -142,6 +136,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                                                 Toast.makeText(SignUpActivity.this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show();
 
+                                                //οταν δημιουργειται ενας χρηστης προφανως δεν εχει επιλεξει ενδιαφεροντα οποτε θετουμε τα sharedPreferences σε false και τον
+                                                // στελνουμε στην MainActivity που αυτη κατευθειαν μεσω της OnStart θα τον ανακατευθυνει στην HobbySelection
                                                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                                 //To prevent User from returning back to Sign Up Activity on pressing back button after registration
@@ -152,14 +148,14 @@ public class SignUpActivity extends AppCompatActivity {
 
                                             }
                                         })
-                                        .addOnFailureListener(new OnFailureListener() {
+                                        .addOnFailureListener(new OnFailureListener() { //κατι πηγε λαθος με το γραψιμο του χρηστη στη βαση
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
                                                 DisplaySnackbar(view,e.getLocalizedMessage());
                                             }
                                         });
 
-                            }else {
+                            }else { //κατι πηγε λαθος με την δημιουργια του χρηστη στο authentication
                                 if(task.getException() instanceof FirebaseNetworkException){
                                     // No internet connection
                                     DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again.");
@@ -172,20 +168,11 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     });
 
-
-
-
-
         }
 
     }
 
-    void showMessage(String title, String message){
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
-
     void DisplaySnackbar(View view,String message){
-
         Snackbar snackbar =  Snackbar.make(view, message, Snackbar.LENGTH_SHORT);
         View v = snackbar.getView();
         TextView tv = (TextView) v.findViewById(com.google.android.material.R.id.snackbar_text);

@@ -117,8 +117,7 @@ public class HobbySelection extends AppCompatActivity {
             DisplaySnackbar(view,"You have to select at least 3 interests from each category");
         }else{
 
-            //store to db the selected preferences of the user
-
+            //αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι οσυνδυασμος των αλλων δυο λιστων
             List<String> preferencesList = new ArrayList<>();
             preferencesList.addAll(selectedMusicGridList);
             preferencesList.addAll(selectedVibeGridList);
@@ -163,7 +162,7 @@ public class HobbySelection extends AppCompatActivity {
 
     public void HideRows(GridLayout gridLayout, int start, int end){
 
-        // Set visibility of remaining rows to GONE
+        // Ορίζουμε την ορατότητα των υπόλοιπων σειρών σε GONE
         for (int i = start; i < end; i++) {
             View view = gridLayout.getChildAt(i);
             view.setVisibility(View.GONE);
@@ -179,7 +178,7 @@ public class HobbySelection extends AppCompatActivity {
 
     public void ShowHiddenRows(GridLayout gridLayout, int start, int end){
 
-        // Set visibility of remaining rows to VISIBLE
+        // Ορίζουμε την ορατότητα των υπόλοιπων σειρών σε VISIBLE
         for (int i = start; i < end; i++) {
             View view = gridLayout.getChildAt(i);
             view.setVisibility(View.VISIBLE);
