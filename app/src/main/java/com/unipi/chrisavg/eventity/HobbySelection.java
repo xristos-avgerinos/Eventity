@@ -46,7 +46,6 @@ public class HobbySelection extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
 
-    List<String> preferencesList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +63,10 @@ public class HobbySelection extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setStatusBarWhite(this);
 
-
         music_expand = findViewById(R.id.music_expand);
         vibe_expand = findViewById(R.id.vibe_expand);
 
+        //κρυβουμε τις 3 τελευταιες γραμμες των δυο GridLayout
         MusicGridLayout = findViewById(R.id.Music_gridview);
         HideRows(MusicGridLayout,9,15);
 
@@ -86,6 +85,7 @@ public class HobbySelection extends AppCompatActivity {
     }
 
     public void ContinueButton(View view){
+        //αρχικα βρισκουμε ποσα toggleButtons εχουν επιλεχθει για καθε μια απο τις δυο κατηγοριες και τα κραταμε σε λιστες
         int selectedCountMusic = 0;
         int selectedCountVibe = 0;
         List<String> selectedMusicGridList = new ArrayList<>();
@@ -116,7 +116,10 @@ public class HobbySelection extends AppCompatActivity {
         if(selectedCountMusic<3 || selectedCountVibe<3 ){
             DisplaySnackbar(view,"You have to select at least 3 interests from each category");
         }else{
-            //store to dp the selected preferences of the user
+
+            //store to db the selected preferences of the user
+
+            List<String> preferencesList = new ArrayList<>();
             preferencesList.addAll(selectedMusicGridList);
             preferencesList.addAll(selectedVibeGridList);
 
@@ -125,6 +128,7 @@ public class HobbySelection extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
                         User user = documentSnapshot.toObject(User.class);
+                        //ενημερωνουμε την λιστα με τις προτημησεις του χρηστη στη βαση με την λιστα που περιεχει ολες τις επιλογες και απο τισ δυο κατηγοριες
                         user.setPreferences(preferencesList);
 
                         users.document(auth.getUid())
@@ -133,6 +137,7 @@ public class HobbySelection extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved!", Toast.LENGTH_SHORT).show();
+                                        //ενημερωνουμε τα SharedPreferences οτι ο χρηστης εχει επιλεξει τιε προτιμησεις του
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
                                         Intent intent = new Intent(HobbySelection.this,MainActivity.class);
                                         startActivity(intent);
@@ -174,7 +179,7 @@ public class HobbySelection extends AppCompatActivity {
 
     public void ShowHiddenRows(GridLayout gridLayout, int start, int end){
 
-        // Set visibility of remaining rows to GONE
+        // Set visibility of remaining rows to VISIBLE
         for (int i = start; i < end; i++) {
             View view = gridLayout.getChildAt(i);
             view.setVisibility(View.VISIBLE);

@@ -297,7 +297,9 @@ public class WelcomeActivity extends AppCompatActivity {
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(getApplicationContext(), "An error occurred", Toast.LENGTH_SHORT).show();
+                                                        auth.signOut();
+                                                        LoginManager.getInstance().logOut();
+                                                        DisplaySnackbar(findViewById(android.R.id.content),e.getLocalizedMessage());
                                                     }
                                                 });
                                     }

@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -67,11 +68,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
-
 
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
@@ -80,10 +79,8 @@ public class LoginActivity extends AppCompatActivity {
         email_textview = findViewById(R.id.email_textview);
         email_textview.setText(email);
 
-
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // getSupportActionBar().hide(); //hide the title bar
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,6 +137,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                //Ενεργοποιουμε και απενεργοποιουμε το κουμπι του login καθως λογω του selector my_button_background.xml
+                // που εχουμε φτιαξει για το background του κουμιου το κανει γκρι η κοκκινο
                 if (!TextUtils.isEmpty(s)) {
                    logInBtn.setEnabled(true);
 
@@ -169,6 +168,9 @@ public class LoginActivity extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if(documentSnapshot.exists()){
                                     User user = documentSnapshot.toObject(User.class);
+                                    //καθε φορα που κανουμε login ειναι αναγκαιο να ενημερωσουμε τα SharedPreferences αναλογα με το αν ο χρηστης
+                                    // εχει επιλεξει προτιμησεις η οχι αν δηλ η λιστα preferences εχει size 0 η οχι ωστε αν δεν εχει επιλεξει
+                                    // μετα μεσω της onStart μεθοδου της MainActivity που τον στελνουμε να τον ανακατευθυνουμε στο HobbySelectionActivity
                                     if (user.getPreferences().size()==0){
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
                                     }else{
@@ -181,12 +183,19 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish();
                                 }
+                                else{
+                                    //αν δεν βρεθηκε ο χρηστης στη βαση αλλα εγινε signIn απο το authentication πρεπει να τον κανουμε
+                                    // logout ωστε να μην τον ανακατευθυνει η σελιδα welcomeActivity στην MainActivity μεσω της onStart
+                                    auth.signOut();
+                                    LoginManager.getInstance().logOut();
+                                    DisplaySnackbar(view,"Something went wrong!Try again later.");
+                                }
                             }
                         });
 
-
                     }else {
-
+                        //αν πηγε κατι λαθος με την συνδεση του χρηστη(με το authentication δηλ
+                        // οχι την βαση )ανιχνευουμε το exception και εμφανιζουμε καταλληλο μηνυμα.
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             DisplaySnackbar(view,"The password is invalid or the user does not have a password");
 
@@ -235,10 +244,6 @@ public class LoginActivity extends AppCompatActivity {
         // Set the maximum number of lines for the Snackbar message to display all the text
         tv.setMaxLines(Integer.MAX_VALUE);
         snackbar.show();
-    }
-
-    void showMessage(String title, String message){
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
     }
 
     public void ChangeEmail(View view){

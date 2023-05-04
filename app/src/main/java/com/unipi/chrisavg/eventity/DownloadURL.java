@@ -12,6 +12,8 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class DownloadURL {
+    //κλαση που χρησιμευει να κανουμε HttpsRequest με βαση ενα url που δινουμε.Στη συγκεκριμενη
+    // περιπτωση στο googleMaps API για να μας επιστρεψει ενα σε μορφη JSON τα δεδομενα.
 
     public String retrieveUrl(String url) throws IOException {
         String urlData="";

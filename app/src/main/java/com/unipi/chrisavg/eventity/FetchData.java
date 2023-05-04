@@ -17,6 +17,7 @@ import java.util.List;
 
 
 public class FetchData extends AsyncTask<Object, String, String> {
+    //Κλαση που κανει τη συνδεση των δεδομενων με το googleMap αντικειμενο μας προσθετοντας ολα τα points που επεστρεψε το request.
     String googleNearByPlacesData;
     GoogleMap googleMap;
     String url;

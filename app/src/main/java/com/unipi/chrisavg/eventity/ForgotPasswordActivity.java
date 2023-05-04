@@ -76,7 +76,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         Toast.makeText(ForgotPasswordActivity.this, getString(R.string.reset_password), Toast.LENGTH_SHORT).show();
                         //Intent intent = new Intent(ForgotPasswordActivity.this,LoginActivity.class);
                         //intent.putExtra("Email", email.getText().toString());
-                        finish();
+                        finish(); //κατευθειαν τερματιζουμε το συγκεκριμενο activity και μαςστελνειαυτοματα πισω στην login
 
                     }else{
                         if(task.getException() instanceof FirebaseNetworkException){
@@ -94,9 +94,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     }
 
-    void showMessage(String title, String message){
-        new AlertDialog.Builder(this).setTitle(title).setMessage(message).setCancelable(true).show();
-    }
 
     void DisplaySnackbar(View view,String message){
 
