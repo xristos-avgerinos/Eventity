@@ -36,6 +36,7 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -125,6 +126,26 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
                                 firebaseUser = mAuth.getCurrentUser();
+
+                                //οριζω το displayName του FirebaseUser οπως το Fullname που δινει ο χρηστης κατα το signup για να εχω απευθειας προσβαση στην MainActivity που το δειχνω στο navigation drawer
+                                if (firebaseUser != null) {
+                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                            .setDisplayName(fullname.getText().toString())
+                                            .build();
+
+                                    firebaseUser.updateProfile(profileUpdates)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d("SignUpActivity", "User profile updated.");
+                                                    } else {
+                                                        Log.e("SignUpActivity", "Failed to update user profile.", task.getException());
+                                                    }
+                                                }
+                                            });
+                                }
+
                                 User user = new User(fullname.getText().toString());
                                 user.setToken("token");
 

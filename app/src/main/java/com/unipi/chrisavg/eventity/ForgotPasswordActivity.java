@@ -76,7 +76,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         Toast.makeText(ForgotPasswordActivity.this, getString(R.string.reset_password), Toast.LENGTH_SHORT).show();
                         //Intent intent = new Intent(ForgotPasswordActivity.this,LoginActivity.class);
                         //intent.putExtra("Email", email.getText().toString());
-                        finish(); //κατευθειαν τερματιζουμε το συγκεκριμενο activity και μαςστελνειαυτοματα πισω στην login
+                        finish(); //κατευθειαν τερματιζουμε το συγκεκριμενο activity και μας στελνει αυτοματα πισω στην login
 
                     }else{
                         if(task.getException() instanceof FirebaseNetworkException){

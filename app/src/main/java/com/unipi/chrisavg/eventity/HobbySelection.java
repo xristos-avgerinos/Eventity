@@ -51,13 +51,10 @@ public class HobbySelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobby_selection);
 
-
-
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
-
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +114,7 @@ public class HobbySelection extends AppCompatActivity {
             DisplaySnackbar(view,"You have to select at least 3 interests from each category");
         }else{
 
-            //αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι οσυνδυασμος των αλλων δυο λιστων
+            //αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
             List<String> preferencesList = new ArrayList<>();
             preferencesList.addAll(selectedMusicGridList);
             preferencesList.addAll(selectedVibeGridList);
@@ -127,7 +124,7 @@ public class HobbySelection extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
                         User user = documentSnapshot.toObject(User.class);
-                        //ενημερωνουμε την λιστα με τις προτημησεις του χρηστη στη βαση με την λιστα που περιεχει ολες τις επιλογες και απο τισ δυο κατηγοριες
+                        //ενημερωνουμε την λιστα με τις προτιμησεις του χρηστη στη βαση με την λιστα που περιεχει ολες τις επιλογες και απο τις δυο κατηγοριες
                         user.setPreferences(preferencesList);
 
                         users.document(auth.getUid())

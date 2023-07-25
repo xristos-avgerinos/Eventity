@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 //Ενεργοποιουμε και απενεργοποιουμε το κουμπι του login καθως λογω του selector my_button_background.xml
-                // που εχουμε φτιαξει για το background του κουμιου το κανει γκρι η κοκκινο
+                // που εχουμε φτιαξει για το background του κουμπιου το κανει γκρι η κοκκινο
                 if (!TextUtils.isEmpty(s)) {
                    logInBtn.setEnabled(true);
 
@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 else{
                                     //αν δεν βρεθηκε ο χρηστης στη βαση αλλα εγινε signIn απο το authentication πρεπει να τον κανουμε
-                                    // logout ωστε να μην τον ανακατευθυνει η σελιδα welcomeActivity στην MainActivity μεσω της onStart
+                                    //logout ωστε να μην τον ανακατευθυνει η σελιδα welcomeActivity στην MainActivity μεσω της onStart
                                     auth.signOut();
                                     LoginManager.getInstance().logOut();
                                     DisplaySnackbar(view,"Something went wrong!Try again later.");
