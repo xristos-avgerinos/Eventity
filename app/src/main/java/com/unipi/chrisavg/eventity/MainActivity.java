@@ -11,6 +11,9 @@ import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.chrisavg.eventity.databinding.ActivityMainBinding;
+import com.unipi.chrisavg.eventity.ui.tickets.TicketsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("Users");
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -55,10 +63,29 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        //For logout button
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    navController.navigate(R.id.nav_home);
+                    break;
+                case R.id.nav_tickets:
+                    navController.navigate(R.id.nav_tickets);
+                    break;
+                case R.id.nav_slideshow:
+                    navController.navigate(R.id.nav_slideshow);
+                    break;
+                case R.id.nav_logout:
+                    SignOut();
+                    break;
+            }
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        users = db.collection("Users");
+            // Close the navigation drawer after item selection
+            drawer.closeDrawer(GravityCompat.START);
+
+            return true;
+        });
+
 
         // Change the subtitle of the nav_header_main
         TextView textViewHeaderTitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderTitle);
@@ -67,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         // Change the subtitle of the nav_header_main
         TextView textViewHeaderSubtitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderSubtitle);
         textViewHeaderSubtitle.setText(mAuth.getCurrentUser().getEmail());
+
+
     }
 
 
@@ -82,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(maps);
     }
 
-    public void SignOut(View view){
+    public void SignOut(){
         mAuth.signOut();
         LoginManager.getInstance().logOut();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().remove("preferencesSelected").apply();
