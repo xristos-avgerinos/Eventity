@@ -4,16 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.Menu;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -26,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.chrisavg.eventity.databinding.ActivityMainBinding;
-import com.unipi.chrisavg.eventity.ui.tickets.TicketsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_tickets, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_tickets, R.id.nav_settings)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -72,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_tickets:
                     navController.navigate(R.id.nav_tickets);
                     break;
-                case R.id.nav_slideshow:
-                    navController.navigate(R.id.nav_slideshow);
+                case R.id.nav_settings:
+                    navController.navigate(R.id.nav_settings);
                     break;
                 case R.id.nav_logout:
                     SignOut();
