@@ -24,4 +24,5 @@
 
     <color name="gray">#808080</color>
 
+    <color name="statusBarColor">#E8E6E6</color>
 </resources>

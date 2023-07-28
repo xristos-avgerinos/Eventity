@@ -4,19 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_act_background"
     tools:context=".ui.home.HomeFragment">
-
 
 
     <Button
         android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="78dp"
         android:onClick="maps"
         android:text="Map"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="295dp"
+        android:layout_height="149dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/abril_fatface"
+        android:text="DISCOVER THE MAGIC OF LOCAL EVENTS, PERSONALIZED JUST FOR YOU"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slider"
+        android:layout_width="374dp"
+        android:layout_height="wrap_content"
+        app:area_margin="9dp"
+        app:bounce_on_start="true"
+        app:inner_color="@color/custom_red_for_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.73"
+        app:outer_color="#F3F1EEEC"
+        app:text="     𝔽𝕚𝕟𝕕 𝕪𝕠𝕦𝕣 𝕟𝕖𝕩𝕥 𝕖𝕧𝕖𝕟𝕥"
+        app:text_size="22sp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

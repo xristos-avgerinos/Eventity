@@ -1,9 +1,14 @@
 package com.unipi.chrisavg.eventity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -22,8 +27,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.chrisavg.eventity.databinding.ActivityMainBinding;
+import  com.ncorti.slidetoact.SlideToActView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements SlideToActView.OnSlideCompleteListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -32,15 +38,15 @@ public class MainActivity extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
+        setStatusBarCustomColor(this);
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -90,9 +96,26 @@ public class MainActivity extends AppCompatActivity {
         TextView textViewHeaderSubtitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderSubtitle);
         textViewHeaderSubtitle.setText(mAuth.getCurrentUser().getEmail());
 
+        SlideToActView slideToActView = findViewById(R.id.slider);
+        slideToActView.setOnSlideCompleteListener(this);
+
 
     }
 
+    @Override
+    public void onSlideComplete(SlideToActView slideToActView) {
+        // Sliding action completed, start the new activity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private void setStatusBarCustomColor(AppCompatActivity activity){
+        //Make status bar icons color white
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            activity.getWindow().setStatusBarColor(getResources().getColor(R.color.statusBarColor));
+        }
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
