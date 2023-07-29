@@ -1,0 +1,41 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="horizontal">
+
+    <!-- ImageView for the small photo -->
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/location"
+        android:scaleType="centerInside"/>
+
+    <!-- Nested LinearLayout for TextViews -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
+
+        <!-- TextView for upper text -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nearby"
+            android:textColor="@color/underline_color"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- TextView for lower text (smaller than the above) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current Location"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+</LinearLayout>
