@@ -85,15 +85,13 @@
                         android:background="@android:color/darker_gray"
                         android:layout_below="@id/searchView"/>
 
-                    <Button
-                        android:id="@+id/button1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="300dp"
+                    <!-- Include the custom button here -->
+                    <include layout="@layout/button_with_photo"
+                        android:id="@+id/customButton"
                         android:layout_below="@id/view"
-                        android:onClick="maps"
-                        android:text="Map"
-                        android:visibility="gone"
-                        tools:visibility="gone" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -101,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_below="@id/view" />
+                        android:layout_below="@id/customButton" />
 
                 </RelativeLayout>
 

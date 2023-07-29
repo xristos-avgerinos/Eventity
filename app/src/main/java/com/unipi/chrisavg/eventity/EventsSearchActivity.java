@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.model.LatLng;
@@ -31,6 +34,16 @@ public class EventsSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_search);
 
+        LinearLayout customButton = findViewById(R.id.customButton);
+        customButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // This code will be executed when the custom button is clicked.
+                // You can perform any actions you want here.
+                // For example, show a toast, start another activity, etc.
+                Toast.makeText(EventsSearchActivity.this, "Button Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

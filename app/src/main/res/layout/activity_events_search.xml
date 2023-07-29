@@ -7,7 +7,9 @@
     tools:context=".EventsSearchActivity">
 
 
-
+    <!-- Include the custom button here -->
+    <include layout="@layout/button_with_photo"
+        android:id="@+id/customButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
