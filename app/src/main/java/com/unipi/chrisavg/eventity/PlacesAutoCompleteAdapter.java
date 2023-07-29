@@ -25,14 +25,12 @@ import java.util.Locale;
 public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCompleteAdapter.PlaceViewHolder> {
 
     private List<AutocompletePrediction> predictions = new ArrayList<>(); //Η λιστα που θα κραταει ολες τις καθε φορα προβλεψεις αναλογα με τι πληκτρολογησε ο χρηστης στο searchView
-    private Context context; // Ωστε να εχουμε προσβαση στο context του MainActivity
     private OnPlaceItemClickListener itemClickListener;
     boolean itemSelected = false; //ωστε να ξερουμε αν εχει γινει η τελικη επιλογη περιοχης
 
 
     // Constructor to receive the context
-    public PlacesAutoCompleteAdapter(Context context,OnPlaceItemClickListener itemClickListener) {
-        this.context = context;
+    public PlacesAutoCompleteAdapter(OnPlaceItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
@@ -85,48 +83,15 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         void bind(AutocompletePrediction prediction) {
             textView.setText(prediction.getFullText(null));
             itemView.setOnClickListener(v -> {
-                // Handle the item click (e.g., pass selected place details to the main activity)
-                String placeId = prediction.getPlaceId();
-                String placeName = prediction.getPrimaryText(null).toString();
                 // Perform further operations based on the selected place
                 if (itemClickListener != null) {
-                    itemClickListener.onPlaceItemClick(prediction);
+                    itemClickListener.onPlaceItemClick(prediction); //καλω τη μεθοδο του interface ωστε να μεταφερουμε το prediction στο mainActivity
                     clearPredictions();
                 }
-
-
-                //τα στελνω σε αυτη τη μεθοδο ωστε να βρω τα ακριβη coordinates της επιλεγμενης περιοχης
-                fetchPlaceDetails(placeId, placeName);
 
             });
         }
     }
 
 
-    private void fetchPlaceDetails(String placeId, String placeName) {
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
-
-        FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
-
-        Places.createClient(context).fetchPlace(request)
-                .addOnSuccessListener((response) -> {
-                    Place place = response.getPlace();
-
-                    // Get latitude and longitude of the selected place
-                    LatLng latLng = place.getLatLng();
-                    double latitude = latLng.latitude;
-                    double longitude = latLng.longitude;
-
-                    // Show the Snackbar with the selected place name and location
-                    showSnackbar(placeName, latitude, longitude);
-                })
-                .addOnFailureListener((exception) -> {
-                    // Handle any errors that occurred during the request
-                });
-    }
-
-    private void showSnackbar(String placeName, double latitude, double longitude) {
-        String locationInfo = String.format(Locale.getDefault(), "Selected place: %s\nLatitude: %f, Longitude: %f", placeName, latitude, longitude);
-        Snackbar.make(((Activity) context).findViewById(android.R.id.content), locationInfo, Snackbar.LENGTH_LONG).show();
-    }
 }

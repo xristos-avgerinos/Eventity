@@ -1,5 +1,6 @@
 package com.unipi.chrisavg.eventity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,9 +13,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -36,7 +41,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.chrisavg.eventity.databinding.ActivityMainBinding;
 import  com.ncorti.slidetoact.SlideToActView;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity  implements SlideToActView.OnSlideCompleteListener,OnPlaceItemClickListener {
 
@@ -124,7 +131,7 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
         searchView.setQueryHint("Find places in...");
 
         // Set up the RecyclerView with an adapter
-        adapter = new PlacesAutoCompleteAdapter(this,this);
+        adapter = new PlacesAutoCompleteAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -191,6 +198,36 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
         // Set the SearchView text to the selected place name
         searchView.setQuery(fullPlaceName, false);
 
+        //τα στελνω σε αυτη τη μεθοδο ωστε να βρω τα ακριβη coordinates της επιλεγμενης περιοχης
+        fetchPlaceDetails(placeId, placeName);
+
+    }
+
+    private void fetchPlaceDetails(String placeId, String placeName) {
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
+
+        FetchPlaceRequest request = FetchPlaceRequest.builder(placeId, placeFields).build();
+
+        Places.createClient(MainActivity.this).fetchPlace(request)
+                .addOnSuccessListener((response) -> {
+                    Place place = response.getPlace();
+
+                    // Get latitude and longitude of the selected place
+                    LatLng latLng = place.getLatLng();
+                    double latitude = latLng.latitude;
+                    double longitude = latLng.longitude;
+
+                    // Show the Snackbar with the selected place name and location
+                    showSnackbar(placeName, latitude, longitude);
+                })
+                .addOnFailureListener((exception) -> {
+                    // Handle any errors that occurred during the request
+                });
+    }
+
+    private void showSnackbar(String placeName, double latitude, double longitude) {
+        String locationInfo = String.format(Locale.getDefault(), "Selected place: %s\nLatitude: %f, Longitude: %f", placeName, latitude, longitude);
+        Snackbar.make(((Activity) MainActivity.this).findViewById(android.R.id.content), locationInfo, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
