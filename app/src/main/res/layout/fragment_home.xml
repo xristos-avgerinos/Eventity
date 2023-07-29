@@ -8,102 +8,122 @@
     tools:context=".ui.home.HomeFragment">
 
 
-    <Button
-        android:id="@+id/map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="maps"
-        android:text="Map"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context="in.insideandroid.template.MainActivity">
 
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="295dp"
-        android:layout_height="149dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="44dp"
-        android:fontFamily="@font/abril_fatface"
-        android:text="DISCOVER THE MAGIC OF LOCAL EVENTS, PERSONALIZED JUST FOR YOU"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RelativeLayout
-        android:id="@+id/RL_location"
-        android:layout_width="377dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="320dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/border_home"
-        app:layout_constraintBottom_toTopOf="@+id/slider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/transparent"
-            android:iconifiedByDefault="false"
-            android:queryHint="Find events in..."
-            android:textColorHint="@android:color/darker_gray"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@android:color/transparent"
-            app:searchIcon="@drawable/location" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_below="@id/searchView"/>
+            android:layout_height="wrap_content">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_below="@id/view" />
-
-    </RelativeLayout>
-
-    <com.ncorti.slidetoact.SlideToActView
-        android:id="@+id/slider"
-        android:layout_width="374dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="165dp"
-        app:area_margin="9dp"
-        app:bounce_on_start="true"
-        app:inner_color="@color/custom_red_for_buttons"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RL_location"
-        app:layout_constraintVertical_bias="0.746"
-        app:outer_color="#F3F1EEEC"
-        app:text="     𝔽𝕚𝕟𝕕 𝕪𝕠𝕦𝕣 𝕟𝕖𝕩𝕥 𝕖𝕧𝕖𝕟𝕥"
-        app:text_size="22sp" />
+            <Button
+                android:id="@+id/map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="maps"
+                android:text="Map"
+                android:visibility="gone"
+                tools:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="295dp"
+                    android:layout_height="149dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="44dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="DISCOVER THE MAGIC OF LOCAL EVENTS, PERSONALIZED JUST FOR YOU"
+                    android:textAlignment="viewStart"
+                    android:textAllCaps="false"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RelativeLayout
+                    android:id="@+id/RL_location"
+                    android:layout_width="377dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_home"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="90dp">
+
+
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/searchView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@android:color/transparent"
+                        android:iconifiedByDefault="false"
+                        android:queryHint="Find events in..."
+                        android:textColorHint="@android:color/darker_gray"
+                        app:iconifiedByDefault="false"
+                        app:queryBackground="@android:color/transparent"
+                        app:searchIcon="@drawable/location" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@android:color/darker_gray"
+                        android:layout_below="@id/searchView"/>
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="300dp"
+                        android:layout_below="@id/view"
+                        android:onClick="maps"
+                        android:text="Map"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_below="@id/view" />
+
+                </RelativeLayout>
+
+
+                <com.ncorti.slidetoact.SlideToActView
+                    android:id="@+id/slider"
+                    android:layout_width="374dp"
+                    android:layout_height="wrap_content"
+                    app:area_margin="9dp"
+                    app:bounce_on_start="true"
+                    app:inner_color="@color/custom_red_for_buttons"
+                    app:outer_color="#F3F1EEEC"
+                    app:text="     𝔽𝕚𝕟𝕕 𝕪𝕠𝕦𝕣 𝕟𝕖𝕩𝕥 𝕖𝕧𝕖𝕟𝕥"
+                    app:text_size="22sp"
+                    android:layout_centerHorizontal="true"
+                    app:layout_constraintTop_toBottomOf="@id/RL_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="22dp"
+                    />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
