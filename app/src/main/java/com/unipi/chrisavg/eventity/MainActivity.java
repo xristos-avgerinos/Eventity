@@ -12,8 +12,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,6 +26,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +36,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.unipi.chrisavg.eventity.databinding.ActivityMainBinding;
 import  com.ncorti.slidetoact.SlideToActView;
 
-public class MainActivity extends AppCompatActivity  implements SlideToActView.OnSlideCompleteListener {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity  implements SlideToActView.OnSlideCompleteListener,OnPlaceItemClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
@@ -37,6 +46,10 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
     FirebaseAuth mAuth;
     CollectionReference users;
     FirebaseFirestore db;
+
+    private SearchView searchView;
+    private RecyclerView recyclerView;
+    private PlacesAutoCompleteAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -100,12 +113,90 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
         slideToActView.setOnSlideCompleteListener(this);
 
 
+        searchView = findViewById(R.id.searchView);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        // Initialize the Places API in order to find places' suggestions for the user
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), "AIzaSyDeymNueHgieMsY90ebBi90u5wV_Cgxpsg");
+        }
+
+        searchView.setQueryHint("Find places in...");
+
+        // Set up the RecyclerView with an adapter
+        adapter = new PlacesAutoCompleteAdapter(this,this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        // Implement the search functionality
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Perform the search with the entered query
+                searchForPlaces(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    //when user clear the searchView in order to search a new place we restore the itemSelected
+                    // to false so as we can make new predictions
+                    adapter.setItemSelected(false);
+                }
+
+                // Update the suggestions as the user types
+                //if user have selected an item from the suggestions we don't make other predictions
+                if (newText.length() > 2 && !adapter.isItemSelected()) {
+                    searchForPlaces(newText);
+                }
+                return false;
+            }
+        });
+
+    }
+
+
+    private void searchForPlaces(String query) {
+        // Perform a Places API autocomplete request
+        // Use AutocompleteSessionToken.newInstance() for a new session each time
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                // .setTypeFilter(TypeFilter.ADDRESS) αν θελω μονο διευθυνσεις να βρισκω
+                .setSessionToken(token)
+                .setQuery(query)
+                .build();
+
+        Places.createClient(this).findAutocompletePredictions(request)
+                .addOnSuccessListener((response) -> {
+                    List<AutocompletePrediction> predictions = response.getAutocompletePredictions();
+                    adapter.setPredictions(predictions);
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener((exception) -> {
+                    // Handle any errors that occurred during the request
+                });
+    }
+
+    //μεθοδος του interface ωστε να εχουμε προσβαση σε αυτες τις λεπτομερειες της επιλεγμενης περιοχης σε αυτο το activity
+    @Override
+    public void onPlaceItemClick(AutocompletePrediction prediction) {
+        String placeId = prediction.getPlaceId();
+        String placeName = prediction.getPrimaryText(null).toString();
+        String fullPlaceName = prediction.getFullText(null).toString();
+
+        // Make itemSelected true so as to stop searching predictions
+        adapter.setItemSelected(true);
+        // Set the SearchView text to the selected place name
+        searchView.setQuery(fullPlaceName, false);
+
     }
 
     @Override
     public void onSlideComplete(SlideToActView slideToActView) {
         // Sliding action completed, start the new activity
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        Intent intent = new Intent(MainActivity.this, EventsSearchActivity.class);
         startActivity(intent);
     }
 
@@ -169,4 +260,6 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
         }
 
     }
+
+
 }
