@@ -21,17 +21,6 @@
             android:layout_height="wrap_content">
 
 
-            <Button
-                android:id="@+id/map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="maps"
-                android:text="Map"
-                android:visibility="gone"
-                tools:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
 
                 <TextView
                     android:id="@+id/textView"
@@ -57,7 +46,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="90dp">
+                    android:layout_marginTop="40dp">
 
 
                     <androidx.appcompat.widget.SearchView
@@ -86,20 +75,38 @@
                         android:layout_below="@id/searchView"/>
 
                     <!-- Include the custom button here -->
-                    <include layout="@layout/button_with_photo"
-                        android:id="@+id/customButton"
-                        android:layout_below="@id/view"
+
+
+                    <include
+                        android:id="@+id/CurrentLocationButton"
+                        layout="@layout/button_with_photo"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/view"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp" />
 
-
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="86dp"
+                        android:layout_marginTop="78dp"
+                        android:layout_marginEnd="58dp"
+                        android:layout_toEndOf="@+id/CurrentLocationButton"
+                        android:elevation="10dp"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_below="@id/customButton" />
+                        android:layout_below="@id/CurrentLocationButton"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp" />
 
                 </RelativeLayout>
 
@@ -118,8 +125,9 @@
                     app:layout_constraintTop_toBottomOf="@id/RL_location"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="22dp"
+                    app:slider_locked="true"
                     />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

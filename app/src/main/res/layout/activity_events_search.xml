@@ -9,7 +9,7 @@
 
     <!-- Include the custom button here -->
     <include layout="@layout/button_with_photo"
-        android:id="@+id/customButton" />
+        android:id="@+id/CurrentLocationButton" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
