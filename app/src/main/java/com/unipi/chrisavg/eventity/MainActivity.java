@@ -401,7 +401,7 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
     @Override
     public void onSlideComplete(SlideToActView slideToActView) {
         // Sliding action completed, start the new activity
-        Intent intent = new Intent(MainActivity.this, EventsSearchActivity.class);
+        Intent intent = new Intent(MainActivity.this, EventsTabbedActivity.class);
         startActivity(intent);
     }
 

@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Eventity"
         tools:targetApi="31">
         <activity
+            android:name=".EventsTabbedActivity"
+            android:exported="false"
+            android:label="@string/title_activity_events_tabbed"
+            android:theme="@style/Theme.Eventity.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".EventsSearchActivity"
             android:exported="false">
             <meta-data
