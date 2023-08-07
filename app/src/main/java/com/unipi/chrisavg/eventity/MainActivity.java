@@ -402,6 +402,8 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
     public void onSlideComplete(SlideToActView slideToActView) {
         // Sliding action completed, start the new activity
         Intent intent = new Intent(MainActivity.this, EventsTabbedActivity.class);
+        intent.putExtra("latitude", locationForSearch.getLatitude());
+        intent.putExtra("longitude", locationForSearch.getLongitude());
         startActivity(intent);
     }
 

@@ -1,4 +1,5 @@
 package com.unipi.chrisavg.eventity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,7 +29,18 @@ public class EventsTabbedActivity extends AppCompatActivity {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new Tab1Fragment();
+                        Intent intent = getIntent();
+                        double latitude = intent.getDoubleExtra("latitude", 0.0);
+                        double longitude = intent.getDoubleExtra("longitude", 0.0);
+
+                        // Create a Bundle to hold the location information
+                        Bundle args = new Bundle();
+                        args.putDouble("latitude", latitude);
+                        args.putDouble("longitude", longitude);
+                        Tab1Fragment tab1Fragment = new Tab1Fragment();
+                        tab1Fragment.setArguments(args);
+
+                        return tab1Fragment;
                     case 1:
                         return new Tab2Fragment();
                     default:
