@@ -8,6 +8,15 @@
     android:layout_weight="1"
     android:orientation="vertical">
 
+   <!-- <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Searching events in ..."
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:background="#A8E3D3CE">
+    </TextView>-->
     <TextView
         android:id="@+id/emptyView"
         android:layout_width="wrap_content"

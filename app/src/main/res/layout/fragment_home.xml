@@ -79,7 +79,7 @@
 
                     <include
                         android:id="@+id/CurrentLocationButton"
-                        layout="@layout/button_with_photo"
+                        layout="@layout/tracking_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/view"

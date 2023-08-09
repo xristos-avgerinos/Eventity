@@ -19,6 +19,8 @@ public class Event {
     private String PhotoURL;
     List<String> Types = new ArrayList<>();
 
+    private long UserMatchScore;
+
     public Event() {
     }
 
@@ -94,6 +96,14 @@ public class Event {
 
     public void setGeopoint(GeoPoint geopoint) {
         Geopoint = geopoint;
+    }
+
+    public long getUserMatchScore() {
+        return UserMatchScore;
+    }
+
+    public void setUserMatchScore(long userMatchScore) {
+        UserMatchScore = userMatchScore;
     }
 
     public String getDateToCustomFormat() {

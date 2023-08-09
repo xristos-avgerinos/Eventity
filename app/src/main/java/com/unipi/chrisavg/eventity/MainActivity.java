@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
             Places.initialize(getApplicationContext(), "AIzaSyDeymNueHgieMsY90ebBi90u5wV_Cgxpsg");
         }
 
-        searchView.setQueryHint("Find places in...");
+        searchView.setQueryHint("Find events in...");
 
         // Set up the RecyclerView with an adapter
         adapter = new PlacesAutoCompleteAdapter(this);
