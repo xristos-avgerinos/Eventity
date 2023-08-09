@@ -181,17 +181,6 @@ public class Tab1Fragment extends Fragment {
             }
         });
 
-        /*ListViewItemsTitles.add("Sarkrista + Special Guests - Live in Athens");
-        ListViewItemsDates.add("Πεμπτη, Οκτ 19");
-        ListViewItemsLocations.add("Temple Athens, Ίακχου 17, Athens, Greece, Palaio Faliro, Greece");
-        ListViewItemsImages.add("https://cdn-az.allevents.in/events7/banners/61ec31a907e18ae6aec7baacdecc6e2e91f36dfaeb5bb3c398141f24f3c5014c-rimg-w960-h503-gmir.jpg?v=1690810850");
-
-        ListViewItemsTitles.add("Oikonomopoulos Tour");
-        ListViewItemsDates.add("Πεμπτη, Οκτ 19");
-        ListViewItemsLocations.add("Theatro petras athens");
-        ListViewItemsImages.add("https://www.ticketservices.gr/pictures/original/b_33088_or_OIKONOMOPOULOS-2023.jpg");
-*/
-
 
         return view;
     }

@@ -199,12 +199,14 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
                     locationForSearch = new Location("");
                     stringLocationForSearch = null;
                     slideToActView.setLocked(true);
+
+                   searchForPlaces(newText);
                 }
 
 
                 // Update the suggestions as the user types
                 //if user have selected an item from the suggestions we don't make other predictions
-                if ( !adapter.isItemSelected()) {
+                if ( !adapter.isItemSelected() && newText.length()>2) {
                     searchForPlaces(newText);
                 }
                 return false;
