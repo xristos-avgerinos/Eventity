@@ -3,12 +3,9 @@ package com.unipi.chrisavg.eventity.ui.EventsSearch;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -18,22 +15,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -41,17 +33,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.maps.android.clustering.ClusterManager;
-import com.unipi.chrisavg.eventity.ArrayAdapterClass;
-import com.unipi.chrisavg.eventity.BuildConfig;
 import com.unipi.chrisavg.eventity.Event;
-import com.unipi.chrisavg.eventity.FetchData;
+import com.unipi.chrisavg.eventity.MyClusterItem;
 import com.unipi.chrisavg.eventity.R;
 import com.unipi.chrisavg.eventity.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -75,6 +63,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback {
     List<Marker> markerList = new ArrayList<>();
 
     Location locationForSearch;
+
+
 
     @Nullable
     @Override
@@ -109,6 +99,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         events = db.collection("Events");
+
+
 
         return view;
     }
@@ -234,14 +226,48 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback {
 
     public void ShowEventsOnMap(){
 
+        ClusterManager<MyClusterItem> clusterManager = new ClusterManager<MyClusterItem>(getContext(), mMap);
+        mMap.setOnCameraIdleListener(clusterManager);
+        mMap.setOnMarkerClickListener(clusterManager);
 
         for (Event event:eventsList) {
             // Adding markers
             LatLng latLng = new LatLng(event.getGeopoint().getLatitude(), event.getGeopoint().getLongitude());
-            Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(event.getTitle()));
-            markerList.add(marker);
+       /*     Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(event.getTitle()));
+            markerList.add(marker);*/
+
+            MyClusterItem clusterItem = new MyClusterItem(latLng, event.getTitle(), event.getDateToCustomFormat());
+            clusterManager.addItem(clusterItem);
+
         }
 
+        LatLng latLng = new LatLng(40.638366, 22.971797);
+        MyClusterItem clusterItem = new MyClusterItem(latLng, "title", "title");
+        clusterManager.addItem(clusterItem);
+
+        LatLng latLng2 = new LatLng(37.808647, 23.790229);
+        MyClusterItem clusterItem2 = new MyClusterItem(latLng2, "title", "title");
+        clusterManager.addItem(clusterItem2);
+
+        LatLng latLng3 = new LatLng(37.966635, 23.934917);
+        MyClusterItem clusterItem3 = new MyClusterItem(latLng3, "title", "title");
+        clusterManager.addItem(clusterItem3);
+
+        LatLng latLng4 = new LatLng( 38.000636, 23.985542);
+        MyClusterItem clusterItem4 = new MyClusterItem(latLng4, "title", "title");
+        clusterManager.addItem(clusterItem4);
+
+        LatLng latLng5 = new LatLng(38.525218, 23.867792);
+        MyClusterItem clusterItem5 = new MyClusterItem(latLng5, "title", "title");
+        clusterManager.addItem(clusterItem5);
+
+        LatLng latLng6 = new LatLng( 38.667766, 23.619803);
+        MyClusterItem clusterItem6 = new MyClusterItem(latLng6, "title", "title");
+        clusterManager.addItem(clusterItem6);
+
+        /*mMap.setOnMarkerClickListener(clusterManager);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.5145160,-0.1270060),13));
+        mMap.setOnCameraIdleListener(clusterManager);*/
 
     }
 
