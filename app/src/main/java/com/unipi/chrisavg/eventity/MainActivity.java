@@ -113,6 +113,10 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     navController.navigate(R.id.nav_home);
+               /*     Intent intent = getIntent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
+                    startActivity(intent);
+                    finish(); // Close the current activity*/
                     break;
                 case R.id.nav_tickets:
                     navController.navigate(R.id.nav_tickets);
@@ -235,6 +239,8 @@ public class MainActivity extends AppCompatActivity  implements SlideToActView.O
 
 
     }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

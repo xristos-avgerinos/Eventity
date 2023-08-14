@@ -201,6 +201,7 @@ public class Tab1Fragment extends Fragment {
             arrayAdapterClass.filter(s);
         }
     }
+
     public void ShowClassifiedEventsInListView(){
 
         // Sort events based on match score in descending order

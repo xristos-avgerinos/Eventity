@@ -330,7 +330,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     }
 
-
     public void ShowEventsOnMap(List<Event> eventsList){
 
         for (Event event:eventsList) {
