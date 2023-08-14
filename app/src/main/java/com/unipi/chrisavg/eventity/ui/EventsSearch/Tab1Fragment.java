@@ -95,7 +95,6 @@ public class Tab1Fragment extends Fragment {
 
 
         // Fetch user from the Users collection
-        List<String> currentUserPreferences = new ArrayList<>();
         db.collection("Users")
                 .document(auth.getUid()) // Replace with the actual user document ID
                 .get()

@@ -271,8 +271,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         clusterManager.setOnClusterItemClickListener(this);
 
 
-
-
         // Fetch user from the Users collection
         List<String> currentUserPreferences = new ArrayList<>();
         db.collection("Users")
@@ -342,18 +340,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
             clusterManager.addItem(clusterItem);
 
         }
-
-       /* LatLng latLng2 = new LatLng(37.808647, 23.790229);
-        MyClusterItem clusterItem2 = new MyClusterItem(latLng2, "title", "title",null);
-        clusterManager.addItem(clusterItem2);
-
-        LatLng latLng3 = new LatLng(37.966635, 23.934917);
-        MyClusterItem clusterItem3 = new MyClusterItem(latLng3, "title", "title",null);
-        clusterManager.addItem(clusterItem3);
-
-        LatLng latLng4 = new LatLng( 38.000636, 23.985542);
-        MyClusterItem clusterItem4 = new MyClusterItem(latLng4, "title", "title",null);
-        clusterManager.addItem(clusterItem4);*/
 
         if (eventsList.size() != 0)
             zoomToCenterOfClusterItems();
