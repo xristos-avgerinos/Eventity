@@ -234,8 +234,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
             }
         });
 
-
-        // Enable my location button and show my location
+//prepei na to do
+       /* // Enable my location button and show my location
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -253,8 +253,10 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         } else {
             // Request permission to access the user's location
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        }*/
 
+        //mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
 
         mMap.getUiSettings().setZoomControlsEnabled(true);

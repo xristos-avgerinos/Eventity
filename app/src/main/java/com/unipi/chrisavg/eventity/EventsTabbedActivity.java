@@ -146,13 +146,7 @@ public class EventsTabbedActivity extends AppCompatActivity  {
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
-        startActivity(intent);
-        finish(); // Close the current activity
-    }
+
 
     private void setStatusBarWhite(AppCompatActivity activity){
         //Make status bar icons color white

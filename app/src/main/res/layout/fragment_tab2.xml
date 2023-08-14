@@ -23,4 +23,5 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="12dp"
         android:visibility="gone"/>
+
 </RelativeLayout>
