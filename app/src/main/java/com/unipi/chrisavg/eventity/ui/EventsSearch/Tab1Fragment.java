@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Tab1Fragment extends Fragment {
-    ListView listView;
+    static ListView listView;
     LinearLayout linearLayoutPb;
     TextView emptyView;
 
@@ -46,7 +46,7 @@ public class Tab1Fragment extends Fragment {
     List<String> ListViewItemsDates = new ArrayList<>();
     List<String> ListViewItemsLocations = new ArrayList<>();
     List<String> ListViewItemsImages = new ArrayList<>();
-    ArrayAdapterClass arrayAdapterClass;
+    static ArrayAdapterClass arrayAdapterClass;
 
     FirebaseAuth auth;
     CollectionReference events;
@@ -74,8 +74,8 @@ public class Tab1Fragment extends Fragment {
         }
 
         Location locationForSearch = new Location("provider");
-        locationForSearch.setLatitude(37.966284);
-        locationForSearch.setLongitude(23.4952437);
+        locationForSearch.setLatitude(latitude);
+        locationForSearch.setLongitude(longitude);
 
         //37.966284,23.4952437
 
@@ -157,10 +157,17 @@ public class Tab1Fragment extends Fragment {
                     }
                 });
 
-        SearchView searchView = null;
+
+        //Αυτος ο κωδικας στα σχολια αν τον ειχα βγαλει απο σχολια δεν θα μπορουσε να εκτελεστει ποτε γιατι το searchView εχει focus
+        // παντα μονο απο το tab2 γιαυτο και θα εκτελεστει ο listener απο το Tab2Fragment που ειναι το fragment που εκτελει
+        // τον κωδικα της onCreateView δευτερος σε σχεση με της Tab1Fragment κατα την εκκινηση του προγραμματος μεσω του EventsTabbedActivity
+        //Οποτε δημιουργουμε την παρακατω μεθοδο searchViewFilteringTab1 που κανει οτι ακριβως θα εκανε και ο listener αυτος αν μπορουσε να εκτελεστει
+
+        /*SearchView searchView = null;
         if (getActivity() != null) {
             searchView = getActivity().findViewById(R.id.search_view); // Find the SearchView within the activity's layout
             // Use the searchView here as needed
+
         }
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -179,12 +186,22 @@ public class Tab1Fragment extends Fragment {
                 }
                 return true;
             }
-        });
+        });*/
 
 
         return view;
     }
 
+    public static void searchViewFilteringTab1(String s){
+
+        if (TextUtils.isEmpty(s)){
+            arrayAdapterClass.filter("");
+            listView.clearTextFilter();
+        }
+        else {
+            arrayAdapterClass.filter(s);
+        }
+    }
     public void ShowClassifiedEventsInListView(){
 
         // Sort events based on match score in descending order

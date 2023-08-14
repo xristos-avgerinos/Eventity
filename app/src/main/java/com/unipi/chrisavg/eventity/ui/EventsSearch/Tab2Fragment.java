@@ -11,25 +11,39 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -47,6 +61,7 @@ import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 import com.unipi.chrisavg.eventity.Event;
+import com.unipi.chrisavg.eventity.MainActivity;
 import com.unipi.chrisavg.eventity.MyClusterItem;
 import com.unipi.chrisavg.eventity.R;
 import com.unipi.chrisavg.eventity.User;
@@ -56,6 +71,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Tab2Fragment extends Fragment implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MyClusterItem>, ClusterManager.OnClusterItemClickListener<MyClusterItem> {
@@ -69,22 +85,29 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     FirebaseFirestore db;
 
     List<Event> eventsList = new ArrayList<>();
+    List<Event> tempEventsList = new ArrayList<>();
+
     private ListenerRegistration listenerRegistration;
 
     final static long LOCATION_RANGE = 50000;
 
     User user;
-    List<Marker> markerList = new ArrayList<>();
 
     Location locationForSearch;
 
     ClusterManager<MyClusterItem> clusterManager;
 
+    ImageView imageViewDetailed;
+    TextView titleTextViewDetailed,dateTextViewDetailed,locationTextViewDetailed;
 
+    LinearLayout RL_detailed_window;
+
+    SupportMapFragment mapFragment;
+    View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab2, container, false);
+          view = inflater.inflate(R.layout.fragment_tab2, container, false);
 
         // Retrieve bundle arguments - locationForSearch
         Bundle args = getArguments();
@@ -96,13 +119,13 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         }
 
         locationForSearch = new Location("provider");
-        locationForSearch.setLatitude(37.966284);
-        locationForSearch.setLongitude(23.4952437);
+        locationForSearch.setLatitude(latitude);
+        locationForSearch.setLongitude(longitude);
 
         //37.966284,23.4952437
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -116,6 +139,65 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         events = db.collection("Events");
 
 
+        imageViewDetailed = view.findViewById(R.id.image);
+        titleTextViewDetailed = view.findViewById(R.id.title);
+        dateTextViewDetailed = view.findViewById(R.id.Date);
+        locationTextViewDetailed = view.findViewById(R.id.Location);
+
+        RL_detailed_window = view.findViewById(R.id.RL_detailed_window);
+
+
+        SearchView searchView = null;
+        if (getActivity() != null) {
+            searchView = getActivity().findViewById(R.id.search_view); // Find the SearchView within the activity's layout
+            // Use the searchView here as needed
+        }
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                Tab1Fragment.searchViewFilteringTab1(s); //κανουμε filtering και στο listview του Tab1
+
+                if (RL_detailed_window.getVisibility()==View.VISIBLE){
+                    RL_detailed_window.setVisibility(View.GONE);
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                }
+
+
+                tempEventsList.clear();
+                clusterManager.clearItems(); // Clear the cluster items from the data set
+                clusterManager.cluster(); // Recalculate and render the clusters
+
+                if (TextUtils.isEmpty(s)){
+                    ShowEventsOnMap(eventsList);
+                    clusterManager.cluster();
+                }
+                else {
+
+                    tempEventsList=new ArrayList<>();
+
+                    s = s.toLowerCase(Locale.getDefault());
+                    for (Event event : eventsList) {
+                        if (event.getTitle().toLowerCase(Locale.getDefault())
+                                .contains(s)){
+                            tempEventsList.add(event);
+                        }
+                    }
+
+                    ShowEventsOnMap(tempEventsList);
+                    clusterManager.cluster();
+
+                }
+
+                return true;
+            }
+        });
 
 
         return view;
@@ -134,30 +216,24 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onInfoWindowClick(@NonNull Marker marker) {
-                // Show a dialog box with more information about the location
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setTitle(marker.getTitle());
-                builder.setMessage(marker.getSnippet());
-                builder.setPositiveButton("OK", null);
-                builder.show();
+            public void onMapClick(@NonNull LatLng latLng) {
+                if (RL_detailed_window.getVisibility()==View.VISIBLE){
+                    RL_detailed_window.setVisibility(View.GONE);
+                    mMap.getUiSettings().setZoomControlsEnabled(true);
+                }
+
             }
         });
 
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        RL_detailed_window.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMarkerClick(@NonNull Marker marker) {
-
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 13);
-                // Move the camera to the marker position
-                mMap.animateCamera(cameraUpdate,2000,null);
-                marker.showInfoWindow();
-                return true;
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_SHORT).show();
             }
         });
+
 
         // Enable my location button and show my location
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -190,6 +266,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         mMap.setOnCameraIdleListener(clusterManager);
         mMap.setOnMarkerClickListener(clusterManager);
         mMap.setOnInfoWindowClickListener(clusterManager);
+
         clusterManager.setOnClusterClickListener(this);
         clusterManager.setOnClusterItemClickListener(this);
 
@@ -218,7 +295,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
                                         // Clear the previous data in the list
                                         eventsList.clear();
-                                        clearMarkers();
+                                        clusterManager.clearItems(); // Clear the cluster items from the data set
+                                        clusterManager.cluster(); // Recalculate and render the clusters
 
                                         // Loop through each document in the query result
                                         for (DocumentSnapshot document : querySnapshot) {
@@ -243,7 +321,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
                                         // Here, "userList" contains the updated data with real-time changes
                                         // You can now use the "userList" in your app
-                                        ShowEventsOnMap();
+                                        ShowEventsOnMap(eventsList);
                                         clusterManager.cluster();
 
                                     });
@@ -255,43 +333,33 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     }
 
 
-    public void ShowEventsOnMap(){
+    public void ShowEventsOnMap(List<Event> eventsList){
 
         for (Event event:eventsList) {
-            // Adding markers
+            // Adding cluster items
             LatLng latLng = new LatLng(event.getGeopoint().getLatitude(), event.getGeopoint().getLongitude());
-       /*     Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).title(event.getTitle()));
-            markerList.add(marker);*/
-
-            MyClusterItem clusterItem = new MyClusterItem(latLng, event.getTitle(), event.getDateToCustomFormat());
+            MyClusterItem clusterItem = new MyClusterItem(latLng, event.getTitle(), event.getDateToCustomFormat(),event);
             clusterManager.addItem(clusterItem);
 
         }
 
-     /*   LatLng latLng2 = new LatLng(37.808647, 23.790229);
-        MyClusterItem clusterItem2 = new MyClusterItem(latLng2, "title", "title");
+       /* LatLng latLng2 = new LatLng(37.808647, 23.790229);
+        MyClusterItem clusterItem2 = new MyClusterItem(latLng2, "title", "title",null);
         clusterManager.addItem(clusterItem2);
 
         LatLng latLng3 = new LatLng(37.966635, 23.934917);
-        MyClusterItem clusterItem3 = new MyClusterItem(latLng3, "title", "title");
+        MyClusterItem clusterItem3 = new MyClusterItem(latLng3, "title", "title",null);
         clusterManager.addItem(clusterItem3);
 
         LatLng latLng4 = new LatLng( 38.000636, 23.985542);
-        MyClusterItem clusterItem4 = new MyClusterItem(latLng4, "title", "title");
+        MyClusterItem clusterItem4 = new MyClusterItem(latLng4, "title", "title",null);
         clusterManager.addItem(clusterItem4);*/
 
-        zoomToCenterOfClusterItems();
+        if (eventsList.size() != 0)
+            zoomToCenterOfClusterItems();
 
     }
 
-    public void clearMarkers() {
-        for (Marker marker : markerList) {
-            marker.remove();
-        }
-        clusterManager.clearItems(); // Clear the cluster items from the data set
-        clusterManager.cluster(); // Recalculate and render the clusters
-
-    }
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
@@ -363,7 +431,25 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     @Override
     public boolean onClusterItemClick(MyClusterItem item) {
-        // Does nothing, but you could go into the user's profile page, for example.
-        return false;
+        Glide.with(getContext())
+                .load(item.getEvent().getPhotoURL())
+                .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
+                .into(imageViewDetailed);
+
+        titleTextViewDetailed.setText(item.getTitle());
+        dateTextViewDetailed.setText(item.getSnippet());
+        locationTextViewDetailed.setText(item.getEvent().getLocation());
+
+        // To show the detailed window
+        RL_detailed_window.setVisibility(View.VISIBLE);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
+
+        // Create a CameraUpdate
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(item.getPosition(),14.0f);
+
+        // Move the camera with animation
+        mMap.animateCamera(cameraUpdate, 1500, null);
+
+        return true;
     }
 }

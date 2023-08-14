@@ -29,12 +29,14 @@ import java.util.Locale;
 
 public class EventsTabbedActivity extends AppCompatActivity  {
 
+    public static SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_tabbed);
 
-        SearchView searchView = findViewById(R.id.search_view);
+        searchView = findViewById(R.id.search_view);
         // Find the close (X) button
         ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         if (closeButton != null) {
@@ -100,18 +102,21 @@ public class EventsTabbedActivity extends AppCompatActivity  {
             @NonNull
             @Override
             public Fragment getItem(int position) {
+                // Create a Bundle to hold the location information
+                Bundle args = new Bundle();
+                args.putDouble("latitude", latitude);
+                args.putDouble("longitude", longitude);
                 switch (position) {
                     case 0:
-                        // Create a Bundle to hold the location information
-                        Bundle args = new Bundle();
-                        args.putDouble("latitude", latitude);
-                        args.putDouble("longitude", longitude);
                         Tab1Fragment tab1Fragment = new Tab1Fragment();
                         tab1Fragment.setArguments(args);
 
                         return tab1Fragment;
                     case 1:
-                        return new Tab2Fragment();
+                        Tab2Fragment tab2Fragment = new Tab2Fragment();
+                        tab2Fragment.setArguments(args);
+
+                        return tab2Fragment;
                     default:
                         return null;
                 }
@@ -138,6 +143,7 @@ public class EventsTabbedActivity extends AppCompatActivity  {
 
         tabLayout.setupWithViewPager(viewPager);
         setStatusBarWhite(this);
+
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
