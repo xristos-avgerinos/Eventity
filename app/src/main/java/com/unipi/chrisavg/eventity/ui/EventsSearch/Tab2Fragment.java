@@ -78,6 +78,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     private GoogleMap mMap;
     static final int LOCATION_SETTINGS_REQUEST = 1;
+    static final int locationRequestCode = 123;
     LocationManager locationManager;
 
     FirebaseAuth auth;
@@ -234,29 +235,29 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
             }
         });
 
-//prepei na to do
-       /* // Enable my location button and show my location
+
+        // Enable my location button and show my location
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                @Override
-                public boolean onMyLocationButtonClick() {
-                    boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                    if(!isGPSEnabled){ //αν δεν εχει ανοιξει το location στο κινητο του τοτε τον στελνω στα settings αν θελει ωστε να το ανοιξει και να παρω την τοποθεσια του
-                        showSettingsAlert();
-                    }
-                    return false;
-                }
-            });
         } else {
             // Request permission to access the user's location
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }*/
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, locationRequestCode);
+        }
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if(!isGPSEnabled){ //αν δεν εχει ανοιξει το location στο κινητο του τοτε τον στελνω στα settings αν θελει ωστε να το ανοιξει και να παρω την τοποθεσια του
+                    showSettingsAlert();
+                }
+                return false;
+            }
+        });
 
         //mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+       //mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -438,5 +439,22 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         mMap.animateCamera(cameraUpdate, 1500, null);
 
         return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == locationRequestCode) { //ελεγχουμε αν εχει ερθει απο το παραπανω requestPermission με requestCode = 111 που ειναι του CurrentLocationButton
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Αν ο χρηστης πατησει allow
+                Toast.makeText(getContext(), "Permissions accepted", Toast.LENGTH_SHORT).show();
+                mMap.setMyLocationEnabled(true);
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else {
+                //Αν ο χρηστης αρνηθει τα δικαιωματα εμφανιζω καταλληλο μηνυμα.
+                Toast.makeText(getContext(), "Permissions denied", Toast.LENGTH_SHORT).show();
+            }
+
+        }
     }
 }

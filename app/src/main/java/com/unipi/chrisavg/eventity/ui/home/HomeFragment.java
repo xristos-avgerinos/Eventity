@@ -191,7 +191,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == locationRequestCode) { //ελεγχουμε αν εχει ερθει απο το παραπανω requestPermission με requestCode = 111 που ειναι του CurrentLocationButton
+        if (requestCode == locationRequestCode) {
             if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 //Αν ο χρηστης πατησει allow
                 Toast.makeText(getContext(), "Permissions accepted", Toast.LENGTH_SHORT).show();
