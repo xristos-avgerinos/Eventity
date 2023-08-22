@@ -521,7 +521,7 @@
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/bar"
+                android:id="@+id/Learn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -531,12 +531,12 @@
                 android:background="@drawable/toggle_button_background"
                 android:checked="false"
                 android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="Bar"
+                android:text="Learn"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textOff="Bar"
-                android:textOn="Bar"
+                android:textOff="Learn"
+                android:textOn="Learn"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />
@@ -563,27 +563,6 @@
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/latenight"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_gravity="fill"
-                android:layout_margin="5dp"
-                android:background="@drawable/toggle_button_background"
-                android:checked="false"
-                android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="Latenight"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textOff="Latenight"
-                android:textOn="Latenight"
-                android:textSize="14sp"
-                android:textStyle="bold|italic"
-                android:typeface="serif" />
-
-            <ToggleButton
                 android:id="@+id/rooftop"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -605,7 +584,7 @@
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/restaurants"
+                android:id="@+id/FoodAndDrink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -615,18 +594,18 @@
                 android:background="@drawable/toggle_button_background"
                 android:checked="false"
                 android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="Restaurants"
+                android:text="Food &amp; Drink"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textOff="Restaurants"
-                android:textOn="Restaurants"
+                android:textOff="Food &amp; Drink"
+                android:textOn="Food &amp; Drink"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/coffe"
+                android:id="@+id/ArtsAndEntertainment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -636,12 +615,12 @@
                 android:background="@drawable/toggle_button_background"
                 android:checked="false"
                 android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="Coffee"
+                android:text="Arts &amp; Entertainment"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textOff="Coffee"
-                android:textOn="Coffee"
+                android:textOff="Arts &amp; Entertainment"
+                android:textOn="Arts &amp; Entertainment"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />
@@ -732,7 +711,7 @@
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/after"
+                android:id="@+id/Business"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -742,18 +721,18 @@
                 android:background="@drawable/toggle_button_background"
                 android:checked="false"
                 android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="After"
+                android:text="Business"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textOff="After"
-                android:textOn="After"
+                android:textOff="Business"
+                android:textOn="Business"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />
 
             <ToggleButton
-                android:id="@+id/dinning"
+                android:id="@+id/Tech"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -763,12 +742,54 @@
                 android:background="@drawable/toggle_button_background"
                 android:checked="false"
                 android:drawableLeft="@drawable/toggle_button_selector"
-                android:text="Dinning"
+                android:text="Tech"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textOff="Dinning"
-                android:textOn="Dinning"
+                android:textOff="Tech"
+                android:textOn="Tech"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                android:typeface="serif" />
+
+            <ToggleButton
+                android:id="@+id/Fashion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_margin="5dp"
+                android:background="@drawable/toggle_button_background"
+                android:checked="false"
+                android:drawableLeft="@drawable/toggle_button_selector"
+                android:text="Fashion"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textOff="Fashion"
+                android:textOn="Fashion"
+                android:textSize="14sp"
+                android:textStyle="bold|italic"
+                android:typeface="serif" />
+
+            <ToggleButton
+                android:id="@+id/Science"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_gravity="fill"
+                android:layout_margin="5dp"
+                android:background="@drawable/toggle_button_background"
+                android:checked="false"
+                android:drawableLeft="@drawable/toggle_button_selector"
+                android:text="Science"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textOff="Science"
+                android:textOn="Science"
                 android:textSize="14sp"
                 android:textStyle="bold|italic"
                 android:typeface="serif" />

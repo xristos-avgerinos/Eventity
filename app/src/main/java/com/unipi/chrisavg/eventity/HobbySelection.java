@@ -68,7 +68,7 @@ public class HobbySelection extends AppCompatActivity {
         HideRows(MusicGridLayout,9,15);
 
         VibeGridLayout = findViewById(R.id.Vibe_gridview);
-        HideRows(VibeGridLayout,9,17);
+        HideRows(VibeGridLayout,9,18);
 
 
     }
@@ -201,9 +201,9 @@ public class HobbySelection extends AppCompatActivity {
 
     public void ExpandOrShrinkVibeGrid(View view){
         if (VibeGridLayoutExpanded){
-            HideRows(VibeGridLayout,9,17);
+            HideRows(VibeGridLayout,9,18);
         }else{
-            ShowHiddenRows(VibeGridLayout,9,17);
+            ShowHiddenRows(VibeGridLayout,9,18);
         }
     }
 

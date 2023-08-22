@@ -163,7 +163,7 @@
 
 
                 <ToggleButton
-                    android:id="@+id/indoors"
+                    android:id="@+id/ArtsAndEntertainment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -172,18 +172,18 @@
                     android:paddingLeft="10dp"
                     android:background="@drawable/toggle_button_selector1"
                     android:checked="false"
-                    android:text="Indoors"
+                    android:text="Arts &amp; Entertainment"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="@drawable/text_color_selector1"
-                    android:textOff="Indoors"
-                    android:textOn="Indoors"
+                    android:textOff="Arts &amp; Entertainment"
+                    android:textOn="Arts &amp; Entertainment"
                     android:textSize="13sp"
                     android:typeface="serif" />
 
 
                 <ToggleButton
-                    android:id="@+id/outdoors"
+                    android:id="@+id/Business"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -192,12 +192,12 @@
                     android:paddingLeft="10dp"
                     android:background="@drawable/toggle_button_selector1"
                     android:checked="false"
-                    android:text="Outdoors"
+                    android:text="Business"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="@drawable/text_color_selector1"
-                    android:textOff="Outdoors"
-                    android:textOn="Outdoors"
+                    android:textOff="Business"
+                    android:textOn="Business"
                     android:textSize="13sp"
                     android:typeface="serif" />
 
@@ -221,7 +221,7 @@
                     android:typeface="serif" />
 
                 <ToggleButton
-                    android:id="@+id/cinema"
+                    android:id="@+id/Tech"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -230,15 +230,52 @@
                     android:paddingLeft="10dp"
                     android:background="@drawable/toggle_button_selector1"
                     android:checked="false"
-                    android:text="Cinema"
+                    android:text="Tech"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="@drawable/text_color_selector1"
-                    android:textOff="Cinema"
-                    android:textOn="Cinema"
+                    android:textOff="Tech"
+                    android:textOn="Tech"
                     android:textSize="13sp"
                     android:typeface="serif" />
 
+                <ToggleButton
+                    android:id="@+id/Fashion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Fashion"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Fashion"
+                    android:textOn="Fashion"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+                <ToggleButton
+                    android:id="@+id/Science"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Science"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Science"
+                    android:textOn="Science"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
 
                 <ToggleButton
                     android:id="@+id/sport_events"

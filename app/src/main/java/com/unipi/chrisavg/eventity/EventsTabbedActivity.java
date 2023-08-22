@@ -37,6 +37,8 @@ public class EventsTabbedActivity extends AppCompatActivity  {
 
     public SearchView searchView;
 
+    public boolean searchViewFlag = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,11 +149,32 @@ public class EventsTabbedActivity extends AppCompatActivity  {
             }
         });
 
+
+
         tabLayout.setupWithViewPager(viewPager);
         setStatusBarWhite(this);
 
 
         SearchView searchView = findViewById(R.id.search_view); // Find the SearchView
+
+
+        LinearLayout buttonContainer = findViewById(R.id.buttonContainer);
+
+        // Set click listeners for the toggle buttons
+        ToggleButton[] toggleButtons = new ToggleButton[]{
+                findViewById(R.id.student_party),
+                findViewById(R.id.festivals),
+                findViewById(R.id.live_music),
+                findViewById(R.id.club),
+                findViewById(R.id.ArtsAndEntertainment),
+                findViewById(R.id.Business),
+                findViewById(R.id.concerts),
+                findViewById(R.id.Tech),
+                findViewById(R.id.Fashion),
+                findViewById(R.id.Science),
+                findViewById(R.id.sport_events),
+
+        };
 
         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
@@ -163,6 +186,9 @@ public class EventsTabbedActivity extends AppCompatActivity  {
             @Override
             public boolean onQueryTextChange(String filter) {
 
+                if (searchViewFlag)
+                    uncheckAllToggleButtons(toggleButtons);
+
                 Tab1Fragment.searchViewFilteringTab1(filter); //κανουμε filtering στο listview του Tab1
                 Tab2Fragment.searchViewFilteringTab2(filter); //κανουμε filtering στο map του Tab2
 
@@ -170,53 +196,41 @@ public class EventsTabbedActivity extends AppCompatActivity  {
             }
         });
 
-
-
-        LinearLayout buttonContainer = findViewById(R.id.buttonContainer);
-
-        // Set click listeners for the toggle buttons
-        ToggleButton[] toggleButtons = new ToggleButton[]{
-                findViewById(R.id.student_party),
-                findViewById(R.id.festivals),
-                findViewById(R.id.live_music),
-                findViewById(R.id.club),
-                findViewById(R.id.indoors),
-                findViewById(R.id.outdoors),
-                findViewById(R.id.concerts),
-                findViewById(R.id.cinema),
-                findViewById(R.id.sport_events),
-
-        };
         HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
 
         for (final ToggleButton toggleButton : toggleButtons) {
             toggleButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    //θετουμε το flag σε false ωστε να μην εκτελεσει την uncheckAllToggleButtons στο onQueryTextChange
+                    // του searchView αφου δεν θελουμε να τα κανει uncheck οταν προερχεται απο την setOnClickListener καποιου toggleButton
+                    searchViewFlag = false;
+
+                    // Clear the search query and collapse the SearchView
+                    searchView.setQuery("", false);
+                    searchView.clearFocus();
+
+
                     if (toggleButton.isChecked()) {
                         // Reorder the button to the beginning
                         buttonContainer.removeView(toggleButton);
                         buttonContainer.addView(toggleButton, 0);
-
-                        //κανουμε filtering στο listview του Tab1
-                        Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
-
-                        //κανουμε filtering στο map του Tab2
-                        Tab2Fragment.toggleButtonsContainerFilteringTab2(getSelectedToggleButtonsText(toggleButtons));
 
                     } else {
                         // Reorder the button to its original position
                         int originalPosition = findOriginalPosition(toggleButton.getId());
                         buttonContainer.removeView(toggleButton);
                         buttonContainer.addView(toggleButton, originalPosition);
-
-
-                        //κανουμε filtering στο listview του Tab1
-                        Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
-
-                        //κανουμε filtering στο map του Tab2
-                        Tab2Fragment.toggleButtonsContainerFilteringTab2(getSelectedToggleButtonsText(toggleButtons));
                     }
+
+                    searchViewFlag = true;
+
+                    //κανουμε filtering στο listview του Tab1
+                    Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
+
+                    //κανουμε filtering στο map του Tab2
+                    Tab2Fragment.toggleButtonsContainerFilteringTab2(getSelectedToggleButtonsText(toggleButtons));
 
                     horizontalScrollView.smoothScrollTo(0, 0); //μεταφερουμε στην εστιαση παλι στο πρωτο toggle button
 
@@ -228,7 +242,14 @@ public class EventsTabbedActivity extends AppCompatActivity  {
 
     }
 
+    private void uncheckAllToggleButtons(ToggleButton[] toggleButtons) {
 
+        for (ToggleButton toggleButton : toggleButtons) {
+            if (toggleButton.isChecked()) {
+                toggleButton.setChecked(false);
+            }
+        }
+    }
 
     private List<String> getSelectedToggleButtonsText(ToggleButton[] toggleButtons) {
         List<String> selectedTexts = new ArrayList<>();
@@ -248,11 +269,14 @@ public class EventsTabbedActivity extends AppCompatActivity  {
                 findViewById(R.id.festivals),
                 findViewById(R.id.live_music),
                 findViewById(R.id.club),
-                findViewById(R.id.indoors),
-                findViewById(R.id.outdoors),
+                findViewById(R.id.ArtsAndEntertainment),
+                findViewById(R.id.Business),
                 findViewById(R.id.concerts),
-                findViewById(R.id.cinema),
+                findViewById(R.id.Tech),
+                findViewById(R.id.Fashion),
+                findViewById(R.id.Science),
                 findViewById(R.id.sport_events),
+
         };
 
         for (int i = 0; i < toggleButtons.length; i++) {
