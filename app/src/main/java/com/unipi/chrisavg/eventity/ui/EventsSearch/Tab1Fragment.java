@@ -7,10 +7,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,17 +54,18 @@ public class Tab1Fragment extends Fragment {
     CollectionReference events;
     FirebaseFirestore db;
 
-    List<Event> eventsList = new ArrayList<>();
+    static List<Event> eventsList = new ArrayList<>();
     private ListenerRegistration listenerRegistration;
 
     final static long LOCATION_RANGE = 50000;
 
     User user;
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab1, container, false);
+        view = inflater.inflate(R.layout.fragment_tab1, container, false);
 
         // Retrieve bundle arguments - locationForSearch
         Bundle args = getArguments();
@@ -74,8 +77,8 @@ public class Tab1Fragment extends Fragment {
         }
 
         Location locationForSearch = new Location("provider");
-        locationForSearch.setLatitude(latitude);
-        locationForSearch.setLongitude(longitude);
+        locationForSearch.setLatitude(37.966284);
+        locationForSearch.setLongitude(23.4952437);
 
         //37.966284,23.4952437
 
@@ -187,9 +190,11 @@ public class Tab1Fragment extends Fragment {
             }
         });*/
 
-
         return view;
     }
+
+
+
 
     public static void searchViewFilteringTab1(String s){
 
@@ -200,6 +205,11 @@ public class Tab1Fragment extends Fragment {
         else {
             arrayAdapterClass.filter(s);
         }
+    }
+
+    public static void toggleButtonsContainerFilteringTab1(List<String> selectedTypes){
+
+        arrayAdapterClass.toggleButtonsContainerFilter(eventsList,selectedTypes);
     }
 
     public void ShowClassifiedEventsInListView(){

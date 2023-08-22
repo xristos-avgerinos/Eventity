@@ -68,10 +68,204 @@
             android:background="#3E191313" />
 
 
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="-5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp">
+
+            <LinearLayout
+                android:id="@+id/buttonContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- Place your toggle buttons here -->
+
+                <ToggleButton
+                    android:id="@+id/student_party"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="Φοιτητικά Party"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Φοιτητικά Party"
+                    android:textOn="Φοιτητικά Party"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+                <ToggleButton
+                    android:id="@+id/festivals"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Festivals"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Festivals"
+                    android:textOn="Festivals"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+                <ToggleButton
+                    android:id="@+id/live_music"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Live Music"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Live Music"
+                    android:textOn="Live Music"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+
+                <ToggleButton
+                    android:id="@+id/club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Club"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Club"
+                    android:textOn="Club"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+
+                <ToggleButton
+                    android:id="@+id/indoors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Indoors"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Indoors"
+                    android:textOn="Indoors"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+
+                <ToggleButton
+                    android:id="@+id/outdoors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Outdoors"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Outdoors"
+                    android:textOn="Outdoors"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+                <ToggleButton
+                    android:id="@+id/concerts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Concerts"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Concerts"
+                    android:textOn="Concerts"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+                <ToggleButton
+                    android:id="@+id/cinema"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Cinema"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Cinema"
+                    android:textOn="Cinema"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+
+
+                <ToggleButton
+                    android:id="@+id/sport_events"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_margin="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@drawable/toggle_button_selector1"
+                    android:checked="false"
+                    android:text="Sport Events"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@drawable/text_color_selector1"
+                    android:textOff="Sport Events"
+                    android:textOn="Sport Events"
+                    android:textSize="13sp"
+                    android:typeface="serif" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
 

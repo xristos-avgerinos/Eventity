@@ -1,6 +1,7 @@
 package com.unipi.chrisavg.eventity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,12 +9,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -23,6 +28,7 @@ import com.unipi.chrisavg.eventity.ui.EventsSearch.Tab2Fragment;
 import androidx.appcompat.widget.SearchView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -144,9 +150,86 @@ public class EventsTabbedActivity extends AppCompatActivity  {
         tabLayout.setupWithViewPager(viewPager);
         setStatusBarWhite(this);
 
+        LinearLayout buttonContainer = findViewById(R.id.buttonContainer);
+
+        // Set click listeners for the toggle buttons
+        ToggleButton[] toggleButtons = new ToggleButton[]{
+                findViewById(R.id.student_party),
+                findViewById(R.id.festivals),
+                findViewById(R.id.live_music),
+                findViewById(R.id.club),
+                findViewById(R.id.indoors),
+                findViewById(R.id.outdoors),
+                findViewById(R.id.concerts),
+                findViewById(R.id.cinema),
+                findViewById(R.id.sport_events),
+
+        };
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.horizontalScrollView);
+
+        for (final ToggleButton toggleButton : toggleButtons) {
+            toggleButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (toggleButton.isChecked()) {
+                        // Reorder the button to the beginning
+                        buttonContainer.removeView(toggleButton);
+                        buttonContainer.addView(toggleButton, 0);
+
+                        Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
+                    } else {
+                        // Reorder the button to its original position
+                        int originalPosition = findOriginalPosition(toggleButton.getId());
+                        buttonContainer.removeView(toggleButton);
+                        buttonContainer.addView(toggleButton, originalPosition);
+
+                        Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
+                    }
+
+                    horizontalScrollView.smoothScrollTo(0, 0);
+
+                }
+            });
+
+
+        }
+
     }
 
 
+
+    private List<String> getSelectedToggleButtonsText(ToggleButton[] toggleButtons) {
+        List<String> selectedTexts = new ArrayList<>();
+        for (ToggleButton toggleButton : toggleButtons) {
+            if (toggleButton.isChecked()) {
+                selectedTexts.add(toggleButton.getText().toString());
+            }
+        }
+        return selectedTexts;
+    }
+
+
+    // Helper method to find the original position of a button by its ID
+    private int findOriginalPosition(int buttonId) {
+        ToggleButton[] toggleButtons = new ToggleButton[]{
+                findViewById(R.id.student_party),
+                findViewById(R.id.festivals),
+                findViewById(R.id.live_music),
+                findViewById(R.id.club),
+                findViewById(R.id.indoors),
+                findViewById(R.id.outdoors),
+                findViewById(R.id.concerts),
+                findViewById(R.id.cinema),
+                findViewById(R.id.sport_events),
+        };
+
+        for (int i = 0; i < toggleButtons.length; i++) {
+            if (toggleButtons[i].getId() == buttonId) {
+                return i;
+            }
+        }
+        return -1; // Button not found
+    }
 
     private void setStatusBarWhite(AppCompatActivity activity){
         //Make status bar icons color white

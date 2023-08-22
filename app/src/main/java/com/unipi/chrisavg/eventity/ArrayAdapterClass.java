@@ -101,4 +101,43 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
         }
         notifyDataSetChanged();
     }
+
+    //filter for search-view(search by title)
+    public void toggleButtonsContainerFilter (List<Event> eventsList,List<String> selectedTypes){
+        rTitles.clear();
+        rDates.clear();
+        rLocations.clear();
+        rImgs.clear();
+
+        if (selectedTypes.size()==0){
+            rTitles.addAll(temp_rTitles);
+            rDates.addAll(temp_rDates);
+            rLocations.addAll(temp_rLocations);
+            rImgs.addAll(temp_rImgs);
+
+        }
+        else {
+            int counter = 0;
+            for ( Event event : eventsList){
+                if (containsCommonItem(event.getTypes(),selectedTypes)){
+                    rTitles.add(event.getTitle());
+                    rDates.add(temp_rDates.get(counter));
+                    rLocations.add(temp_rLocations.get(counter));
+                    rImgs.add(temp_rImgs.get(counter));
+
+                }
+                counter++;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    public static boolean containsCommonItem(List<String> list1, List<String> list2) {
+        for (String item : list1) {
+            if (list2.contains(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

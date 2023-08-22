@@ -29,4 +29,8 @@
 
     <color name="SearchViewColors">#5C5757</color>
 
+    <color name="custom_blue">#BC3355D5</color>
+
+    <color name="toggle_buttons_color">#474040</color>
+
 </resources>
