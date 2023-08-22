@@ -35,7 +35,7 @@ import java.util.Locale;
 
 public class EventsTabbedActivity extends AppCompatActivity  {
 
-    public static SearchView searchView;
+    public SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +150,28 @@ public class EventsTabbedActivity extends AppCompatActivity  {
         tabLayout.setupWithViewPager(viewPager);
         setStatusBarWhite(this);
 
+
+        SearchView searchView = findViewById(R.id.search_view); // Find the SearchView
+
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String filter) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String filter) {
+
+                Tab1Fragment.searchViewFilteringTab1(filter); //κανουμε filtering στο listview του Tab1
+                Tab2Fragment.searchViewFilteringTab2(filter); //κανουμε filtering στο map του Tab2
+
+                return true;
+            }
+        });
+
+
+
         LinearLayout buttonContainer = findViewById(R.id.buttonContainer);
 
         // Set click listeners for the toggle buttons
@@ -176,17 +198,27 @@ public class EventsTabbedActivity extends AppCompatActivity  {
                         buttonContainer.removeView(toggleButton);
                         buttonContainer.addView(toggleButton, 0);
 
+                        //κανουμε filtering στο listview του Tab1
                         Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
+
+                        //κανουμε filtering στο map του Tab2
+                        Tab2Fragment.toggleButtonsContainerFilteringTab2(getSelectedToggleButtonsText(toggleButtons));
+
                     } else {
                         // Reorder the button to its original position
                         int originalPosition = findOriginalPosition(toggleButton.getId());
                         buttonContainer.removeView(toggleButton);
                         buttonContainer.addView(toggleButton, originalPosition);
 
+
+                        //κανουμε filtering στο listview του Tab1
                         Tab1Fragment.toggleButtonsContainerFilteringTab1(getSelectedToggleButtonsText(toggleButtons));
+
+                        //κανουμε filtering στο map του Tab2
+                        Tab2Fragment.toggleButtonsContainerFilteringTab2(getSelectedToggleButtonsText(toggleButtons));
                     }
 
-                    horizontalScrollView.smoothScrollTo(0, 0);
+                    horizontalScrollView.smoothScrollTo(0, 0); //μεταφερουμε στην εστιαση παλι στο πρωτο toggle button
 
                 }
             });

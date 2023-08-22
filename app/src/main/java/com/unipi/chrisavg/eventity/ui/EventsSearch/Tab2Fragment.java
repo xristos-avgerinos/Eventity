@@ -7,31 +7,21 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -42,12 +32,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -55,13 +41,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.Algorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.google.maps.android.ui.IconGenerator;
 import com.unipi.chrisavg.eventity.Event;
-import com.unipi.chrisavg.eventity.MainActivity;
 import com.unipi.chrisavg.eventity.MyClusterItem;
 import com.unipi.chrisavg.eventity.R;
 import com.unipi.chrisavg.eventity.User;
@@ -76,7 +59,7 @@ import java.util.Locale;
 
 public class Tab2Fragment extends Fragment implements OnMapReadyCallback, ClusterManager.OnClusterClickListener<MyClusterItem>, ClusterManager.OnClusterItemClickListener<MyClusterItem> {
 
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
     static final int LOCATION_SETTINGS_REQUEST = 1;
     static final int locationRequestCode = 123;
     LocationManager locationManager;
@@ -85,8 +68,9 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     CollectionReference events;
     FirebaseFirestore db;
 
-    List<Event> eventsList = new ArrayList<>();
-    List<Event> tempEventsList = new ArrayList<>();
+    static List<Event> eventsList = new ArrayList<>();
+    static List<Event> searchViewTempEventsList = new ArrayList<>();
+    static List<Event> ToggleButtonsTempEventsList = new ArrayList<>();
 
     private ListenerRegistration listenerRegistration;
 
@@ -96,12 +80,12 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     Location locationForSearch;
 
-    ClusterManager<MyClusterItem> clusterManager;
+    static ClusterManager<MyClusterItem> clusterManager;
 
     ImageView imageViewDetailed;
     TextView titleTextViewDetailed,dateTextViewDetailed,locationTextViewDetailed;
 
-    LinearLayout RL_detailed_window;
+    static LinearLayout RL_detailed_window;
 
     SupportMapFragment mapFragment;
     View view;
@@ -148,59 +132,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         RL_detailed_window = view.findViewById(R.id.RL_detailed_window);
 
 
-        SearchView searchView = null;
-        if (getActivity() != null) {
-            searchView = getActivity().findViewById(R.id.search_view); // Find the SearchView within the activity's layout
-            // Use the searchView here as needed
-        }
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-
-                Tab1Fragment.searchViewFilteringTab1(s); //κανουμε filtering και στο listview του Tab1
-
-                if (RL_detailed_window.getVisibility()==View.VISIBLE){
-                    RL_detailed_window.setVisibility(View.GONE);
-                    mMap.getUiSettings().setZoomControlsEnabled(true);
-                }
-
-
-                tempEventsList.clear();
-                clusterManager.clearItems(); // Clear the cluster items from the data set
-                clusterManager.cluster(); // Recalculate and render the clusters
-
-                if (TextUtils.isEmpty(s)){
-                    ShowEventsOnMap(eventsList);
-                    clusterManager.cluster();
-                }
-                else {
-
-                    tempEventsList=new ArrayList<>();
-
-                    s = s.toLowerCase(Locale.getDefault());
-                    for (Event event : eventsList) {
-                        if (event.getTitle().toLowerCase(Locale.getDefault())
-                                .contains(s)){
-                            tempEventsList.add(event);
-                        }
-                    }
-
-                    ShowEventsOnMap(tempEventsList);
-                    clusterManager.cluster();
-
-                }
-
-                return true;
-            }
-        });
-
-
         return view;
     }
 
@@ -213,6 +144,82 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    public static void searchViewFilteringTab2(String filter){
+
+        if (RL_detailed_window.getVisibility()==View.VISIBLE){
+            RL_detailed_window.setVisibility(View.GONE);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+        }
+
+
+        searchViewTempEventsList.clear();
+        clusterManager.clearItems(); // Clear the cluster items from the data set
+        clusterManager.cluster(); // Recalculate and render the clusters
+
+        if (TextUtils.isEmpty(filter)){
+            ShowEventsOnMap(eventsList);
+            clusterManager.cluster();
+        }
+        else {
+
+            searchViewTempEventsList =new ArrayList<>();
+
+            filter = filter.toLowerCase(Locale.getDefault());
+            for (Event event : eventsList) {
+                if (event.getTitle().toLowerCase(Locale.getDefault())
+                        .contains(filter)){
+                    searchViewTempEventsList.add(event);
+                }
+            }
+
+            ShowEventsOnMap(searchViewTempEventsList);
+            clusterManager.cluster();
+
+        }
+    }
+
+    public static void toggleButtonsContainerFilteringTab2(List<String> selectedTypes){
+
+        if (RL_detailed_window.getVisibility()==View.VISIBLE){
+            RL_detailed_window.setVisibility(View.GONE);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+        }
+
+
+        ToggleButtonsTempEventsList.clear();
+        clusterManager.clearItems(); // Clear the cluster items from the data set
+        clusterManager.cluster(); // Recalculate and render the clusters
+
+        if (selectedTypes.size()==0){
+            ShowEventsOnMap(eventsList);
+            clusterManager.cluster();
+        }
+        else {
+
+            ToggleButtonsTempEventsList =new ArrayList<>();
+
+            for ( Event event : eventsList) {
+                if (containsCommonItem(event.getTypes(), selectedTypes)) {
+                    ToggleButtonsTempEventsList.add(event);
+                }
+            }
+
+            ShowEventsOnMap(ToggleButtonsTempEventsList);
+            clusterManager.cluster();
+
+        }
+    }
+
+
+    public static boolean containsCommonItem(List<String> list1, List<String> list2) {
+        for (String item : list1) {
+            if (list2.contains(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -333,7 +340,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     }
 
-    public void ShowEventsOnMap(List<Event> eventsList){
+    public static void ShowEventsOnMap(List<Event> eventsList){
 
         for (Event event:eventsList) {
             // Adding cluster items
@@ -397,7 +404,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         return true;
     }
 
-    public void zoomToCenterOfClusterItems(){
+    public static void zoomToCenterOfClusterItems(){
         // Get all cluster items from the algorithm
         Algorithm<MyClusterItem> algorithm = clusterManager.getAlgorithm();
         Collection<MyClusterItem> clusterItemsCollection = algorithm.getItems();

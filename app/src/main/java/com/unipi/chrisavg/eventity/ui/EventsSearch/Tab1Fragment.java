@@ -159,51 +159,20 @@ public class Tab1Fragment extends Fragment {
                     }
                 });
 
-
-        //Αυτος ο κωδικας στα σχολια αν τον ειχα βγαλει απο σχολια δεν θα μπορουσε να εκτελεστει ποτε γιατι το searchView εχει focus
-        // παντα μονο απο το tab2 γιαυτο και θα εκτελεστει ο listener απο το Tab2Fragment που ειναι το fragment που εκτελει
-        // τον κωδικα της onCreateView δευτερος σε σχεση με της Tab1Fragment κατα την εκκινηση του προγραμματος μεσω του EventsTabbedActivity
-        //Οποτε δημιουργουμε την παρακατω μεθοδο searchViewFilteringTab1 που κανει οτι ακριβως θα εκανε και ο listener αυτος αν μπορουσε να εκτελεστει
-
-        /*SearchView searchView = null;
-        if (getActivity() != null) {
-            searchView = getActivity().findViewById(R.id.search_view); // Find the SearchView within the activity's layout
-            // Use the searchView here as needed
-
-        }
-        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                if (TextUtils.isEmpty(s)){
-                    arrayAdapterClass.filter("");
-                    listView.clearTextFilter();
-                }
-                else {
-                    arrayAdapterClass.filter(s);
-                }
-                return true;
-            }
-        });*/
-
         return view;
     }
 
 
 
 
-    public static void searchViewFilteringTab1(String s){
+    public static void searchViewFilteringTab1(String filter){
 
-        if (TextUtils.isEmpty(s)){
+        if (TextUtils.isEmpty(filter)){
             arrayAdapterClass.filter("");
             listView.clearTextFilter();
         }
         else {
-            arrayAdapterClass.filter(s);
+            arrayAdapterClass.filter(filter);
         }
     }
 
