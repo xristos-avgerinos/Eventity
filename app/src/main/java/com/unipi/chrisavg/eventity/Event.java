@@ -1,15 +1,19 @@
 package com.unipi.chrisavg.eventity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Event {
+public class Event implements Parcelable {
     private String key;
     private String Title;
     private Timestamp Date;
@@ -33,6 +37,29 @@ public class Event {
         this.PhotoURL = photoUrl;
         this.Types = types;
     }
+
+    protected Event(Parcel in) {
+        key = in.readString();
+        Title = in.readString();
+        Date = in.readParcelable(Timestamp.class.getClassLoader());
+        Location = in.readString();
+        OrganizerId = in.readString();
+        PhotoURL = in.readString();
+        Types = in.createStringArrayList();
+        UserMatchScore = in.readLong();
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public String getKey() {
         return key;
@@ -140,4 +167,20 @@ public class Event {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(key);
+        dest.writeString(Title);
+        dest.writeParcelable(Date, flags);
+        dest.writeString(Location);
+        dest.writeString(OrganizerId);
+        dest.writeString(PhotoURL);
+        dest.writeStringList(Types);
+        dest.writeLong(UserMatchScore);
+    }
 }

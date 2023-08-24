@@ -71,7 +71,10 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
     }
 
     //filter for search-view(search by title)
-    public void filter(String charText){
+    public List<Event> filter(List<Event> eventsList,String charText){
+
+        List<Event> tempEventsList = new ArrayList<>();
+
         charText = charText.toLowerCase(Locale.getDefault());
         rTitles.clear();
         rDates.clear();
@@ -84,8 +87,9 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
             rLocations.addAll(temp_rLocations);
             rImgs.addAll(temp_rImgs);
 
-        }
-        else {
+            tempEventsList = eventsList;
+
+        } else {
             int counter = 0;
             for ( String title : temp_rTitles){
                 if (title.toLowerCase(Locale.getDefault())
@@ -95,15 +99,21 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
                     rLocations.add(temp_rLocations.get(counter));
                     rImgs.add(temp_rImgs.get(counter));
 
+                    tempEventsList.add(eventsList.get(counter));
+
                 }
                 counter++;
             }
         }
         notifyDataSetChanged();
+
+        return tempEventsList;
     }
 
     //filter for search-view(search by title)
-    public void toggleButtonsContainerFilter (List<Event> eventsList,List<String> selectedTypes){
+    public List<Event> toggleButtonsContainerFilter (List<Event> eventsList,List<String> selectedTypes){
+        List<Event> tempEventsList = new ArrayList<>();
+
         rTitles.clear();
         rDates.clear();
         rLocations.clear();
@@ -115,8 +125,9 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
             rLocations.addAll(temp_rLocations);
             rImgs.addAll(temp_rImgs);
 
-        }
-        else {
+            tempEventsList = eventsList;
+
+        } else {
             int counter = 0;
             for ( Event event : eventsList){
                 if (containsCommonItem(event.getTypes(),selectedTypes)){
@@ -125,11 +136,15 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
                     rLocations.add(temp_rLocations.get(counter));
                     rImgs.add(temp_rImgs.get(counter));
 
+                    tempEventsList.add(event);
+
                 }
                 counter++;
             }
         }
         notifyDataSetChanged();
+
+        return tempEventsList;
     }
 
     public static boolean containsCommonItem(List<String> list1, List<String> list2) {

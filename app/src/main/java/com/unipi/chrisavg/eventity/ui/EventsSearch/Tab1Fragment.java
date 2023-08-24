@@ -7,16 +7,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,9 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.unipi.chrisavg.eventity.ArrayAdapterClass;
 import com.unipi.chrisavg.eventity.Event;
-import com.unipi.chrisavg.eventity.EventsTabbedActivity;
-import com.unipi.chrisavg.eventity.MainActivity;
 import com.unipi.chrisavg.eventity.R;
+import com.unipi.chrisavg.eventity.SpecificEventDetailedActivity;
 import com.unipi.chrisavg.eventity.User;
 
 import java.util.ArrayList;
@@ -55,6 +51,11 @@ public class Tab1Fragment extends Fragment {
     FirebaseFirestore db;
 
     static List<Event> eventsList = new ArrayList<>();
+
+    //The list that will have the real events even if they get filtered by searchView or toggleButtons container.
+    //We need this list so as to send the event parameters to the SpecificEventDetailedActivity.
+    static List<Event> eventsListClone = new ArrayList<>();
+
     private ListenerRegistration listenerRegistration;
 
     final static long LOCATION_RANGE = 50000;
@@ -159,6 +160,18 @@ public class Tab1Fragment extends Fragment {
                     }
                 });
 
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), SpecificEventDetailedActivity.class);
+                intent.putExtra("event", eventsListClone.get(position));
+                intent.putExtra("latitude", eventsListClone.get(position).getGeopoint().getLatitude());
+                intent.putExtra("longitude", eventsListClone.get(position).getGeopoint().getLongitude());
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -168,17 +181,17 @@ public class Tab1Fragment extends Fragment {
     public static void searchViewFilteringTab1(String filter){
 
         if (TextUtils.isEmpty(filter)){
-            arrayAdapterClass.filter("");
+            eventsListClone = arrayAdapterClass.filter(eventsList,"");
             listView.clearTextFilter();
         }
         else {
-            arrayAdapterClass.filter(filter);
+            eventsListClone = arrayAdapterClass.filter(eventsList,filter);
         }
     }
 
     public static void toggleButtonsContainerFilteringTab1(List<String> selectedTypes){
 
-        arrayAdapterClass.toggleButtonsContainerFilter(eventsList,selectedTypes);
+        eventsListClone = arrayAdapterClass.toggleButtonsContainerFilter(eventsList,selectedTypes);
     }
 
     public void ShowClassifiedEventsInListView(){
@@ -190,6 +203,9 @@ public class Tab1Fragment extends Fragment {
                 return Long.compare(event2.getUserMatchScore(), event1.getUserMatchScore());
             }
         });
+
+        eventsListClone = eventsList;
+
 
         for (Event event:eventsList) {
             ListViewItemsTitles.add(event.getTitle());

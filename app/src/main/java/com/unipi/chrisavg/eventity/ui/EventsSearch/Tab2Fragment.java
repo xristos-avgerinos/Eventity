@@ -47,6 +47,7 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.unipi.chrisavg.eventity.Event;
 import com.unipi.chrisavg.eventity.MyClusterItem;
 import com.unipi.chrisavg.eventity.R;
+import com.unipi.chrisavg.eventity.SpecificEventDetailedActivity;
 import com.unipi.chrisavg.eventity.User;
 
 import java.util.ArrayList;
@@ -89,6 +90,9 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     SupportMapFragment mapFragment;
     View view;
+
+    String selectedEventItemKey;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -220,6 +224,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         }
         return false;
     }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -238,7 +244,16 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         RL_detailed_window.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "hey", Toast.LENGTH_SHORT).show();
+                Event targetEvent = eventsList.stream()
+                        .filter(event -> event.getKey().equals(selectedEventItemKey))
+                        .findFirst()  // Returns an Optional containing the first matching element, or empty if none is found
+                        .orElse(null); // If no matching event is found, return null
+
+                Intent intent = new Intent(getContext(), SpecificEventDetailedActivity.class);
+                intent.putExtra("event", targetEvent);
+                intent.putExtra("latitude", targetEvent.getGeopoint().getLatitude());
+                intent.putExtra("longitude", targetEvent.getGeopoint().getLongitude());
+                startActivity(intent);
             }
         });
 
@@ -434,6 +449,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         titleTextViewDetailed.setText(item.getTitle());
         dateTextViewDetailed.setText(item.getSnippet());
         locationTextViewDetailed.setText(item.getEvent().getLocation());
+
+        selectedEventItemKey = item.getEvent().getKey();
 
         // To show the detailed window
         RL_detailed_window.setVisibility(View.VISIBLE);
