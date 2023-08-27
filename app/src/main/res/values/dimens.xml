@@ -8,4 +8,9 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
+    <dimen name="toggle_button_margin">5dp</dimen>
+    <dimen name="toggle_button_padding_right">10dp</dimen>
+    <dimen name="toggle_button_padding_left">10dp</dimen>
+    <dimen name="toggle_button_text_size">13sp</dimen>
+
 </resources>

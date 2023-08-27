@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/my_toolbar1">
+    <item
+        android:id="@+id/ShareEvent"
+        android:icon="@drawable/ic_share"
+        android:title="Share"
+     />
+    <item
+        android:id="@+id/ContactOrganizer"
+        android:icon="@drawable/ic_email"
+        android:title="Contact the organizer"
+      />
+</menu>

@@ -51,7 +51,7 @@ tools:context=".SpecificEventDetailedActivity">
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginBottom="25dp">
+                    android:layout_marginBottom="15dp">
 
                     <ImageView
                         android:id="@+id/imageView"
@@ -61,6 +61,14 @@ tools:context=".SpecificEventDetailedActivity">
                         android:src="@drawable/ic_launcher_background" />
             </androidx.cardview.widget.CardView>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#D29C9B9B" />
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="match_parent"
@@ -73,12 +81,13 @@ tools:context=".SpecificEventDetailedActivity">
                     android:textSize="32sp"
                     android:textStyle="bold" />
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView2"
@@ -122,8 +131,8 @@ tools:context=".SpecificEventDetailedActivity">
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Time"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="12sp" />
+                            android:textColor="#8A8787"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -132,8 +141,8 @@ tools:context=".SpecificEventDetailedActivity">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView3"
@@ -176,11 +185,187 @@ tools:context=".SpecificEventDetailedActivity">
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Exact Location"
-                            android:textColor="@android:color/darker_gray"
-                            android:textSize="12sp" />
+                            android:textColor="#8A8787"
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#D29C9B9B" />
+
+                <TextView
+                    android:id="@+id/Organizer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="ORGANIZER"
+                    android:textColor="#B9000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="9dp"
+                        android:layout_marginBottom="4dp">
+
+                        <ImageView
+                            android:id="@+id/organizerImage"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_person3"
+                            android:background="#22808080"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp">
+
+                        <!-- TextView for upper text -->
+                        <TextView
+                            android:id="@+id/organizerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Name"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <!-- TextView for lower text (smaller than the above) -->
+                        <TextView
+                            android:id="@+id/organizerPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Phone"
+                            android:textColor="#8A8787"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#D29C9B9B" />
+
+                <TextView
+                    android:id="@+id/RelatedTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="RELATED TO THIS EVENT"
+                    android:textColor="#B9000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <GridLayout
+                    android:id="@+id/related_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:columnCount="3"
+                   >
+
+                    <!--<ToggleButton
+                        android:id="@+id/Fashion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="fill"
+                        android:layout_margin="5dp"
+                        android:paddingRight="10dp"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/toggle_button_background"
+                        android:text="Fashion"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/toggle_buttons_color"
+                        android:textOff="Fashion"
+                        android:textOn="Fashion"
+                        android:textSize="13sp"
+                        android:typeface="serif"
+                        android:clickable="false"/>-->
+
+
+                </GridLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#D29C9B9B" />
+                
+                <TextView
+                    android:id="@+id/LocationTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="LOCATION"
+                    android:textColor="#B9000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+
+               <androidx.cardview.widget.CardView
+                    android:id="@+id/mapCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    app:cardCornerRadius="22dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="88dp">
+
+
+                    <fragment xmlns:tools="http://schemas.android.com/tools"
+                        android:id="@+id/map_fragment"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
@@ -188,4 +373,52 @@ tools:context=".SpecificEventDetailedActivity">
 
 
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#A4BDBABA" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:background="#F8F5F5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="35dp"
+                android:layout_weight="1"
+                android:fontFamily="serif"
+                android:text="Free"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/GetTickets"
+                android:layout_width="168dp"
+                android:layout_height="41dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/button2_bg"
+                android:text="Get Tickets"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:onClick="shareEvent"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
