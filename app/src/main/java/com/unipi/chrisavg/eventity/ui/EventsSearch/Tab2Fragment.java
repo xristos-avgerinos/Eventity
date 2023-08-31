@@ -108,8 +108,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         }
 
         locationForSearch = new Location("provider");
-        locationForSearch.setLatitude(37.966284);
-        locationForSearch.setLongitude(23.4952437);
+        locationForSearch.setLatitude(latitude);
+        locationForSearch.setLongitude(longitude);
 
         //37.966284,23.4952437
 

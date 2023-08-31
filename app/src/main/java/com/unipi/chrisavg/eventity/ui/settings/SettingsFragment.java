@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.unipi.chrisavg.eventity.databinding.FragmentHomeBinding;
 import com.unipi.chrisavg.eventity.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -19,14 +20,9 @@ public class SettingsFragment extends Fragment {
     FirebaseAuth mAuth;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SettingsViewModel settingsViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textSettings;
-        settingsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         return root;
     }
