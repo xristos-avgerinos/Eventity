@@ -166,8 +166,6 @@ public class Tab1Fragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), SpecificEventDetailedActivity.class);
                 intent.putExtra("event", eventsListClone.get(position));
-                intent.putExtra("latitude", eventsListClone.get(position).getGeopoint().getLatitude());
-                intent.putExtra("longitude", eventsListClone.get(position).getGeopoint().getLongitude());
                 startActivity(intent);
             }
         });

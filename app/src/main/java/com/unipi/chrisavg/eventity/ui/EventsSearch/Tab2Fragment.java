@@ -251,8 +251,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
                 Intent intent = new Intent(getContext(), SpecificEventDetailedActivity.class);
                 intent.putExtra("event", targetEvent);
-                intent.putExtra("latitude", targetEvent.getGeopoint().getLatitude());
-                intent.putExtra("longitude", targetEvent.getGeopoint().getLongitude());
                 startActivity(intent);
             }
         });

@@ -161,8 +161,8 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         Time.setText(receivedEvent.getDateToCustomFormat().substring(index+1).trim());
         ApproximateLocation.setText(receivedEvent.getLocation());
 
-        latitude = intent.getDoubleExtra("latitude", 0.0);
-        longitude = intent.getDoubleExtra("longitude", 0.0);
+        latitude = receivedEvent.getGeopoint().getLatitude();
+        longitude = receivedEvent.getGeopoint().getLongitude();
 
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         String exLoc = "";

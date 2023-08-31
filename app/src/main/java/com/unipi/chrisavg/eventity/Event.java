@@ -46,6 +46,10 @@ public class Event implements Parcelable {
         OrganizerId = in.readString();
         PhotoURL = in.readString();
         Types = in.createStringArrayList();
+        // Read the GeoPoint properties from the Parcel and reconstruct the GeoPoint object
+        double latitude = in.readDouble();
+        double longitude = in.readDouble();
+        Geopoint = new GeoPoint(latitude, longitude);
         UserMatchScore = in.readLong();
     }
 
@@ -181,6 +185,9 @@ public class Event implements Parcelable {
         dest.writeString(OrganizerId);
         dest.writeString(PhotoURL);
         dest.writeStringList(Types);
+        // Write the GeoPoint properties to the Parcel
+        dest.writeDouble(Geopoint.getLatitude());
+        dest.writeDouble(Geopoint.getLongitude());
         dest.writeLong(UserMatchScore);
     }
 }
