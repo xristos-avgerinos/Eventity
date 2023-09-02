@@ -22,13 +22,17 @@ public class Event implements Parcelable {
     private String OrganizerId;
     private String PhotoURL;
     List<String> Types = new ArrayList<>();
+    private int Capacity;
+    private int ReservedTickets;
+    private double Price;
+
 
     private long UserMatchScore;
 
     public Event() {
     }
 
-    public Event(String title, Timestamp date, String location,GeoPoint geopoint, String organizerId, String photoUrl, List<String> types) {
+    public Event(String title, Timestamp date, String location,GeoPoint geopoint, String organizerId, String photoUrl, List<String> types, int capacity, int reservedTickets, double price) {
         this.Title = title;
         this.Date = date;
         this.Location = location;
@@ -36,6 +40,9 @@ public class Event implements Parcelable {
         this.OrganizerId = organizerId;
         this.PhotoURL = photoUrl;
         this.Types = types;
+        this.Capacity = capacity;
+        this.ReservedTickets = reservedTickets;
+        this.Price = price;
     }
 
     protected Event(Parcel in) {
@@ -50,6 +57,9 @@ public class Event implements Parcelable {
         double latitude = in.readDouble();
         double longitude = in.readDouble();
         Geopoint = new GeoPoint(latitude, longitude);
+        Capacity = in.readInt();
+        ReservedTickets = in.readInt();
+        Price = in.readDouble();
         UserMatchScore = in.readLong();
     }
 
@@ -137,6 +147,30 @@ public class Event implements Parcelable {
         UserMatchScore = userMatchScore;
     }
 
+    public int getCapacity() {
+        return Capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        Capacity = capacity;
+    }
+
+    public int getReservedTickets() {
+        return ReservedTickets;
+    }
+
+    public void setReservedTickets(int reservedTickets) {
+        ReservedTickets = reservedTickets;
+    }
+
+    public double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(double price) {
+        Price = price;
+    }
+
     public String getDateToCustomFormat() {
         // Create a Date object from the Timestamp
         Date date = this.Date.toDate();
@@ -188,6 +222,9 @@ public class Event implements Parcelable {
         // Write the GeoPoint properties to the Parcel
         dest.writeDouble(Geopoint.getLatitude());
         dest.writeDouble(Geopoint.getLongitude());
+        dest.writeInt(Capacity);
+        dest.writeInt(ReservedTickets);
+        dest.writeDouble(Price);
         dest.writeLong(UserMatchScore);
     }
 }

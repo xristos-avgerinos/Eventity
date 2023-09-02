@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".SpecificEventDetailedActivity">
+
+    <!--<androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:backgroundTintMode="src_over"
+        app:title="Checkout"
+        app:navigationIcon="@drawable/ic_back"
+        app:titleTextAppearance="@style/ToolbarTitleStyle2"
+        android:elevation="4dp"/>-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:navigationIcon="@drawable/ic_back"
+       >
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Checkout"
+                android:textAppearance="@style/ToolbarTitleStyle2"
+                android:gravity="center"
+                android:layout_marginRight="64dp"/>
+
+        <!-- Navigation icon and other items can still be added here -->
+    </androidx.appcompat.widget.Toolbar>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/toolbar"
+        android:background="#8ACCCCCC" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:layout_marginTop="23dp"
+        tools:context="in.insideandroid.template.LoginActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="Title"
+                    android:textColor="#B9000000"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="9dp"
+                        android:layout_marginBottom="4dp">
+
+                        <ImageView
+                            android:id="@+id/calendarImage"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_calendar"
+                            android:background="#22808080"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp">
+
+                        <!-- TextView for upper text -->
+                        <TextView
+                            android:id="@+id/Date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Date"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <!-- TextView for lower text (smaller than the above) -->
+                        <TextView
+                            android:id="@+id/Time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Time"
+                            android:textColor="#8A8787"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="9dp"
+                        android:layout_marginBottom="4dp">
+
+                        <ImageView
+                            android:id="@+id/locationImage"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_location4"
+                            android:background="#22808080"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="12dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp">
+
+                        <!-- TextView for upper text -->
+                        <TextView
+                            android:id="@+id/ApproximateLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Approximate Location"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <!-- TextView for lower text (smaller than the above) -->
+                        <TextView
+                            android:id="@+id/ExactLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Exact Location"
+                            android:textColor="#8A8787"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/toolbar"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="#D29C9B9B" />
+
+                <TextView
+                    android:id="@+id/ContactInformation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/abril_fatface"
+                    android:text="Contact Information"
+                    android:textColor="#B9000000"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        android:textSize="13sp"
+                        android:textColor="@color/custom_red_for_buttons"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Required"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/RL_firstname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:padding="12dp"
+                    android:background="@drawable/border2">
+
+                    <LinearLayout
+                        android:id="@+id/firstnameLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/firstnameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="First Name"
+                            android:textColor="@color/underline_color"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:textSize="13sp"
+                            android:textColor="@color/custom_red_for_buttons">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/firstnameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/firstnameLL"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:hint="Give your first name"
+                        android:inputType="textPersonName"
+                        android:textColor="#B9000000"
+                        android:textSize="17sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/RL_lastname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:padding="12dp"
+                    android:background="@drawable/border2">
+
+                    <LinearLayout
+                        android:id="@+id/lastnameLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/lastnameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Name"
+                            android:textColor="@color/underline_color"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:textSize="13sp"
+                            android:textColor="@color/custom_red_for_buttons">
+
+                        </TextView>
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/lastnameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/lastnameLL"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:hint="Give your last name"
+                        android:inputType="textPersonName"
+                        android:textColor="#B9000000"
+                        android:textSize="17sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/RL_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:padding="13dp"
+                    android:background="@drawable/border3">
+
+                    <LinearLayout
+                        android:id="@+id/emailLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                        <TextView
+                            android:id="@+id/emailTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email address"
+                            android:textColor="@color/gray"
+                            android:textSize="13sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" *"
+                            android:textSize="13sp"
+                            android:textColor="@color/custom_red_for_buttons">
+
+                        </TextView>
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:id="@+id/emailEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/emailLL"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-condensed-medium"
+                        android:inputType="textPersonName"
+                        android:text="test@gmail.com"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:textColor="#B9000000"
+                        android:textSize="17sp"
+                        android:clickable="false"/>
+                </RelativeLayout>
+
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="8dp"
+                    android:text="Keep me updated on more events and news from this event organizer."
+                    android:textColor="#B9000000"
+                    android:textSize="17sp"
+                    android:textStyle="italic"
+                    android:buttonTint="@color/underline_color"/>
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:fontFamily="sans-serif-condensed"
+                    android:paddingLeft="8dp"
+                    android:text="Send me emails about the best events happening nearby to me."
+                    android:textColor="#B9000000"
+                    android:textSize="17sp"
+                    android:textStyle="italic"
+                    android:buttonTint="@color/underline_color"/>
+
+                <Button
+                    android:id="@+id/LogIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/layer_list"
+                    android:text="Get My Ticket"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="#FFFFFF"
+                    android:textSize="19sp"
+                    android:onClick="GetTicket"/>
+
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

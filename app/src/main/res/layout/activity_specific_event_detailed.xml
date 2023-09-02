@@ -59,7 +59,7 @@ tools:context=".SpecificEventDetailedActivity">
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_launcher_background" />
-            </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
 
                 <View
                     android:layout_width="match_parent"

@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -111,6 +112,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         if (intent != null) {
             receivedEvent = intent.getParcelableExtra("event");
         }
+
 
         Title = findViewById(R.id.title);
         Date = findViewById(R.id.Date);
@@ -228,6 +230,23 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
             mapFragment.getMapAsync(this);
         }
 
+        Button getTicketsButton = findViewById(R.id.GetTickets);
+
+        if (receivedEvent.getCapacity() == receivedEvent.getReservedTickets()){
+            getTicketsButton.setClickable(false);
+            getTicketsButton.setEnabled(false);
+            getTicketsButton.setText("Sold Out");
+            getTicketsButton.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
+        }
+
+        getTicketsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SpecificEventDetailedActivity.this, CheckOutTicket.class);
+                intent.putExtra("event", receivedEvent);
+                startActivity(intent);
+            }
+        });
 
     }
 
