@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,20 +33,32 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 
 public class CheckOutTicket extends AppCompatActivity {
 
@@ -62,6 +76,8 @@ public class CheckOutTicket extends AppCompatActivity {
 
     Event receivedEvent;
 
+    private StorageReference storageRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +88,9 @@ public class CheckOutTicket extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Reservations = db.collection("Reservations");
         Events = db.collection("Events");
+
+        // Initialize the Firebase Storage reference
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -159,46 +178,103 @@ public class CheckOutTicket extends AppCompatActivity {
             lastnameEditText.requestFocus();
             DisplaySnackbar(view,"Please fill in your last name");
         }else{
-            //store the reservation to db
-            Reservation reservation = new Reservation(receivedEvent.getKey(),auth.getUid(),firstnameEditText.getText().toString(),lastnameEditText.getText().toString());
-            Reservations.document().set(reservation)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                   @Override
-                   public void onSuccess(Void unused) {
+            String eventData = "Event: " + receivedEvent.getTitle() + "\nDate: " + receivedEvent.getDateToCustomFormat() +
+                    "\nTicket ID: " + receivedEvent.getKey() + "\nPerson name: " + firstnameEditText.getText().toString() + " " + lastnameEditText.getText().toString();
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+            try {
+                BitMatrix bitMatrix = multiFormatWriter.encode(eventData, BarcodeFormat.QR_CODE, 600, 600);
+                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
-                       //add reserved tickets of event by 1
-                       receivedEvent.setReservedTickets(receivedEvent.getReservedTickets()+1);
+                // Upload QR Code Image to Firestore
+                uploadImageToFirestore(bitmap);
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                       // Create a map to hold the updated data
-                       Map<String, Object> updateData = new HashMap<>();
-                       updateData.put("ReservedTickets", receivedEvent.getReservedTickets());
-
-                       // Update the document
-                       Events.document(receivedEvent.getKey()).update(updateData)
-                               .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                   @Override
-                                   public void onSuccess(Void aVoid) {
-                                       // Event successfully updated
-                                       Toast.makeText(CheckOutTicket.this, "Ticket Reserved", Toast.LENGTH_SHORT).show();
-
-                                   }
-                               })
-                               .addOnFailureListener(new OnFailureListener() {
-                                   @Override
-                                   public void onFailure(@NonNull Exception e) {
-                                       DisplaySnackbar(view,e.getLocalizedMessage());
-                                   }
-                               });
-                   }
-               })
-               .addOnFailureListener(new OnFailureListener() {
-                   @Override
-                   public void onFailure(@NonNull Exception e) {
-                       DisplaySnackbar(view,e.getLocalizedMessage());
-                   }
-               });
         }
+    }
+
+    private void uploadImageToFirestore(Bitmap bitmap) {
+        // Create a unique filename or document ID for the image in Firestore
+        String imageName = receivedEvent.getKey() + "-" + auth.getUid();
+
+        // Create a reference to the Firebase Storage location
+        StorageReference imageRef = storageRef.child(imageName);
+
+        // Convert the Bitmap to a byte array
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        // Upload the image to Firebase Storage
+        UploadTask uploadTask = imageRef.putBytes(data);
+
+        // Handle the upload success or failure
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // Get the download URL of the uploaded image
+                Task<Uri> downloadUriTask = imageRef.getDownloadUrl();
+                downloadUriTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri downloadUri) {
+                        // Save the download URL to Firestore or use it as needed
+                        saveReservationToFirestore(downloadUri.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    private void saveReservationToFirestore(String ticketQRCodeUrl) {
+        //store the reservation to db
+        Reservation reservation = new Reservation(receivedEvent.getKey(),auth.getUid(),firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),ticketQRCodeUrl);
+
+        // Create a new document with an auto-generated ID
+        DocumentReference newReservationRef = Reservations.document();
+        newReservationRef.set(reservation)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        String ReservationId = newReservationRef.getId();
+
+                        //add reserved tickets of event by 1
+                        receivedEvent.setReservedTickets(receivedEvent.getReservedTickets()+1);
+
+
+                        // Create a map to hold the updated data
+                        Map<String, Object> updateData = new HashMap<>();
+                        updateData.put("ReservedTickets", receivedEvent.getReservedTickets());
+
+                        // Update the document
+                        Events.document(receivedEvent.getKey()).update(updateData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // Event successfully updated
+                                       Intent intent = new Intent(CheckOutTicket.this,UserTicket.class);
+                                       intent.putExtra("ReservationID",ReservationId);
+                                       startActivity(intent);
+                                       finish();
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        DisplaySnackbar(findViewById(android.R.id.content),e.getLocalizedMessage());
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        DisplaySnackbar(findViewById(android.R.id.content),e.getLocalizedMessage());
+                    }
+                });
     }
 
     void DisplaySnackbar(View view,String message){
