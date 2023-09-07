@@ -6,13 +6,15 @@ public class Reservation {
     private String TicketPersonFirstName;
     private String TicketPersonLastName;
     private String TicketQRCodeURL;
+    private int Seat;
 
-    public Reservation(String eventId, String userId, String ticketPersonFirstName, String ticketPersonLastName,String ticketQRCodeURL) {
+    public Reservation(String eventId, String userId, String ticketPersonFirstName, String ticketPersonLastName,String ticketQRCodeURL,int seat) {
         EventId = eventId;
         UserId = userId;
         TicketPersonFirstName = ticketPersonFirstName;
         TicketPersonLastName = ticketPersonLastName;
         TicketQRCodeURL = ticketQRCodeURL;
+        Seat = seat;
     }
 
     public Reservation() {
@@ -57,4 +59,13 @@ public class Reservation {
     public void setTicketQRCodeURL(String ticketQRCodeURL) {
         TicketQRCodeURL = ticketQRCodeURL;
     }
+
+    public int getSeat() {
+        return Seat;
+    }
+
+    public void setSeat(int seat) {
+        Seat = seat;
+    }
 }
+

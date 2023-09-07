@@ -186,8 +186,8 @@ public class CheckOutTicket extends AppCompatActivity {
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
-                // Upload QR Code Image to Firestore
-                uploadImageToFirestore(bitmap);
+                // Upload QR Code Image to Firebase storage
+                uploadImageToStorage(bitmap);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -196,7 +196,7 @@ public class CheckOutTicket extends AppCompatActivity {
         }
     }
 
-    private void uploadImageToFirestore(Bitmap bitmap) {
+    private void uploadImageToStorage(Bitmap bitmap) {
         // Create a unique filename or document ID for the image in Firestore
         String imageName = receivedEvent.getKey() + "-" + auth.getUid();
 
@@ -221,16 +221,19 @@ public class CheckOutTicket extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri downloadUri) {
                         // Save the download URL to Firestore or use it as needed
-                        saveReservationToFirestore(downloadUri.toString());
+                        saveReservationToFirestoreDb(downloadUri.toString());
                     }
                 });
             }
         });
     }
 
-    private void saveReservationToFirestore(String ticketQRCodeUrl) {
+    private void saveReservationToFirestoreDb(String ticketQRCodeUrl) {
+        //add reserved tickets of event by 1
+        receivedEvent.setReservedTickets(receivedEvent.getReservedTickets()+1);
+
         //store the reservation to db
-        Reservation reservation = new Reservation(receivedEvent.getKey(),auth.getUid(),firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),ticketQRCodeUrl);
+        Reservation reservation = new Reservation(receivedEvent.getKey(),auth.getUid(),firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),ticketQRCodeUrl,receivedEvent.getReservedTickets());
 
         // Create a new document with an auto-generated ID
         DocumentReference newReservationRef = Reservations.document();
@@ -239,9 +242,6 @@ public class CheckOutTicket extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void unused) {
                         String ReservationId = newReservationRef.getId();
-
-                        //add reserved tickets of event by 1
-                        receivedEvent.setReservedTickets(receivedEvent.getReservedTickets()+1);
 
 
                         // Create a map to hold the updated data

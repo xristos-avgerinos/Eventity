@@ -1,17 +1,361 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".UserTicket">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/TicketQRCode"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="72dp"
-        tools:srcCompat="@tools:sample/avatars" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/colorBackground"
+        android:backgroundTintMode="src_over"
+        app:navigationIcon="@drawable/ic_close"
+        app:titleTextAppearance="@style/ToolbarTitleStyle"
+        android:elevation="4dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/toolbar"
+        android:background="#8ACCCCCC" />
+
+    <ScrollView
+        android:id="@+id/SV_general"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbarThumbHorizontal="@null"
+            android:scrollbarThumbVertical="@null">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:background="@color/colorBackground"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abril_fatface"
+                    android:gravity="center"
+                    android:text="Check in for this event"
+                    android:textColor="#B9000000"
+                    android:textSize="29sp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:id="@+id/signup_image_layout"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/TicketQRCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="casual"
+                    android:text="Scan this QR code at the event to check in."
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#F44336"
+                    android:textSize="15sp"
+                    android:textStyle="bold|italic" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/dotted_line" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="14dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Purchaser Name"
+                        android:textColor="#8A8787"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/PurchaserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/abril_fatface"
+                        android:text="Purchaser Name"
+                        android:textAllCaps="false"
+                        android:textColor="#D2000000"
+                        android:textSize="29sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ticket/Seat"
+                        android:textColor="#8A8787"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/Seat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Seat"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:typeface="serif" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="14dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Event"
+                        android:textColor="#8A8787"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/EventName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Event Name"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:typeface="serif" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Date"
+                            android:textColor="#8A8787"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/EventDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Event Date"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/EventTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Starts at: "
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Location"
+                            android:textColor="#8A8787"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/EventLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Event Location"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+
+                        <TextView
+                            android:id="@+id/map"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="See map"
+                            android:textAllCaps="false"
+                            android:textColor="@color/underline_color"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Price"
+                            android:textColor="#8A8787"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/EventPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Event Price"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Organizer"
+                            android:textColor="#8A8787"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/EventOrganizer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Event Organizer"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="17sp"
+                            android:typeface="serif" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="serif"
+                    android:text="See you there 😊	"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#B9000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:typeface="normal" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+</RelativeLayout>
