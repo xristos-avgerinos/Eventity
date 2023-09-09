@@ -122,6 +122,15 @@ public class MainActivity extends AppCompatActivity  {
             return true;
         });
 
+        Intent intent = getIntent();
+
+        boolean openTicketsFragment = false;
+        if (intent != null) {
+            openTicketsFragment = intent.getBooleanExtra("OpenTicketsFragment",false);
+        }
+        if (openTicketsFragment){
+            navController.navigate(R.id.nav_tickets);
+        }
 
         // Change the subtitle of the nav_header_main
         TextView textViewHeaderTitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderTitle);

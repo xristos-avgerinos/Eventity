@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -37,10 +38,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserTicket extends AppCompatActivity {
 
@@ -48,8 +53,10 @@ public class UserTicket extends AppCompatActivity {
     CollectionReference Reservations,Events;
     FirebaseFirestore db;
     String receivedReservationId;
-
+    Organizer organizer;
+    Event event;
     TextView purchaserName,seat,eventName,eventDate,eventTime,eventLocation,eventPrice,eventOrganizer,map;
+    final Reservation[] reservation = {null};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +99,7 @@ public class UserTicket extends AppCompatActivity {
             receivedReservationId = intent.getStringExtra("ReservationID");
         }
 
-        final Reservation[] reservation = {null};
+
         Reservations.document(receivedReservationId).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -113,7 +120,7 @@ public class UserTicket extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot2) {
                                     if(documentSnapshot2.exists()){
-                                        Event event = documentSnapshot2.toObject(Event.class);
+                                        event = documentSnapshot2.toObject(Event.class);
 
                                         // Use RequestOptions to set options for Glide (optional)
                                         RequestOptions requestOptions = new RequestOptions()
@@ -157,7 +164,7 @@ public class UserTicket extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                                                         if(documentSnapshot.exists()){
-                                                            Organizer organizer = documentSnapshot.toObject(Organizer.class);
+                                                            organizer = documentSnapshot.toObject(Organizer.class);
                                                             eventOrganizer.setText(organizer.getFirstname() + " " + organizer.getLastname());
                                                         }
                                                     }
@@ -220,23 +227,80 @@ public class UserTicket extends AppCompatActivity {
         switch(item.getItemId()) {
 
             case R.id.CancelOrder:
-                /*Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                String eventDetails = "Check out \"" + receivedEvent.getTitle() + "\"on Eventity! \n\n" +
-                        "Date: " + receivedEvent.getDateToCustomFormat() + "\n\n" +
-                        "Location: " + receivedEvent.getLocation() + "\n\n" +
-                        "Event details: https://eventity.com/event/123";
-                shareIntent.putExtra(Intent.EXTRA_TEXT, eventDetails);
+                // Delete the document
+                Reservations.document(receivedReservationId).delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Document successfully deleted
 
-                // Start the Android's built-in sharing activity
-                startActivity(Intent.createChooser(shareIntent, "Share Event"));*/
+                                //Lets reduce ReservedTickets of event by one
+
+                                event.setReservedTickets(event.getReservedTickets()-1);
+
+                                // Create a map to hold the updated data
+                                Map<String, Object> updateData = new HashMap<>();
+                                updateData.put("ReservedTickets", event.getReservedTickets());
+
+                                // Update the document
+                                Events.document(reservation[0].getEventId()).update(updateData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+
+                                                //Lets delete the image from storage too
+                                                FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                StorageReference storageRef = storage.getReference();
+                                                String imagePath =   reservation[0].getEventId() + "-" + reservation[0].getUserId();
+                                                StorageReference imageRef = storageRef.child(imagePath);
+                                                imageRef.delete()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                // Image successfully deleted
+                                                                Toast.makeText(UserTicket.this, "Your order has been cancelled!", Toast.LENGTH_SHORT).show();
+
+                                                                Intent intent = new Intent(UserTicket.this,MainActivity.class);
+                                                                intent.putExtra("OpenTicketsFragment",true);
+                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
+                                                                startActivity(intent);
+                                                                finishAffinity();
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                // Handle errors if the deletion fails
+                                                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+
+
+
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                 break;
 
             case R.id.ContactOrganizer:
-               /* Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
                 emailIntent.setData(Uri.parse("mailto:" + organizer.getEmail()));
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{organizer.getEmail()});
-                startActivity(emailIntent);*/
+                startActivity(emailIntent);
                 break;
 
             default:

@@ -14,7 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.unipi.chrisavg.eventity.ArrayAdapterClass;
 import com.unipi.chrisavg.eventity.ArrayAdapterClass2;
 import com.unipi.chrisavg.eventity.Event;
+import com.unipi.chrisavg.eventity.MainActivity;
 import com.unipi.chrisavg.eventity.R;
 import com.unipi.chrisavg.eventity.Reservation;
 import com.unipi.chrisavg.eventity.SpecificEventDetailedActivity;
@@ -99,8 +103,6 @@ public class TicketsFragment extends Fragment {
         events = db.collection("Events");
         reservations = db.collection("Reservations");
 
-
-
         reservations.whereEqualTo("userId", auth.getUid()).get()
                 .addOnCompleteListener(task -> {
 
@@ -119,7 +121,7 @@ public class TicketsFragment extends Fragment {
                                 reservationListIds.add(documentSnapshot.getId());
                             }
 
-                            // Now you have all reservations with userId="123" in the reservationList
+                            // Now you have all reservations with userId="" in the reservationList
                             // You can process them as needed
                             events.get().addOnCompleteListener(task2 -> {
                                 if(task2.isSuccessful()){
@@ -151,7 +153,7 @@ public class TicketsFragment extends Fragment {
                                 }
                                 else{
                                     // Handle errors
-                                    DisplaySnackbar(task.getException().getLocalizedMessage());
+                                    DisplaySnackbar(task2.getException().getLocalizedMessage());
                                 }
 
                             });
@@ -180,7 +182,7 @@ public class TicketsFragment extends Fragment {
 
     public void ShowClassifiedEventsInListView(){
 
-        // Sort events based on match score in descending order
+        // Sort events based on date in descending order
         Collections.sort(eventsList, new Comparator<Event>() {
             @Override
             public int compare(Event event1, Event event2) {
@@ -235,4 +237,5 @@ public class TicketsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }

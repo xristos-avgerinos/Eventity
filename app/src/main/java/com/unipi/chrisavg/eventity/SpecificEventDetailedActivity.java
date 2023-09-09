@@ -313,4 +313,5 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         return true;
     }
+
 }

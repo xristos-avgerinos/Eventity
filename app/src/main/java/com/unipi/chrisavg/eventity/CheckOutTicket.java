@@ -254,10 +254,10 @@ public class CheckOutTicket extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         // Event successfully updated
-                                       Intent intent = new Intent(CheckOutTicket.this,UserTicket.class);
-                                       intent.putExtra("ReservationID",ReservationId);
-                                       startActivity(intent);
-                                       finish();
+                                        Intent intent = new Intent(CheckOutTicket.this,UserTicket.class);
+                                        intent.putExtra("ReservationID",ReservationId);
+                                        startActivity(intent);
+                                        finish();
 
                                     }
                                 })
