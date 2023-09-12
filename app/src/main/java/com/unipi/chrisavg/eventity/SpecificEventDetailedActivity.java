@@ -47,9 +47,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 import com.unipi.chrisavg.eventity.ui.EventsSearch.Tab2Fragment;
 
@@ -67,7 +69,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
     ImageView imageView;
 
     FirebaseAuth auth;
-    CollectionReference Organizers;
+    CollectionReference Organizers,reservations;
     FirebaseFirestore db;
 
     Organizer organizer;
@@ -79,7 +81,9 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
     double latitude;
     double longitude;
 
-    Event receivedEvent;
+    public static Event receivedEvent;
+
+    public static boolean shouldReload = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Organizers = db.collection("Organizers");
+        reservations = db.collection("Reservations");
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -232,21 +237,50 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         Button getTicketsButton = findViewById(R.id.GetTickets);
 
-        if (receivedEvent.getCapacity() == receivedEvent.getReservedTickets()){
-            getTicketsButton.setClickable(false);
-            getTicketsButton.setEnabled(false);
-            getTicketsButton.setText("Sold Out");
-            getTicketsButton.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
-        }
 
-        getTicketsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SpecificEventDetailedActivity.this, CheckOutTicket.class);
-                intent.putExtra("event", receivedEvent);
-                startActivity(intent);
-            }
-        });
+        reservations.whereEqualTo("userId", auth.getUid()).whereEqualTo("eventId",receivedEvent.getKey()).get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && querySnapshot.getDocuments().size() == 1) {
+                            getTicketsButton.setText("See your ticket");
+                            getTicketsButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(SpecificEventDetailedActivity.this, UserTicket.class);
+                                    intent.putExtra("ReservationID",querySnapshot.getDocuments().get(0).getId());
+                                    intent.putExtra("SendingActivity","SpecificEventDetailedActivity");
+                                    startActivity(intent);
+                                    //finish();
+                                }
+                            });
+
+                        }else{
+
+                            if (receivedEvent.getCapacity() == receivedEvent.getReservedTickets()){
+                                getTicketsButton.setClickable(false);
+                                getTicketsButton.setEnabled(false);
+                                getTicketsButton.setText("Sold Out");
+                                getTicketsButton.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
+                            }
+
+                            getTicketsButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(SpecificEventDetailedActivity.this, CheckOutTicket.class);
+                                    intent.putExtra("event", receivedEvent);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+
+                    } else {
+                        // Handle errors
+                        //DisplaySnackbar(task.getException().getLocalizedMessage());
+                    }
+
+                });
 
     }
 
@@ -313,5 +347,39 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (shouldReload) {
+            recreate();
+            shouldReload = false; // Reset the flag to prevent continuous reloading
+        }
+    }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        reservations.whereEqualTo("userId", auth.getUid()).whereEqualTo("eventId",receivedEvent.getKey()).get()
+                .addOnCompleteListener(task -> {
+
+                    if (task.isSuccessful()) {
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (querySnapshot != null && querySnapshot.getDocuments().size() == 1) {
+                            Intent intent = new Intent(SpecificEventDetailedActivity.this, UserTicket.class);
+                            intent.putExtra("ReservationID",querySnapshot.getDocuments().get(0).getId());
+                            intent.putExtra("SendingActivity","SpecificEventDetailedActivity");
+                            startActivity(intent);
+                            finish();
+                        }
+
+                    } else {
+                        // Handle errors
+                        //DisplaySnackbar(task.getException().getLocalizedMessage());
+                    }
+
+                });
+    }*/
 
 }

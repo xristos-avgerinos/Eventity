@@ -253,9 +253,13 @@ public class CheckOutTicket extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        SpecificEventDetailedActivity.receivedEvent.setReservedTickets(receivedEvent.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
+                                        SpecificEventDetailedActivity.shouldReload=true; //so as to if we have sold out not to sell more tickets
+
                                         // Event successfully updated
                                         Intent intent = new Intent(CheckOutTicket.this,UserTicket.class);
                                         intent.putExtra("ReservationID",ReservationId);
+                                        intent.putExtra("SendingActivity","CheckOutActivity");
                                         startActivity(intent);
                                         finish();
 

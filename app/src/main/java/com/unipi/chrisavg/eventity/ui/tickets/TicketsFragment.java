@@ -111,6 +111,11 @@ public class TicketsFragment extends Fragment {
                     reservationListIds.clear();
                     eventsList.clear();
 
+                    ListViewItemsTitles.clear();
+                    ListViewItemsDates.clear();
+                    ListViewItemsLocations.clear();
+                    ListViewItemsImages.clear();
+
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null) {
@@ -172,6 +177,7 @@ public class TicketsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), UserTicket.class);
                 intent.putExtra("ReservationID",reservationListIdsClone.get(position));
+                intent.putExtra("SendingActivity","TicketsFragment");
                 startActivity(intent);
             }
         });

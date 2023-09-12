@@ -40,6 +40,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.unipi.chrisavg.eventity.ui.tickets.TicketsFragment;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.ElementType;
@@ -57,6 +58,7 @@ public class UserTicket extends AppCompatActivity {
     Event event;
     TextView purchaserName,seat,eventName,eventDate,eventTime,eventLocation,eventPrice,eventOrganizer,map;
     final Reservation[] reservation = {null};
+    String sendingActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class UserTicket extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             receivedReservationId = intent.getStringExtra("ReservationID");
+            sendingActivity = intent.getStringExtra("SendingActivity");
         }
 
 
@@ -178,9 +181,9 @@ public class UserTicket extends AppCompatActivity {
                                                 double longitude = event.getGeopoint().getLongitude(); // Replace with the longitude of your location
 
                                                 // Create an intent to open the map with directions to the specified coordinates
-                                                Uri gmmIntentUri = Uri.parse("https://www.google.com/maps?q=" + latitude + "," + longitude);
+                                                Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude);
                                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                                mapIntent.setPackage("com.google.android.apps.maps"); // Use Google Maps
+                                                mapIntent.setPackage("com.google.android.apps.maps"); // This ensures it opens in the Google Maps app if available
 
                                                 // Check if there's a map application available on the device
                                                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
@@ -260,11 +263,22 @@ public class UserTicket extends AppCompatActivity {
                                                                 // Image successfully deleted
                                                                 Toast.makeText(UserTicket.this, "Your order has been cancelled!", Toast.LENGTH_SHORT).show();
 
-                                                                Intent intent = new Intent(UserTicket.this,MainActivity.class);
-                                                                intent.putExtra("OpenTicketsFragment",true);
-                                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
-                                                                startActivity(intent);
-                                                                finishAffinity();
+                                                                if (sendingActivity.equals("TicketsFragment")) {
+                                                                    Intent intent = new Intent(UserTicket.this,MainActivity.class);
+                                                                    intent.putExtra("OpenTicketsFragment",true);
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
+                                                                    startActivity(intent);
+                                                                    finishAffinity();
+                                                                } else if(sendingActivity.equals("CheckOutActivity")) {
+                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
+                                                                    SpecificEventDetailedActivity.shouldReload=true; //so as to reload the reservedTickets of receivedEvent of SpecificEventDetailedActivity
+                                                                    finish();
+                                                                }else if(sendingActivity.equals("SpecificEventDetailedActivity")){
+                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
+                                                                    SpecificEventDetailedActivity.shouldReload=true; //so as to reload the reservedTickets of receivedEvent of SpecificEventDetailedActivity
+                                                                    finish();
+                                                                }
+
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
