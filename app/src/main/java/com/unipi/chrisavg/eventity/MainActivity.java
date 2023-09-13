@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity  {
         // Change the subtitle of the nav_header_main
         TextView textViewHeaderTitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderTitle);
         textViewHeaderTitle.setText(mAuth.getCurrentUser().getDisplayName());
-
         // Change the subtitle of the nav_header_main
         TextView textViewHeaderSubtitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderSubtitle);
         textViewHeaderSubtitle.setText(mAuth.getCurrentUser().getEmail());

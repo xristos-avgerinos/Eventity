@@ -281,6 +281,7 @@ public class WelcomeActivity extends AppCompatActivity {
                                         // γραφτει και στη βαση με fullname το ονομα που εχει και στο Google η Facebook. Κανονικο sign up.
                                         FirebaseUser firebaseUser = auth.getCurrentUser();
                                         User user = new User(firebaseUser.getDisplayName());
+                                        user.setPhoneNumber("");
                                         users.document(auth.getUid())
                                                 .set(user)
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

@@ -147,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
 
                                 User user = new User(fullname.getText().toString());
-                                user.setToken("token");
+                                user.setPhoneNumber("");
 
                                 users.document(firebaseUser.getUid())
                                         .set(user)
