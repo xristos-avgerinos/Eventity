@@ -186,7 +186,7 @@ tools:context=".ui.settings.SettingsFragment">
                             android:layout_height="wrap_content"
                             android:text="Email"
                             android:textColor="@color/headings"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
                         <EditText
                             android:id="@+id/emailEditText"
@@ -203,6 +203,7 @@ tools:context=".ui.settings.SettingsFragment">
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/fullnameLinLay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -214,17 +215,16 @@ tools:context=".ui.settings.SettingsFragment">
                             android:layout_height="wrap_content"
                             android:text="Fullname"
                             android:textColor="@color/headings"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
 
-                        <EditText
-                            android:id="@+id/fullnameEditText"
+                        <TextView
+                            android:id="@+id/fullnameTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:clickable="false"
                             android:fontFamily="sans-serif-light"
-                            android:inputType="textPersonName|textEmailSubject"
                             android:text="fullname"
                             android:textColor="#000000"
                             android:textSize="18sp" />
@@ -232,6 +232,7 @@ tools:context=".ui.settings.SettingsFragment">
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/phoneNumberLinLay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -243,16 +244,15 @@ tools:context=".ui.settings.SettingsFragment">
                             android:layout_height="wrap_content"
                             android:text="Phone"
                             android:textColor="@color/headings"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
-                        <EditText
-                            android:id="@+id/phoneNumberEditText"
+                        <TextView
+                            android:id="@+id/phoneNumberTextView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:clickable="false"
                             android:fontFamily="sans-serif-light"
-                            android:inputType="textPersonName|textEmailSubject"
                             android:hint="Write your phone number"
                             android:textColor="#000000"
                             android:textSize="18sp" />
@@ -264,7 +264,43 @@ tools:context=".ui.settings.SettingsFragment">
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:background="@drawable/border2"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="6dp"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/RelatedTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginRight="8sp"
+                                android:fontFamily="@font/abril_fatface"
+                                android:text="Your Interests"
+                                android:textColor="#92000000"
+                                android:textSize="22sp"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                android:id="@+id/floatingActionButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:clickable="true"
+                                android:src="@drawable/ic_edit"
+                                app:backgroundTint="#CE65DCE5"
+                                app:fabSize="mini"
+                                app:elevation="0dp"/>
+
+                        </LinearLayout>
+
 
 
                         <GridLayout
@@ -272,6 +308,8 @@ tools:context=".ui.settings.SettingsFragment">
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:columnCount="3"
+                            android:layout_gravity="center"
+                            android:foregroundGravity="center"
                             >
 
                             <!--<ToggleButton
@@ -295,6 +333,24 @@ tools:context=".ui.settings.SettingsFragment">
 
 
                         </GridLayout>
+
+                      <!--  <Button
+                            android:id="@+id/Continue_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:paddingRight="40dp"
+                            android:paddingLeft="40dp"
+                            android:layout_marginBottom="2dp"
+                            android:background="@drawable/button1_bg"
+                            android:onClick="ContinueButton"
+                            android:text="Modify"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:textColor="#FFFFFF"
+                            android:textSize="19sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"/>-->
+
 
                     </LinearLayout>
 

@@ -358,28 +358,4 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         }
     }
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        reservations.whereEqualTo("userId", auth.getUid()).whereEqualTo("eventId",receivedEvent.getKey()).get()
-                .addOnCompleteListener(task -> {
-
-                    if (task.isSuccessful()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (querySnapshot != null && querySnapshot.getDocuments().size() == 1) {
-                            Intent intent = new Intent(SpecificEventDetailedActivity.this, UserTicket.class);
-                            intent.putExtra("ReservationID",querySnapshot.getDocuments().get(0).getId());
-                            intent.putExtra("SendingActivity","SpecificEventDetailedActivity");
-                            startActivity(intent);
-                            finish();
-                        }
-
-                    } else {
-                        // Handle errors
-                        //DisplaySnackbar(task.getException().getLocalizedMessage());
-                    }
-
-                });
-    }*/
-
 }
