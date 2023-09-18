@@ -60,6 +60,8 @@ public class UserTicket extends AppCompatActivity {
     final Reservation[] reservation = {null};
     String sendingActivity;
 
+    private View loadingLayout; // Reference to the loading layout
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,8 @@ public class UserTicket extends AppCompatActivity {
         map = findViewById(R.id.map);
         eventPrice = findViewById(R.id.EventPrice);
         eventOrganizer = findViewById(R.id.EventOrganizer);
+
+        loadingLayout = findViewById(R.id.loading_layout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,6 +141,7 @@ public class UserTicket extends AppCompatActivity {
                                                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                                         // Set the loaded image as the background of the RelativeLayout
                                                         Scroll.setBackground(resource);
+
                                                     }
 
                                                     @Override
@@ -170,6 +175,7 @@ public class UserTicket extends AppCompatActivity {
                                                             organizer = documentSnapshot.toObject(Organizer.class);
                                                             eventOrganizer.setText(organizer.getFirstname() + " " + organizer.getLastname());
                                                         }
+                                                        loadingLayout.setVisibility(View.GONE);
                                                     }
                                                 });
 
@@ -230,6 +236,8 @@ public class UserTicket extends AppCompatActivity {
         switch(item.getItemId()) {
 
             case R.id.CancelOrder:
+                loadingLayout.setVisibility(View.VISIBLE);
+
                 // Delete the document
                 Reservations.document(receivedReservationId).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -278,6 +286,7 @@ public class UserTicket extends AppCompatActivity {
                                                                     SpecificEventDetailedActivity.shouldReload=true; //so as to reload the reservedTickets of receivedEvent of SpecificEventDetailedActivity
                                                                     finish();
                                                                 }
+                                                                //loadingLayout.setVisibility(View.GONE);
 
                                                             }
                                                         })

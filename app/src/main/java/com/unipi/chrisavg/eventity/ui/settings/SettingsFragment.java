@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -25,15 +24,11 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,16 +41,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.unipi.chrisavg.eventity.Event;
 import com.unipi.chrisavg.eventity.HobbySelectionModify;
-import com.unipi.chrisavg.eventity.LoginActivity;
-import com.unipi.chrisavg.eventity.MainActivity;
 import com.unipi.chrisavg.eventity.R;
-import com.unipi.chrisavg.eventity.Reservation;
 import com.unipi.chrisavg.eventity.User;
-import com.unipi.chrisavg.eventity.databinding.FragmentHomeBinding;
 import com.unipi.chrisavg.eventity.databinding.FragmentSettingsBinding;
 
 import java.util.ArrayList;
@@ -82,6 +70,8 @@ public class SettingsFragment extends Fragment {
 
     FloatingActionButton floatingActionButton;
 
+    private View loadingLayout; // Reference to the loading layout
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -106,6 +96,8 @@ public class SettingsFragment extends Fragment {
         FullnameLinLay = root.findViewById(R.id.fullnameLinLay);
         PhoneNumberLinLay = root.findViewById(R.id.phoneNumberLinLay);
         floatingActionButton = root.findViewById(R.id.floatingActionButton);
+
+        loadingLayout = root.findViewById(R.id.loading_layout);
 
 
         firebaseUser = mAuth.getCurrentUser();
@@ -141,7 +133,10 @@ public class SettingsFragment extends Fragment {
                         } else {
                             Toast.makeText(getContext(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         }
+
+                        loadingLayout.setVisibility(View.GONE);
                     }
+
                 });
 
 

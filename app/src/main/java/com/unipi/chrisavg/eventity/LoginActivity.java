@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
 
+    LinearLayout linearLayoutPb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,9 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
+
+        linearLayoutPb = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
+
 
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
@@ -158,6 +164,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void GoMainActivity(View view){
 
+        linearLayoutPb.setVisibility(View.VISIBLE);
+
         auth.signInWithEmailAndPassword(email,password_editText.getText().toString())
                 .addOnCompleteListener((task)->{
                     if(task.isSuccessful()){
@@ -219,7 +227,9 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     }
+                    linearLayoutPb.setVisibility(View.GONE);
                 });
+
 
     }
 

@@ -78,6 +78,8 @@ public class CheckOutTicket extends AppCompatActivity {
 
     private StorageReference storageRef;
 
+    private View loadingLayout; // Reference to the loading layout
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +90,8 @@ public class CheckOutTicket extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Reservations = db.collection("Reservations");
         Events = db.collection("Events");
+
+        loadingLayout = findViewById(R.id.loading_layout);
 
         // Initialize the Firebase Storage reference
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -178,6 +182,8 @@ public class CheckOutTicket extends AppCompatActivity {
             lastnameEditText.requestFocus();
             DisplaySnackbar(view,"Please fill in your last name");
         }else{
+            loadingLayout.setVisibility(View.VISIBLE);
+
             String eventData = "Event: " + receivedEvent.getTitle() + "\nDate: " + receivedEvent.getDateToCustomFormat() +
                     "\nTicket ID: " + receivedEvent.getKey() + "\nPerson name: " + firstnameEditText.getText().toString() + " " + lastnameEditText.getText().toString();
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -262,6 +268,8 @@ public class CheckOutTicket extends AppCompatActivity {
                                         intent.putExtra("SendingActivity","CheckOutActivity");
                                         startActivity(intent);
                                         finish();
+
+                                        //loadingLayout.setVisibility(View.GONE);
 
                                     }
                                 })

@@ -421,4 +421,10 @@ tools:context=".SpecificEventDetailedActivity">
 
     </LinearLayout>
 
+
+    <!-- Include the loading layout -->
+    <include layout="@layout/loading_layout"
+        android:id="@+id/loading_layout"
+        android:visibility="visible" />
+
 </RelativeLayout>

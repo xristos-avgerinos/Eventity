@@ -85,6 +85,8 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
     public static boolean shouldReload = false;
 
+    private View loadingLayout; // Reference to the loading layout
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +130,8 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         OrganizerName = findViewById(R.id.organizerName);
         OrganizerPhone = findViewById(R.id.organizerPhone);
+
+        loadingLayout = findViewById(R.id.loading_layout);
 
         Organizers.document(receivedEvent.getOrganizerId())
                 .get()
@@ -279,6 +283,8 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
                         // Handle errors
                         //DisplaySnackbar(task.getException().getLocalizedMessage());
                     }
+
+                    loadingLayout.setVisibility(View.GONE);
 
                 });
 
