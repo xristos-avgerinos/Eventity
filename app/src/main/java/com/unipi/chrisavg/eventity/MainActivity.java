@@ -180,20 +180,6 @@ public class MainActivity extends AppCompatActivity  {
         String preferencesSelected = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("preferencesSelected",null);
 
         if(currentUser!= null && preferencesSelected!=null ){
-           /* users.document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        User user = documentSnapshot.toObject(User.class);
-                        if (user.getPreferences().size()==0){
-                            Intent intent = new Intent(MainActivity.this,HobbySelection.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }
-            });*/
-
             //Αν ο χρηστης δεν εχει επιλεξει τα ενδιαφεροντα του τον ανακατευθυνουμε στο HobbySelection activity για να επιλεξει
             if (preferencesSelected.equals("False")){
                 Intent intent = new Intent(MainActivity.this,HobbySelection.class);
