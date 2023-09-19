@@ -22,4 +22,10 @@
         android:name="com.unipi.chrisavg.eventity.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_bot"
+        android:name="com.unipi.chrisavg.eventity.ui.bot.BotFragment"
+        android:label="@string/menu_bot"
+        tools:layout="@layout/fragment_bot" />
 </navigation>
