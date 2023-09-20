@@ -249,7 +249,6 @@ public class CheckOutTicket extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         String ReservationId = newReservationRef.getId();
 
-
                         // Create a map to hold the updated data
                         Map<String, Object> updateData = new HashMap<>();
                         updateData.put("ReservedTickets", receivedEvent.getReservedTickets());

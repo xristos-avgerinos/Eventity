@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity  {
     CollectionReference users;
     FirebaseFirestore db;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
@@ -85,8 +84,6 @@ public class MainActivity extends AppCompatActivity  {
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_tickets, R.id.nav_settings,R.id.nav_bot)
                 .setOpenableLayout(drawer)
@@ -95,15 +92,11 @@ public class MainActivity extends AppCompatActivity  {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //For logout button
+        //Απο εδώ κάνουμε την ανακατεύθυνση στα items του navigation drawer
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.nav_home:
                     navController.navigate(R.id.nav_home);
-               /*     Intent intent = getIntent();
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
-                    startActivity(intent);
-                    finish(); // Close the current activity*/
                     break;
                 case R.id.nav_tickets:
                     navController.navigate(R.id.nav_tickets);
@@ -119,14 +112,16 @@ public class MainActivity extends AppCompatActivity  {
                     break;
             }
 
-            // Close the navigation drawer after item selection
+            // Κλείσιμο του navigation drawer μετά την επιλογή στοιχείου
             drawer.closeDrawer(GravityCompat.START);
 
             return true;
         });
 
-        Intent intent = getIntent();
 
+        //Αν κάποιο activity έχει δώσει εντολή να ανοίξουμε το tickets fragment τοτε ανακατευθύνουμε στο MainActivity
+        // δηλαδή το συγκεκριμένο καθώς ειναι το κυριο activity που ρυθμίζει και τα navigations στα nav drawer items.
+        Intent intent = getIntent();
         boolean openTicketsFragment = false;
         if (intent != null) {
             openTicketsFragment = intent.getBooleanExtra("OpenTicketsFragment",false);
@@ -135,21 +130,16 @@ public class MainActivity extends AppCompatActivity  {
             navController.navigate(R.id.nav_tickets);
         }
 
-        // Change the subtitle of the nav_header_main
+        // Αλλάζουμε το title του nav_header_main
         TextView textViewHeaderTitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderTitle);
         textViewHeaderTitle.setText(mAuth.getCurrentUser().getDisplayName());
-        // Change the subtitle of the nav_header_main
+        // Αλλάζουμε το subtitle του nav_header_main
         TextView textViewHeaderSubtitle = navigationView.getHeaderView(0).findViewById(R.id.textViewHeaderSubtitle);
         textViewHeaderSubtitle.setText(mAuth.getCurrentUser().getEmail());
-
-
-
-
     }
 
 
     private void setStatusBarCustomColor(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(getResources().getColor(R.color.statusBarColor));

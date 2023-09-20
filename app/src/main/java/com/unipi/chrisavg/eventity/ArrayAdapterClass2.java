@@ -60,7 +60,7 @@ public class ArrayAdapterClass2 extends android.widget.ArrayAdapter<String> {
 
         Glide.with(getContext())
                 .load(rImgs.get(position))
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(myImage);
         myTitle.setText(rTitles.get(position));
         myDate.setText(rDates.get(position));

@@ -43,7 +43,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // getSupportActionBar().hide(); //hide the title bar
+        // getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);
@@ -74,8 +73,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(ForgotPasswordActivity.this, getString(R.string.reset_password), Toast.LENGTH_SHORT).show();
-                        //Intent intent = new Intent(ForgotPasswordActivity.this,LoginActivity.class);
-                        //intent.putExtra("Email", email.getText().toString());
                         finish(); //κατευθειαν τερματιζουμε το συγκεκριμενο activity και μας στελνει αυτοματα πισω στην login
 
                     }else{

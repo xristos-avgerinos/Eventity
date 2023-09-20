@@ -2,6 +2,7 @@ package com.unipi.chrisavg.eventity;
 
 
 public class Organizer {
+
     private String AFM;
     private String age;
     private String firstname;

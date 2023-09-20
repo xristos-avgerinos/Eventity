@@ -45,20 +45,22 @@ public class EventsTabbedActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_events_tabbed);
 
         searchView = findViewById(R.id.search_view);
-        // Find the close (X) button
+        // Βρισκουμε το κουμπί κλεισίματος (X)
         ImageView closeButton = searchView.findViewById(androidx.appcompat.R.id.search_close_btn);
         if (closeButton != null) {
-            closeButton.setColorFilter(R.color.SearchViewColors); // Set the color of the close icon to black
+            closeButton.setColorFilter(R.color.SearchViewColors); // Ορίζουμε το χρώμα του εικονιδίου κλεισίματος σε μαύρο
         }
 
-        // Find the search (magnifier) icon
+        // Βρισκουμε το εικονίδιο αναζήτησης (magnifier)
         ImageView searchButton = searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
         if (searchButton != null) {
-            searchButton.setColorFilter(R.color.SearchViewColors); // Set the color of the search icon to black
+            searchButton.setColorFilter(R.color.SearchViewColors); // Ορίζουμε το χρώμα του εικονιδίου αναζητησης σε μαύρο
         }
-        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text); // Find the EditText inside the SearchView
 
-        int textColor = getResources().getColor(R.color.SearchViewColors); // Replace with the color you want
+        // Βρισκουμε το EditText μέσα στο SearchView
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+
+        int textColor = getResources().getColor(R.color.SearchViewColors);
         searchEditText.setTextColor(textColor);
         searchEditText.setHintTextColor(textColor);
 
@@ -110,7 +112,7 @@ public class EventsTabbedActivity extends AppCompatActivity  {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                // Create a Bundle to hold the location information
+                // Δημιουργια ένος Bundle για να αποθηκεύσουμε τις πληροφορίες τοποθεσίας
                 Bundle args = new Bundle();
                 args.putDouble("latitude", latitude);
                 args.putDouble("longitude", longitude);

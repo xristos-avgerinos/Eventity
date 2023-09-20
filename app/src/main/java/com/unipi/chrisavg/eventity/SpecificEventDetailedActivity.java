@@ -92,8 +92,6 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_specific_event_detailed);
 
-
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Organizers = db.collection("Organizers");
@@ -102,7 +100,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // getSupportActionBar().hide(); //hide the title bar
+        // getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,6 +131,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         loadingLayout = findViewById(R.id.loading_layout);
 
+        //Παιρνουμε τον organizer του event και περναμε τα στοιχεια του στα textView
         Organizers.document(receivedEvent.getOrganizerId())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -148,25 +147,26 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         Glide.with(SpecificEventDetailedActivity.this)
                 .load(receivedEvent.getPhotoURL())
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        // Set the drawable as the background of the CollapsingToolbarLayout
+                        // Ορίζουμε το drawable ως φόντο του imageView
                         imageView.setImageDrawable(resource);
                     }
 
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
-                        // Called when the resource is cleared from the ImageView
-                        // You can handle this case if needed
+                        // Καλείται όταν το resource καθαρίζεται από το ImageView
+                        // Μπορείτε να χειριστείτε αυτή την περίπτωση αν χρειάζεται
                     }
                 });
 
 
         Title.setText(receivedEvent.getTitle());
 
-        int index = receivedEvent.getDateToCustomFormat().indexOf('•'); // Find the index of the • character
+        // Βρισκουμε τη θεση του χαρακτήρα '•' ωστε να διαχωρισουμε το date και το time
+        int index = receivedEvent.getDateToCustomFormat().indexOf('•');
 
         Date.setText(receivedEvent.getDateToCustomFormat().substring(0, index).trim());
         Time.setText(receivedEvent.getDateToCustomFormat().substring(index+1).trim());
@@ -200,7 +200,6 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         for (String relatedType : receivedEvent.getTypes()) {
             ToggleButton toggleButton = new ToggleButton(this);
-            // Set layout parameters
             GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
             layoutParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
             layoutParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
@@ -208,7 +207,6 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
             int marginInPixels = getResources().getDimensionPixelSize(R.dimen.toggle_button_margin);
             layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);
             toggleButton.setLayoutParams(layoutParams);
-            // Set padding
             int paddingRight = getResources().getDimensionPixelSize(R.dimen.toggle_button_padding_right);
             int paddingLeft = getResources().getDimensionPixelSize(R.dimen.toggle_button_padding_left);
             toggleButton.setPadding(paddingLeft, 0, paddingRight, 0);
@@ -216,24 +214,19 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
             toggleButton.setTextOff(relatedType);
             toggleButton.setTextOn(relatedType);
             toggleButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            // Set text size
             float textSize = getResources().getDimension(R.dimen.toggle_button_text_size);
             toggleButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-            // Set typeface
             Typeface typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL);
             toggleButton.setTypeface(typeface);
-            // Set clickable
             toggleButton.setClickable(false);
             toggleButton.setTextColor(getResources().getColor(R.color.toggle_buttons_color));
-            //set background
             toggleButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_button_background));
-            // Set textAllCaps to false
             toggleButton.setAllCaps(false);
 
             gridLayout.addView(toggleButton);
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Αποκταμε το SupportMapFragment και θα ειδοποιηθουμε όταν ο χάρτης είναι έτοιμος να χρησιμοποιηθεί(OnMapReady).
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -302,7 +295,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Δινουμε εστιαση στο marker του map που βρισκεται το event
         LatLng eventLocation = new LatLng(latitude, longitude);
 
         Marker eventMarker = mMap.addMarker(new MarkerOptions().position(eventLocation).title(receivedEvent.getTitle()));
@@ -310,9 +303,6 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
     }
 
-    public void shareEvent(View view) {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -336,7 +326,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
                         "Event details: https://eventity.com/event/123";
                 shareIntent.putExtra(Intent.EXTRA_TEXT, eventDetails);
 
-                // Start the Android's built-in sharing activity
+                // Ξεκιναμε την ενσωματωμένη δραστηριότητα share του Android
                 startActivity(Intent.createChooser(shareIntent, "Share Event"));
                 break;
 

@@ -61,7 +61,7 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
 
         Glide.with(getContext())
                 .load(rImgs.get(position))
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(myImage);
         myTitle.setText(rTitles.get(position));
         myDate.setText(rDates.get(position));
@@ -70,7 +70,7 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
         return row;
     }
 
-    //filter for search-view(search by title)
+    //φίλταρισμα που θα γινει στο listView με βαση το query στο searchView (αναζήτηση με βάση τον τίτλο)
     public List<Event> filter(List<Event> eventsList,String charText){
 
         List<Event> tempEventsList = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
         return tempEventsList;
     }
 
-    //filter for search-view(search by title)
+    //φίλταρισμα που θα γινει στο listView με βαση το επιλεγμενο toggle button (αναζήτηση με βάση τον τυπο)
     public List<Event> toggleButtonsContainerFilter (List<Event> eventsList,List<String> selectedTypes){
         List<Event> tempEventsList = new ArrayList<>();
 

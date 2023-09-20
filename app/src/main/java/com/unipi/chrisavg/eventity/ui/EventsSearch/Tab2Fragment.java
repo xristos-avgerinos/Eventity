@@ -70,8 +70,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     FirebaseFirestore db;
 
     static List<Event> eventsList = new ArrayList<>();
-    static List<Event> searchViewTempEventsList = new ArrayList<>();
-    static List<Event> ToggleButtonsTempEventsList = new ArrayList<>();
+    static List<Event> searchViewTempEventsList = new ArrayList<>(); //λιστα που κραταει τα καθε φορα events που μενουν μετα το filtering μεσω searchView
+    static List<Event> ToggleButtonsTempEventsList = new ArrayList<>(); //λιστα που κραταει τα καθε φορα events που μενουν μετα το filtering μεσω toggleButtons
 
     private ListenerRegistration listenerRegistration;
 
@@ -96,9 +96,9 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-          view = inflater.inflate(R.layout.fragment_tab2, container, false);
+        view = inflater.inflate(R.layout.fragment_tab2, container, false);
 
-        // Retrieve bundle arguments - locationForSearch
+        // Ανάκτηση των bundle arguments - locationForSearch
         Bundle args = getArguments();
         double latitude = 0;
         double longitude = 0;
@@ -111,9 +111,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         locationForSearch.setLatitude(latitude);
         locationForSearch.setLongitude(longitude);
 
-        //37.966284,23.4952437
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        // Αποκταμε το SupportMapFragment και θα ειδοποιηθουμε όταν ο χάρτης είναι έτοιμος να χρησιμοποιηθεί(OnMapReady).
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -121,12 +120,9 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
 
-
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         events = db.collection("Events");
-
 
         imageViewDetailed = view.findViewById(R.id.image);
         titleTextViewDetailed = view.findViewById(R.id.title);
@@ -150,6 +146,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
      */
 
     public static void searchViewFilteringTab2(String filter){
+        //Η μέθοδος που κανει το filtering με βαση το τι πληκτρολογει ο χρηστης στο searchview για το tab2
 
         if (RL_detailed_window.getVisibility()==View.VISIBLE){
             RL_detailed_window.setVisibility(View.GONE);
@@ -158,8 +155,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
 
         searchViewTempEventsList.clear();
-        clusterManager.clearItems(); // Clear the cluster items from the data set
-        clusterManager.cluster(); // Recalculate and render the clusters
+        clusterManager.clearItems(); // Διαγραφή των cluster items από το σύνολο δεδομένων
+        clusterManager.cluster(); // Επαναϋπολογισμός και απόδοση των clusters
 
         if (TextUtils.isEmpty(filter)){
             ShowEventsOnMap(eventsList);
@@ -184,6 +181,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     }
 
     public static void toggleButtonsContainerFilteringTab2(List<String> selectedTypes){
+        //Η μέθοδος που κανει το filtering με βαση το τι επιλεγει ο χρηστης απο τα toggle buttons για το tab2
 
         if (RL_detailed_window.getVisibility()==View.VISIBLE){
             RL_detailed_window.setVisibility(View.GONE);
@@ -192,8 +190,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
 
         ToggleButtonsTempEventsList.clear();
-        clusterManager.clearItems(); // Clear the cluster items from the data set
-        clusterManager.cluster(); // Recalculate and render the clusters
+        clusterManager.clearItems(); // Διαγραφή των cluster items από το σύνολο δεδομένων
+        clusterManager.cluster(); // Επαναϋπολογισμός και απόδοση των clusters
 
         if (selectedTypes.size()==0){
             ShowEventsOnMap(eventsList);
@@ -234,7 +232,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
                 if (RL_detailed_window.getVisibility()==View.VISIBLE){
-                    RL_detailed_window.setVisibility(View.GONE);
+                    RL_detailed_window.setVisibility(View.GONE); //εμφανιζουμε το παραθυρακι του event
                     mMap.getUiSettings().setZoomControlsEnabled(true);
                 }
 
@@ -244,10 +242,11 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         RL_detailed_window.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Παιρνουμε το event με το eventKey που πατηθηκε και ανοιγουμε το SpecificEventDetailedActivity στελνοντας το συγκεκριμενο event
                 Event targetEvent = eventsList.stream()
                         .filter(event -> event.getKey().equals(selectedEventItemKey))
-                        .findFirst()  // Returns an Optional containing the first matching element, or empty if none is found
-                        .orElse(null); // If no matching event is found, return null
+                        .findFirst()
+                        .orElse(null);
 
                 Intent intent = new Intent(getContext(), SpecificEventDetailedActivity.class);
                 intent.putExtra("event", targetEvent);
@@ -256,12 +255,12 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         });
 
 
-        // Enable my location button and show my location
+        // Ενεργοποίηση του κουμπιού "Η τοποθεσία μου" και εμφάνιση της τοποθεσίας μου αν εχω τα permissions
         if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
         } else {
-            // Request permission to access the user's location
+            // Διαφορετικά αίτηση άδειας πρόσβασης στην τοποθεσία του χρήστη(request permissions)
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, locationRequestCode);
         }
 
@@ -276,15 +275,14 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
             }
         });
 
-        //mMap.setMyLocationEnabled(true);
-       //mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
         clusterManager = new ClusterManager<MyClusterItem>(getContext(), mMap);
 
+        //για το clustering των markers στο map
         ClusterItemRenderer clusterItemRenderer = new ClusterItemRenderer();
         clusterManager.setRenderer(clusterItemRenderer);
+
         //mMap.setOnCameraChangeListener((GoogleMap.OnCameraChangeListener) clusterManager);
         mMap.setOnCameraIdleListener(clusterManager);
         mMap.setOnMarkerClickListener(clusterManager);
@@ -294,7 +292,6 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         clusterManager.setOnClusterItemClickListener(this);
 
 
-        // Fetch user from the Users collection
         List<String> currentUserPreferences = new ArrayList<>();
         db.collection("Users")
                 .document(auth.getUid()) // Replace with the actual user document ID
@@ -305,8 +302,8 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
                         if(documentSnapshot.exists()){
                             user = documentSnapshot.toObject(User.class);
 
-                            // Start listening for real-time updates
-                            // Fetch events and sort them based on user preferences
+                            // Αρχίζουμε να ακούμε ενημερώσεις σε πραγματικό χρόνο
+                            // Λήψη events και ταξινόμησή τους με βάση τις προτιμήσεις του χρήστη
                             listenerRegistration = events
                                     .addSnapshotListener((querySnapshot, error) -> {
                                         if (error != null) {
@@ -314,17 +311,14 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
                                             return;
                                         }
 
-                                        // Clear the previous data in the list
                                         eventsList.clear();
-                                        clusterManager.clearItems(); // Clear the cluster items from the data set
-                                        clusterManager.cluster(); // Recalculate and render the clusters
+                                        clusterManager.clearItems();
+                                        clusterManager.cluster();
 
-                                        // Loop through each document in the query result
                                         for (DocumentSnapshot document : querySnapshot) {
                                             Event event = document.toObject(Event.class);
                                             event.setKey(document.getId());
 
-                                            // Get the current datetime
                                             Date currentDatetime = Calendar.getInstance().getTime();
 
                                             Location eventLocation = new Location("");
@@ -333,15 +327,13 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
                                             int location_distance = (int) eventLocation.distanceTo(locationForSearch);
 
-                                            // Check date after current date and location close to locationForSearch until 50000 km
+                                            // Ελέγχουμε την ημερομηνία να είναι μετά την τρέχουσα ημερομηνία και την τοποθεσία κοντά στο locationForSearch μέχρι 50000 χλμ
                                             if (event.getDate() != null && event.getDate().toDate().after(currentDatetime) && location_distance<=LOCATION_RANGE) {
-
                                                 eventsList.add(event);
                                             }
                                         }
 
-                                        // Here, "userList" contains the updated data with real-time changes
-                                        // You can now use the "userList" in your app
+                                        // Εδώ, η "eventsList" περιέχει τα ενημερωμένα δεδομένα με αλλαγές σε πραγματικό χρόνο.
                                         ShowEventsOnMap(eventsList);
                                         clusterManager.cluster();
 
@@ -356,15 +348,14 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     public static void ShowEventsOnMap(List<Event> eventsList){
 
         for (Event event:eventsList) {
-            // Adding cluster items
+            // προσθετουμε αντικειμενα cluster
             LatLng latLng = new LatLng(event.getGeopoint().getLatitude(), event.getGeopoint().getLongitude());
             MyClusterItem clusterItem = new MyClusterItem(latLng, event.getTitle(), event.getDateToCustomFormat(),event);
             clusterManager.addItem(clusterItem);
-
         }
 
         if (eventsList.size() != 0)
-            zoomToCenterOfClusterItems();
+            zoomToCenterOfClusterItems(); //αν υπαρχουν events στο map τοτε οταν εκκινειται το map κανω zoom στο κεντρο απο ολα τα event ωστε να εχει μια σφαιρικη οψη προς ολα τα events
 
     }
 
@@ -404,7 +395,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
         Collection<MyClusterItem> clusterItems = cluster.getItems();
 
-        // Calculate the center of all cluster items
+        // Υπολογίζουμε το κέντρο όλων των cluster items απο το cluster που πατησε ωστε να μεταφερω τη καμερα πανω απο το κεντρο αυτων
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (MyClusterItem clusterItem : clusterItems) {
             builder.include(clusterItem.getPosition());
@@ -412,20 +403,20 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         LatLngBounds bounds = builder.build();
         LatLng center = bounds.getCenter();
 
-        // Move the camera to the calculated center with a specific zoom level
+        // Μετακίνηση της κάμερας στο υπολογισμένο κέντρο με ένα συγκεκριμένο επίπεδο ζουμ(12)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 12.0f));
         return true;
     }
 
     public static void zoomToCenterOfClusterItems(){
-        // Get all cluster items from the algorithm
+        // Λήψη όλων των cluster items (απο ολα τα clusters) από τον αλγόριθμο
         Algorithm<MyClusterItem> algorithm = clusterManager.getAlgorithm();
         Collection<MyClusterItem> clusterItemsCollection = algorithm.getItems();
 
-        // Convert the collection to a list
+        // Μετατροπή της συλλογής σε λίστα
         List<MyClusterItem> clusterItems = new ArrayList<>(clusterItemsCollection);
 
-        // Calculate the center of all cluster items
+        // Υπολογίζουμε το κέντρο όλων των cluster items
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (MyClusterItem clusterItem : clusterItems) {
             builder.include(clusterItem.getPosition());
@@ -433,7 +424,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         LatLngBounds bounds = builder.build();
         LatLng center = bounds.getCenter();
 
-        // Move the camera to the calculated center with a specific zoom level
+        // Μετακίνηση της κάμερας στο υπολογισμένο κέντρο με ένα συγκεκριμένο επίπεδο ζουμ(9)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 9.0f));
     }
 
@@ -441,7 +432,7 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
     public boolean onClusterItemClick(MyClusterItem item) {
         Glide.with(getContext())
                 .load(item.getEvent().getPhotoURL())
-                .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
+                .diskCacheStrategy(DiskCacheStrategy.ALL) // Κρυφή μνήμη(cache) της εικόνας για καλύτερη απόδοση
                 .into(imageViewDetailed);
 
         titleTextViewDetailed.setText(item.getTitle());
@@ -450,14 +441,13 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
         selectedEventItemKey = item.getEvent().getKey();
 
-        // To show the detailed window
+        // Εμφανιζουμε το detailed window για το event
         RL_detailed_window.setVisibility(View.VISIBLE);
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
-        // Create a CameraUpdate
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(item.getPosition(),14.0f);
 
-        // Move the camera with animation
+        // Μετακίνηση της κάμερας με animation
         mMap.animateCamera(cameraUpdate, 1500, null);
 
         return true;

@@ -73,8 +73,10 @@ public class TicketsFragment extends Fragment {
 
     static List<Event> eventsList = new ArrayList<>();
 
-    // Create a list to store the reservations
+    // Δημιουργούμε μια λίστα για να αποθηκεύσουμε τις κρατήσεις
     List<Reservation> reservationList = new ArrayList<>();
+
+    // Λιστα που κραταμε τα ids των reservations
     List<String> reservationListIds = new ArrayList<>();
 
     List<Reservation> reservationListClone = new ArrayList<>();
@@ -97,12 +99,12 @@ public class TicketsFragment extends Fragment {
 
         linearLayoutPb.setVisibility(View.VISIBLE);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         events = db.collection("Events");
         reservations = db.collection("Reservations");
 
+        // Παιρνω τις κρατησεις που το userId τους ειναι αυτο του χρήστη που είναι συνδεμένος
         reservations.whereEqualTo("userId", auth.getUid()).get()
                 .addOnCompleteListener(task -> {
 
@@ -121,13 +123,11 @@ public class TicketsFragment extends Fragment {
                         if (querySnapshot != null) {
                             for (QueryDocumentSnapshot documentSnapshot : querySnapshot) {
                                 Reservation reservation = documentSnapshot.toObject(Reservation.class);
-                                // Add the reservation to the list
+                                // Προσθήκη της κράτησης στη λίστα
                                 reservationList.add(reservation);
                                 reservationListIds.add(documentSnapshot.getId());
                             }
 
-                            // Now you have all reservations with userId="" in the reservationList
-                            // You can process them as needed
                             events.get().addOnCompleteListener(task2 -> {
                                 if(task2.isSuccessful()){
                                     QuerySnapshot querySnapshot2 = task2.getResult();
@@ -139,11 +139,11 @@ public class TicketsFragment extends Fragment {
                                             if (reservationList.stream()
                                                     .anyMatch(reservation -> reservation.getEventId().equals(event.getKey()))){
 
-                                                // Get the current datetime
                                                 Date currentDatetime = Calendar.getInstance().getTime();
 
-                                                // Check date after current date
+                                                // Ημερομηνία ελέγχου μετά την τρέχουσα ημερομηνία
                                                 if (event.getDate() != null && event.getDate().toDate().after(currentDatetime)) {
+                                                    //Παίρνω τα events που ταυτίζονται με τα eventIds των κρατήσεων ωστε να τα εμφανισω στο listView
                                                     eventsList.add(event);
                                                 }
                                             }
@@ -188,7 +188,7 @@ public class TicketsFragment extends Fragment {
 
     public void ShowClassifiedEventsInListView(){
 
-        // Sort events based on date in descending order
+        // Ταξινόμηση των events με βάση την ημερομηνία σε φθίνουσα σειρά
         Collections.sort(eventsList, new Comparator<Event>() {
             @Override
             public int compare(Event event1, Event event2) {
@@ -206,11 +206,13 @@ public class TicketsFragment extends Fragment {
             ListViewItemsLocations.add(event.getLocation());
             ListViewItemsImages.add(event.getPhotoURL());
 
+            // Παιρνω τη θεση του eventId στο λιστα με τα reservations
             int ReservationListPositionOfEventId = IntStream.range(0, reservationList.size())
                     .filter(i -> event.getKey().equals(reservationList.get(i).getEventId()))
                     .findFirst()
                     .orElse(-1);
 
+            //Φτιαχνω βοηθητικη λιστα με τα ταξινομημενα reservations
             reservationListClone.add(reservationList.get(ReservationListPositionOfEventId));
             reservationListIdsClone.add((reservationListIds.get(ReservationListPositionOfEventId)));
         }

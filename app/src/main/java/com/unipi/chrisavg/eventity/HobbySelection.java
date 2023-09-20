@@ -51,7 +51,6 @@ public class HobbySelection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobby_selection);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
@@ -74,7 +73,6 @@ public class HobbySelection extends AppCompatActivity {
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);
@@ -110,11 +108,12 @@ public class HobbySelection extends AppCompatActivity {
             }
         }
 
+        // Πρέπει να έχει επιλέξει 3 τουλάχιστον προτιμήσεις απο κάθε GridLayout(κατηγορία)
         if(selectedCountMusic<3 || selectedCountVibe<3 ){
             DisplaySnackbar(view,"You have to select at least 3 interests from each category");
         }else{
 
-            //αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
+            //Αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
             List<String> preferencesList = new ArrayList<>();
             preferencesList.addAll(selectedMusicGridList);
             preferencesList.addAll(selectedVibeGridList);
@@ -124,7 +123,7 @@ public class HobbySelection extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
                         User user = documentSnapshot.toObject(User.class);
-                        //ενημερωνουμε την λιστα με τις προτιμησεις του χρηστη στη βαση με την λιστα που περιεχει ολες τις επιλογες και απο τις δυο κατηγοριες
+                        //Ενημερωνουμε την λιστα με τις προτιμησεις του χρηστη στη βαση με την λιστα που περιεχει ολες τις επιλογες και απο τις δυο κατηγοριες
                         user.setPreferences(preferencesList);
 
                         users.document(auth.getUid())
@@ -133,7 +132,7 @@ public class HobbySelection extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved!", Toast.LENGTH_SHORT).show();
-                                        //ενημερωνουμε τα SharedPreferences οτι ο χρηστης εχει επιλεξει τιε προτιμησεις του
+                                        // Ενημερωνουμε τα SharedPreferences οτι ο χρηστης εχει επιλεξει τις προτιμησεις του
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
                                         Intent intent = new Intent(HobbySelection.this,MainActivity.class);
                                         startActivity(intent);

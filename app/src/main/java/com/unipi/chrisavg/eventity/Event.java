@@ -53,7 +53,7 @@ public class Event implements Parcelable {
         OrganizerId = in.readString();
         PhotoURL = in.readString();
         Types = in.createStringArrayList();
-        // Read the GeoPoint properties from the Parcel and reconstruct the GeoPoint object
+        // Διαβάστε τις ιδιότητες του GeoPoint(lat,long) από το Parcel και ανακατασκευάζουμε το αντικείμενο GeoPoint
         double latitude = in.readDouble();
         double longitude = in.readDouble();
         Geopoint = new GeoPoint(latitude, longitude);
@@ -172,29 +172,28 @@ public class Event implements Parcelable {
     }
 
     public String getDateToCustomFormat() {
-        // Create a Date object from the Timestamp
+        // Δημιουργία ενός αντικειμένου Date από το Timestamp
         Date date = this.Date.toDate();
 
-        // Create a Calendar instance to extract components
+        // Δημιουργια ενος αντικειμενου calendar για να εξαγάγουμε τα στοιχεία
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
-        // Define day of week and month names for both Greek and English
+        // Ορίζουμε τα ονόματα της ημέρας της εβδομάδας και του μήνα τόσο για τα ελληνικά όσο και για τα αγγλικά
         String[] dayOfWeekNamesGreek = {"Κυριακή", "Δευτέρα", "Τρίτη", "Τετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο"};
         String[] monthNamesGreek = {"Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαι", "Ιουν", "Ιουλ", "Αυγ", "Σεπτ", "Οκτ", "Νοεμ", "Δεκ"};
 
         String[] dayOfWeekNamesEnglish = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         String[] monthNamesEnglish = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
-        // Extract components from Calendar
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // Adjust for 0-based indexing
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; // Προσαρμογη για 0-based indexing
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int year = calendar.get(Calendar.YEAR);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        // Get the current locale
+        // Λήψη της τρέχουσας τοπικής γλώσσας ωστε να ξερουμε αν θα εμφανισουμε τα στοιχεια του calendar σε ελληνικα η αγγλικα
         Locale currentLocale = Locale.getDefault();
         String[] dayOfWeekNames = (currentLocale.getLanguage().equals("el")) ? dayOfWeekNamesGreek : dayOfWeekNamesEnglish;
         String[] monthNames = (currentLocale.getLanguage().equals("el")) ? monthNamesGreek : monthNamesEnglish;
@@ -219,7 +218,7 @@ public class Event implements Parcelable {
         dest.writeString(OrganizerId);
         dest.writeString(PhotoURL);
         dest.writeStringList(Types);
-        // Write the GeoPoint properties to the Parcel
+        // Γράφουμε τις ιδιότητες GeoPoint στο Parcel
         dest.writeDouble(Geopoint.getLatitude());
         dest.writeDouble(Geopoint.getLongitude());
         dest.writeInt(Capacity);

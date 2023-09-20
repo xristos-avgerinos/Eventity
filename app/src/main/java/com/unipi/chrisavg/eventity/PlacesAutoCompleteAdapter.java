@@ -24,12 +24,14 @@ import java.util.Locale;
 
 public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCompleteAdapter.PlaceViewHolder> {
 
-    private List<AutocompletePrediction> predictions = new ArrayList<>(); //Η λιστα που θα κραταει ολες τις καθε φορα προβλεψεις αναλογα με τι πληκτρολογησε ο χρηστης στο searchView
+    //Η λιστα που θα κραταει ολες τις καθε φορα προβλεψεις αναλογα με τι πληκτρολογησε ο χρηστης στο searchView
+    private List<AutocompletePrediction> predictions = new ArrayList<>();
+
     private OnPlaceItemClickListener itemClickListener;
     boolean itemSelected = false; //ωστε να ξερουμε αν εχει γινει η τελικη επιλογη περιοχης
 
 
-    // Constructor to receive the context
+    // Constructor για τη λήψη του context
     public PlacesAutoCompleteAdapter(OnPlaceItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
@@ -39,7 +41,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
     }
     public void clearPredictions() {
         if (predictions != null) {
-            predictions = new ArrayList<>(); // Create a new instance of the list
+            predictions = new ArrayList<>();
             notifyDataSetChanged();
         }
     }
@@ -83,7 +85,7 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         void bind(AutocompletePrediction prediction) {
             textView.setText(prediction.getFullText(null));
             itemView.setOnClickListener(v -> {
-                // Perform further operations based on the selected place
+
                 if (itemClickListener != null) {
                     itemClickListener.onPlaceItemClick(prediction); //καλω τη μεθοδο του interface ωστε να μεταφερουμε το prediction στο mainActivity
                     clearPredictions();

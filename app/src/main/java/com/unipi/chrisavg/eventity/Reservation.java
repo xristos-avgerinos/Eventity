@@ -1,6 +1,7 @@
 package com.unipi.chrisavg.eventity;
 
 public class Reservation {
+
     private String EventId;
     private String UserId;
     private String TicketPersonFirstName;

@@ -60,7 +60,7 @@ public class UserTicket extends AppCompatActivity {
     final Reservation[] reservation = {null};
     String sendingActivity;
 
-    private View loadingLayout; // Reference to the loading layout
+    private View loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class UserTicket extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        // getSupportActionBar().hide(); //hide the title bar
+        // getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,6 @@ public class UserTicket extends AppCompatActivity {
 
         setStatusBarCustomColor(this);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Reservations = db.collection("Reservations");
@@ -116,8 +115,8 @@ public class UserTicket extends AppCompatActivity {
                     ImageView TicketQRCode = findViewById(R.id.TicketQRCode);
                     Glide.with(getApplicationContext())
                             .load(reservation[0].getTicketQRCodeURL())
-                            .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image for better performance
-                            .into(TicketQRCode);
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(TicketQRCode); //περναμε στο imageView με το qrCode ticket το qrCode που παιρνουμε απο το reservation
 
                     purchaserName.setText(reservation[0].getTicketPersonFirstName() + " " + reservation[0].getTicketPersonLastName());
 
@@ -129,24 +128,24 @@ public class UserTicket extends AppCompatActivity {
                                     if(documentSnapshot2.exists()){
                                         event = documentSnapshot2.toObject(Event.class);
 
-                                        // Use RequestOptions to set options for Glide (optional)
+                                        // Χρησιμοποιουμε το RequestOptions για να ορίσουμε επιλογές για το Glide (προαιρετικά)
                                         RequestOptions requestOptions = new RequestOptions()
-                                                .diskCacheStrategy(DiskCacheStrategy.ALL); // Cache the image for better performance
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-                                        Glide.with(getApplicationContext()) // Use the appropriate context (e.g., this for an Activity)
+                                        Glide.with(getApplicationContext())
                                                 .load(event.getPhotoURL())
-                                                .apply(requestOptions) // Apply RequestOptions (optional)
+                                                .apply(requestOptions)
                                                 .into(new CustomTarget<Drawable>() {
                                                     @Override
                                                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                                        // Set the loaded image as the background of the RelativeLayout
+                                                        // Ορίζουμε τη φορτωμένη εικόνα του event ως φόντο του RelativeLayout
                                                         Scroll.setBackground(resource);
 
                                                     }
 
                                                     @Override
                                                     public void onLoadCleared(@Nullable Drawable placeholder) {
-                                                        // Handle the case where the image loading is cleared
+                                                        // Χειρισμός της περίπτωσης όπου η φόρτωση της εικόνας εκκαθαρίζεται
                                                     }
                                                 });
 
@@ -154,7 +153,7 @@ public class UserTicket extends AppCompatActivity {
                                         String paddedSeat = String.format("%0"+String.valueOf(event.getCapacity()).length()+"d", reservation[0].getSeat());
                                         seat.setText( paddedSeat);
                                         eventName.setText(event.getTitle());
-                                        int index = event.getDateToCustomFormat().indexOf('•'); // Find the index of the • character
+                                        int index = event.getDateToCustomFormat().indexOf('•'); // Βρισκουμε τη θεση του χαρακτήρα '•'
                                         eventDate.setText(event.getDateToCustomFormat().substring(0, index).trim());
                                         eventTime.setText(eventTime.getText() + event.getDateToCustomFormat().substring(index+1).trim());
                                         eventLocation.setText(event.getLocation());
@@ -182,21 +181,21 @@ public class UserTicket extends AppCompatActivity {
                                         map.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                // Specify the latitude and longitude of the location
-                                                double latitude = event.getGeopoint().getLatitude(); // Replace with the latitude of your location
-                                                double longitude = event.getGeopoint().getLongitude(); // Replace with the longitude of your location
+                                                // Καθορίζουμε το γεωγραφικό πλάτος και μήκος της τοποθεσίας
+                                                double latitude = event.getGeopoint().getLatitude();
+                                                double longitude = event.getGeopoint().getLongitude();
 
-                                                // Create an intent to open the map with directions to the specified coordinates
+                                                // Δημιουργουμε ενα intent για να ανοίξει ο χάρτης με οδηγίες προς τις καθορισμένες συντεταγμένες
                                                 Uri gmmIntentUri = Uri.parse("geo:" + latitude + "," + longitude);
                                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                                mapIntent.setPackage("com.google.android.apps.maps"); // This ensures it opens in the Google Maps app if available
+                                                mapIntent.setPackage("com.google.android.apps.maps"); // Αυτό διασφαλίζει ότι ανοίγει στην εφαρμογή Χάρτες Google, εάν είναι διαθέσιμη
 
-                                                // Check if there's a map application available on the device
+                                                // Ελέγχουμε αν υπάρχει διαθέσιμη εφαρμογή χάρτη στη συσκευή.
                                                 if (mapIntent.resolveActivity(getPackageManager()) != null) {
                                                     startActivity(mapIntent);
                                                 } else {
-                                                    // Handle the case where no map application is installed
-                                                    // You can display a message to the user or provide an alternative action
+                                                    // Χειρισμός της περίπτωσης όπου δεν έχει εγκατασταθεί καμία εφαρμογή χαρτών
+                                                    // Εμφανίζουμε ένα μήνυμα στο χρήστη
                                                     DisplaySnackbar(v,"Something went wrong!");
                                                 }
                                             }
@@ -215,7 +214,6 @@ public class UserTicket extends AppCompatActivity {
     }
 
     private void setStatusBarCustomColor(AppCompatActivity activity) {
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(getResources().getColor(R.color.statusBarColor));
@@ -237,29 +235,26 @@ public class UserTicket extends AppCompatActivity {
 
             case R.id.CancelOrder:
                 loadingLayout.setVisibility(View.VISIBLE);
-
-                // Delete the document
                 Reservations.document(receivedReservationId).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                // Document successfully deleted
+                                // Διαγραφή εγγράφου απο το reservations collection με επιτυχία
 
-                                //Lets reduce ReservedTickets of event by one
-
+                                //Μειώνοτμε τα ReservedTickets του event κατά ένα
                                 event.setReservedTickets(event.getReservedTickets()-1);
 
-                                // Create a map to hold the updated data
+                                // Δημιουργήστε ένος map για να κρατήσουμε τα ενημερωμένα δεδομένα
                                 Map<String, Object> updateData = new HashMap<>();
                                 updateData.put("ReservedTickets", event.getReservedTickets());
 
-                                // Update the document
+                                // Ενημέρωση του εγγράφου
                                 Events.document(reservation[0].getEventId()).update(updateData)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
 
-                                                //Lets delete the image from storage too
+                                                // Ας διαγράψουμε την εικόνα από το storage επίσης
                                                 FirebaseStorage storage = FirebaseStorage.getInstance();
                                                 StorageReference storageRef = storage.getReference();
                                                 String imagePath =   reservation[0].getEventId() + "-" + reservation[0].getUserId();
@@ -268,22 +263,26 @@ public class UserTicket extends AppCompatActivity {
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
-                                                                // Image successfully deleted
+                                                                // Η εικόνα διαγράφηκε επιτυχώς
                                                                 Toast.makeText(UserTicket.this, "Your order has been cancelled!", Toast.LENGTH_SHORT).show();
 
                                                                 if (sendingActivity.equals("TicketsFragment")) {
                                                                     Intent intent = new Intent(UserTicket.this,MainActivity.class);
                                                                     intent.putExtra("OpenTicketsFragment",true);
-                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear the back stack
+                                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Καθαρίστε την προς τα πίσω στοίβα
                                                                     startActivity(intent);
                                                                     finishAffinity();
                                                                 } else if(sendingActivity.equals("CheckOutActivity")) {
-                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
-                                                                    SpecificEventDetailedActivity.shouldReload=true; //so as to reload the reservedTickets of receivedEvent of SpecificEventDetailedActivity
+                                                                    //ενημερώνουμε το receivedEvent του SpecificEventDetailedActivity για τα δεσμευμένα εισιτήρια
+                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());
+                                                                    //έτσι ώστε να επαναφορτωθούν τα reservedTickets του receivedEvent του SpecificEventDetailedActivity
+                                                                    SpecificEventDetailedActivity.shouldReload=true;
                                                                     finish();
                                                                 }else if(sendingActivity.equals("SpecificEventDetailedActivity")){
-                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
-                                                                    SpecificEventDetailedActivity.shouldReload=true; //so as to reload the reservedTickets of receivedEvent of SpecificEventDetailedActivity
+                                                                    //ενημερώνουμε το receivedEvent του SpecificEventDetailedActivity για τα δεσμευμένα εισιτήρια
+                                                                    SpecificEventDetailedActivity.receivedEvent.setReservedTickets(event.getReservedTickets());
+                                                                    //έτσι ώστε να επαναφορτωθούν τα reservedTickets του receivedEvent του SpecificEventDetailedActivity
+                                                                    SpecificEventDetailedActivity.shouldReload=true;
                                                                     finish();
                                                                 }
                                                                 //loadingLayout.setVisibility(View.GONE);
@@ -293,7 +292,7 @@ public class UserTicket extends AppCompatActivity {
                                                         .addOnFailureListener(new OnFailureListener() {
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
-                                                                // Handle errors if the deletion fails
+                                                                // Χειρισμός σφαλμάτων σε περίπτωση αποτυχίας της διαγραφής
                                                                 Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                                                             }
                                                         });

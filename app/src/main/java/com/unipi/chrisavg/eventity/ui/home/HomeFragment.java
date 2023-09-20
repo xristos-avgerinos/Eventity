@@ -64,20 +64,18 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
 
     private FragmentHomeBinding binding;
 
-
     SlideToActView slideToActView;
 
     private SearchView searchView;
     private RecyclerView recyclerView;
     private PlacesAutoCompleteAdapter adapter;
-
     ProgressBar progressBar;
-    static final int locationRequestCode = 111;
-
     LocationManager locationManager;
     Location locationForSearch;
     String stringLocationForSearch;
+
     static final int LOCATION_SETTINGS_REQUEST = 1;
+    static final int locationRequestCode = 111;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -87,15 +85,19 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
         View root = binding.getRoot();
 
         slideToActView = root.findViewById(R.id.slider);
+        searchView = root.findViewById(R.id.searchView);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        progressBar = root.findViewById(R.id.progressBar);
+
         slideToActView.setOnSlideCompleteListener(this);
 
-        // Set an OnClickListener on the SlideToActView
+        // Ορισμός ενός OnClickListener στο SlideToActView
         slideToActView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(searchView.getQuery().toString().equals(stringLocationForSearch)){
-                    //αν αυτο που εχει επιλεχθει ειναι διο με αυτο που υπαρχει τωρα στα queryText τοτε το κελειδωνουμε για να προχωρησει
+                    //αν αυτο που εχει επιλεχθει ειναι ιδιο με αυτο που υπαρχει τωρα στα queryText τοτε το ξεκλειδωνουμε για να προχωρησει
                     slideToActView.setLocked(false);
                 }else{
                     // αν αυτο που επιλεχθηκε μεσω recyclerView η currentLocation
@@ -112,26 +114,23 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
             }
         });
 
-        searchView = root.findViewById(R.id.searchView);
-        recyclerView = root.findViewById(R.id.recyclerView);
-
-        // Initialize the Places API in order to find places' suggestions for the user
+        // Αρχικοποίηση του Places API για την εύρεση προτάσεων τοποθεσιών για τον χρήστη
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyDeymNueHgieMsY90ebBi90u5wV_Cgxpsg");
         }
 
         searchView.setQueryHint("Find events in...");
 
-        // Set up the RecyclerView with an adapter
+        // Ορίζουμε στο RecyclerView έναν adapter
         adapter = new PlacesAutoCompleteAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        // Implement the search functionality
+        // Εφαρμογή της λειτουργίας αναζήτησης
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Perform the search with the entered query
+                // Εκτελούμε την αναζήτηση με το εισαγόμενο query text
                 searchForPlaces(query);
                 return false;
             }
@@ -139,28 +138,34 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
-                    //when user clear the searchView in order to search a new place we restore the itemSelected
-                    // to false so as we can make new predictions
+                    // Οταν ο χρήστης καθαρίζει το searchView για να αναζητήσει ένα νέο μέρος, επαναφέρουμε το itemSelected σε false,
+                    // ώστε να μπορούμε να κάνουμε νέες προβλέψεις.
                     adapter.setItemSelected(false);
                     locationForSearch = new Location("");
                     stringLocationForSearch = null;
+
+                    // Κλειδώνουμε επίσης το slideToActView
                     slideToActView.setLocked(true);
 
+                    // Αναζητούμε με το κενό ώστε να καθαρίσει το RecyclerView
                     searchForPlaces(newText);
                 }
 
 
-                // Update the suggestions as the user types
-                //if user have selected an item from the suggestions we don't make other predictions
-                if ( !adapter.isItemSelected() && newText.length()>2) {
+                // Ενημέρωση των προτάσεων καθώς ο χρήστης πληκτρολογεί.
+                // Βέβαια αν ο χρήστης έχει επιλέξει ένα στοιχείο από τις προτάσεις δεν κάνουμε άλλες προβλέψεις.
+
+                if ( !adapter.isItemSelected() && newText.length()>2) { //Πρεπει επίσης το newText να έχει πανω απο δύο χαρακτήρες για να κάνουμε πρόβλεψη
                     searchForPlaces(newText);
                 }
                 return false;
             }
         });
 
-        progressBar = root.findViewById(R.id.progressBar);
+
         locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+        //Αν ο χρήστης πάει να πάρει τη τοποθεσία του για να συνεχίσει
         LinearLayout CurrentLocationButton = root.findViewById(R.id.CurrentLocationButton);
         CurrentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,12 +230,13 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
 
         });
         alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        // Set an OnCancelListener to detect if the user pressed "Cancel"
+
+        // Ορίζουμε ένα OnCancelListener για να ανιχνεύσουμε αν ο χρήστης πάτησε "Cancel"
         alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                // Handle the "Cancel" action here
-                // This block of code will be executed when the user presses the back button or touches outside the dialog.
+                // Χειριζόμαστε την ενέργεια "Ακύρωση" εδώ
+                // Αυτό το μπλοκ κώδικα θα εκτελεστεί όταν ο χρήστης πατήσει το κουμπί επιστροφής ή αγγίξει το σημείο εκτός του διαλόγου.
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -246,7 +252,8 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
         geocoder = new Geocoder(getContext(), Locale.getDefault());
 
         try {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            // Εδώ το 1 αντιπροσωπεύει το μέγιστο αποτέλεσμα θέσης που επιστρέφεται, από τα έγγραφα συνιστάται 1 έως 5.
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -254,14 +261,15 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
         String address;
         if (addresses.size()!=0){
             address = addresses.get(0).getAddressLine(0);
-            // Make itemSelected true so as to stop searching predictions
+
+            // Κάνουμε το itemSelected true ώστε να σταματήσει η αναζήτηση προβλέψεων
             adapter.setItemSelected(true);
-            searchView.setQuery(address, false);
-            locationForSearch = location;
+            searchView.setQuery(address, false); //αλλαζουμε το text του searchView με το string address που βρήκαμε
+            locationForSearch = location; //κρατάμε την τοποθεσία για να την μεταφέρουμε στό επόμενο activity
             stringLocationForSearch = address;
             slideToActView.setLocked(false);
             progressBar.setVisibility(View.GONE);
-            locationManager.removeUpdates(this);
+            locationManager.removeUpdates(this); //σταματάμε να ζητάμε την τοποθεσία του χρήστη για να μην χαλαμε και μπαταρία
 
         }
     }
@@ -282,14 +290,13 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOCATION_SETTINGS_REQUEST) {
-            findUserLocation(); // ξανα ζηταω να τη βρω γτ οταν επιστρεφει απο τα settings εχει χασει το action να βρει τη τοποθεσια απο πριν
-
+            findUserLocation(); // ξανα ζηταω να τη βρω γιατι οταν επιστρεφει απο τα settings εχει χασει το action να βρει τη τοποθεσια απο πριν
         }
     }
 
     private void searchForPlaces(String query) {
-        // Perform a Places API autocomplete request
-        // Use AutocompleteSessionToken.newInstance() for a new session each time
+        // Εκτέλεση αίτησης αυτόματης συμπλήρωσης Places API
+        // Χρησιμοποιούμε το AutocompleteSessionToken.newInstance() για ένα νέο session κάθε φορά
         AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
@@ -305,7 +312,8 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener((exception) -> {
-                    // Handle any errors that occurred during the request
+                    // Χειρισμός τυχόν σφαλμάτων που προέκυψαν κατά τη διάρκεια της αίτησης
+                    DisplaySnackbar("Something went wrong!");
                 });
     }
 
@@ -316,9 +324,9 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
         String placeName = prediction.getPrimaryText(null).toString();
         String fullPlaceName = prediction.getFullText(null).toString();
 
-        // Make itemSelected true so as to stop searching predictions
+        // Κάνουμε το itemSelected true ώστε να σταματήσει η αναζήτηση προβλέψεων
         adapter.setItemSelected(true);
-        // Set the SearchView text to the selected place name
+        // Ορίζουμε το κείμενο του SearchView οπως το επιλεγμένο όνομα τόπου
         searchView.setQuery(fullPlaceName, false);
 
         //τα στελνω σε αυτη τη μεθοδο ωστε να βρω τα ακριβη coordinates της επιλεγμενης περιοχης
@@ -335,7 +343,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
                 .addOnSuccessListener((response) -> {
                     Place place = response.getPlace();
 
-                    // Get latitude and longitude of the selected place
+                    // Λήψη γεωγραφικού πλάτους και γεωγραφικού μήκους του επιλεγμένου τόπου
                     LatLng latLng = place.getLatLng();
                     double latitude = latLng.latitude;
                     double longitude = latLng.longitude;
@@ -347,20 +355,21 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
                     slideToActView.setLocked(false);
                 })
                 .addOnFailureListener((exception) -> {
-                    // Handle any errors that occurred during the request
+                    // Χειρισμός τυχόν σφαλμάτων που προέκυψαν κατά τη διάρκεια της αίτησης
+                    DisplaySnackbar("Something went wrong!");
                 });
     }
 
 
     @Override
     public void onSlideComplete(SlideToActView slideToActView) {
-        // Sliding action completed, start the new activity
+        // Ολοκλήρωση sliding ενέργειας, έναρξη της νέας δραστηριότητας
         Intent intent = new Intent(getContext(), EventsTabbedActivity.class);
         intent.putExtra("latitude", locationForSearch.getLatitude());
         intent.putExtra("longitude", locationForSearch.getLongitude());
         startActivity(intent);
 
-        // Reset the SlideToActView
+        // Επαναφορά του SlideToActView ωστε αν γυρίσει πίσω σε αυτο το activity να μην ειναι completed
         slideToActView.resetSlider();
     }
 

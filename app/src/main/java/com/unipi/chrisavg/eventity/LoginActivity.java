@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
 
         linearLayoutPb = (LinearLayout) findViewById(R.id.linlaHeaderProgress);
 
-
         toolbar = findViewById(R.id.toolbar);
         Intent intent = getIntent();
         email = intent.getStringExtra("Email");
@@ -102,7 +101,6 @@ public class LoginActivity extends AppCompatActivity {
         underline = findViewById(R.id.underline);
 
         logInBtn.setEnabled(false);
-
 
         password_editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -152,9 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     public void GoForgetPasswordActivity(View view){
@@ -184,7 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
                                     }
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    //To prevent User from returning back to LOGIN Activity on pressing back button
+                                    //Για να αποτρέψετε την επιστροφή του χρήστη στη login activity με το πάτημα του κουμπιού back
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                             | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
@@ -217,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
                             DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
                         }
                         else if(task.getException() instanceof FirebaseTooManyRequestsException){
-                            // Όλα τα αιτήματα από αυτήν τη συσκευή έχουν αποκλειστε. Εμφάνιση κατάλληλου μηνύματος στον χρήστη
+                            // Όλα τα αιτήματα από αυτήν τη συσκευή έχουν αποκλειστει. Εμφάνιση κατάλληλου μηνύματος στον χρήστη
                             DisplaySnackbar(view,"The account has been blocked due to unusual activity.You may entered wrong password too many times.Try again later or reset your password.");
 
                         }
@@ -235,7 +230,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);

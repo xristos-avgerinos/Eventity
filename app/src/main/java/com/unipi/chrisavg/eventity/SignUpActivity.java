@@ -77,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
         setStatusBarWhite(this);
 
-        // Initialize Firebase Auth
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
@@ -85,7 +85,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color dark
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);
@@ -114,12 +113,12 @@ public class SignUpActivity extends AppCompatActivity {
             confirmPassword.requestFocus();
             DisplaySnackbar(view,getString(R.string.passwords_dont_match));
 
-            //Clear the entered passwords
+            //Καθαρίζουμε τους εισαγόμενους κωδικούς πρόσβασης
             password.clearComposingText();
             confirmPassword.clearComposingText();
         }
         else{
-            //κανουμε ολους τους ελεγχους σε αυτον τον listener.γινεται και ελεγχος αν το email ειναι μοναδικο
+            //Κανουμε ολους τους ελεγχους σε αυτον τον listener. Γινεται και ελεγχος αν το email ειναι μοναδικο
             mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -161,7 +160,6 @@ public class SignUpActivity extends AppCompatActivity {
                                                 // στελνουμε στην MainActivity που αυτη κατευθειαν μεσω της OnStart θα τον ανακατευθυνει στην HobbySelection
                                                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "False").apply();
                                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                                //To prevent User from returning back to Sign Up Activity on pressing back button after registration
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                         | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
@@ -178,7 +176,6 @@ public class SignUpActivity extends AppCompatActivity {
 
                             }else { //κατι πηγε λαθος με την δημιουργια του χρηστη στο authentication
                                 if(task.getException() instanceof FirebaseNetworkException){
-                                    // No internet connection
                                     DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again.");
                                 }
                                 else {

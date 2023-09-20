@@ -52,13 +52,13 @@ public class Tab1Fragment extends Fragment {
 
     static List<Event> eventsList = new ArrayList<>();
 
-    //The list that will have the real events even if they get filtered by searchView or toggleButtons container.
-    //We need this list so as to send the event parameters to the SpecificEventDetailedActivity.
+    //Η λίστα που θα έχει τα πραγματικά events ακόμα και αν φιλτραριστούν από το searchView ή toggleButtons.
+    //Χρειαζόμαστε αυτή τη λίστα για να στείλουμε τα events στο SpecificEventDetailedActivity.
     static List<Event> eventsListClone = new ArrayList<>();
 
     private ListenerRegistration listenerRegistration;
 
-    final static long LOCATION_RANGE = 50000;
+    final static long LOCATION_RANGE = 50000; //ψαχνω σε ακτινα 50km
 
     User user;
     View view;
@@ -68,7 +68,7 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_tab1, container, false);
 
-        // Retrieve bundle arguments - locationForSearch
+        // Ανάκτηση των bundle arguments - locationForSearch
         Bundle args = getArguments();
         double latitude = 0;
         double longitude = 0;
@@ -81,8 +81,6 @@ public class Tab1Fragment extends Fragment {
         locationForSearch.setLatitude(latitude);
         locationForSearch.setLongitude(longitude);
 
-        //37.966284,23.4952437
-
         listView= (ListView) view.findViewById(R.id.SpecListview);
         emptyView=view.findViewById(R.id.emptyView);
         listView.setEmptyView(emptyView);
@@ -92,13 +90,11 @@ public class Tab1Fragment extends Fragment {
 
         linearLayoutPb.setVisibility(View.VISIBLE);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         events = db.collection("Events");
 
-
-        // Fetch user from the Users collection
+        // Λήψη χρήστη από το collection Users
         db.collection("Users")
                 .document(auth.getUid()) // Replace with the actual user document ID
                 .get()
@@ -108,8 +104,8 @@ public class Tab1Fragment extends Fragment {
                         if(documentSnapshot.exists()){
                             user = documentSnapshot.toObject(User.class);
 
-                            // Start listening for real-time updates
-                            // Fetch events and sort them based on user preferences
+                            //Αρχίζουμε να ακούμε ενημερώσεις σε πραγματικό χρόνο.
+                            // Λήψη των events και ταξινόμησή τους με βάση τις προτιμήσεις του χρήστη
                             listenerRegistration = events
                                     .addSnapshotListener((querySnapshot, error) -> {
                                         if (error != null) {
@@ -118,19 +114,17 @@ public class Tab1Fragment extends Fragment {
                                         }
 
                                         linearLayoutPb.setVisibility(View.VISIBLE);
-                                        // Clear the previous data in the list
+                                        // Διαγραφή των προηγούμενων δεδομένων στις λίστες
                                         eventsList.clear();
                                         ListViewItemsTitles.clear();
                                         ListViewItemsDates.clear();
                                         ListViewItemsLocations.clear();
                                         ListViewItemsImages.clear();
 
-                                        // Loop through each document in the query result
                                         for (DocumentSnapshot document : querySnapshot) {
                                             Event event = document.toObject(Event.class);
                                             event.setKey(document.getId());
 
-                                            // Get the current datetime
                                             Date currentDatetime = Calendar.getInstance().getTime();
 
                                             Location eventLocation = new Location("");
@@ -139,9 +133,9 @@ public class Tab1Fragment extends Fragment {
 
                                             int location_distance = (int) eventLocation.distanceTo(locationForSearch);
 
-                                            // Check date after current date and location close to locationForSearch until 50000 km
+                                            // Ελέγχουμε την ημερομηνία να είναι μετά την τρέχουσα ημερομηνία και την τοποθεσία κοντά στο locationForSearch μέχρι 50000 χλμ
                                             if (event.getDate() != null && event.getDate().toDate().after(currentDatetime) && location_distance<=LOCATION_RANGE) {
-                                                // Calculate match score based on preferences
+                                                // Υπολογισμός του match score με βάση τις προτιμήσεις
                                                 long UserMatchScore = event.getTypes().stream()
                                                         .filter(user.getPreferences()::contains)
                                                         .count();
@@ -151,8 +145,7 @@ public class Tab1Fragment extends Fragment {
                                             }
                                         }
 
-                                        // Here, "userList" contains the updated data with real-time changes
-                                        // You can now use the "userList" in your app
+                                        // Εδώ, η "eventsList" περιέχει τα ενημερωμένα δεδομένα με αλλαγές σε πραγματικό χρόνο.
                                         ShowClassifiedEventsInListView();
                                         linearLayoutPb.setVisibility(View.GONE);
                                     });
@@ -173,11 +166,8 @@ public class Tab1Fragment extends Fragment {
         return view;
     }
 
-
-
-
     public static void searchViewFilteringTab1(String filter){
-
+        //Η μέθοδος που κανει το filtering με βαση το τι πληκτρολογει ο χρηστης στο searchview για το tab1
         if (TextUtils.isEmpty(filter)){
             eventsListClone = arrayAdapterClass.filter(eventsList,"");
             listView.clearTextFilter();
@@ -188,13 +178,13 @@ public class Tab1Fragment extends Fragment {
     }
 
     public static void toggleButtonsContainerFilteringTab1(List<String> selectedTypes){
-
+        //Η μέθοδος που κανει το filtering με βαση το τι επιλεγει ο χρηστης απο τα toggle buttons για το tab1
         eventsListClone = arrayAdapterClass.toggleButtonsContainerFilter(eventsList,selectedTypes);
     }
 
     public void ShowClassifiedEventsInListView(){
 
-        // Sort events based on match score in descending order
+        // Ταξινόμηση των events με βάση το match score σε φθίνουσα σειρά
         Collections.sort(eventsList, new Comparator<Event>() {
             @Override
             public int compare(Event event1, Event event2) {
@@ -204,7 +194,6 @@ public class Tab1Fragment extends Fragment {
 
         eventsListClone = eventsList;
 
-
         for (Event event:eventsList) {
             ListViewItemsTitles.add(event.getTitle());
             ListViewItemsDates.add(event.getDateToCustomFormat());
@@ -212,19 +201,21 @@ public class Tab1Fragment extends Fragment {
             ListViewItemsImages.add(event.getPhotoURL());
         }
 
+        //δημιουργουμε τον ανταπτορα για το listview δινοντας του τις λιστες με τους τιτλους,ημερομηνιες,τοποθεσιες
+        // και φωτογραφιες ταξινομημενες με βαση το ταξινομημενο πινακα απο πανω eventsList
         arrayAdapterClass = new ArrayAdapterClass(getContext(), ListViewItemsTitles, ListViewItemsDates,ListViewItemsLocations, ListViewItemsImages);
 
         if (eventsList.isEmpty()) {
+            //αν ειναι αδεια η λιστα εμφανιζουμε το emptyView δηλ ενα μηνυμα στη λιστα οτι ειναι αδεια
             emptyView.setVisibility(View.VISIBLE);
         }
+
         listView.setAdapter(arrayAdapterClass);
         arrayAdapterClass.notifyDataSetChanged();
-
-
     }
 
 
-    // Be sure to remove the listener when the activity is destroyed to avoid memory leaks
+    // Φροντίζουμε να αφαιρέσουμε τον listener όταν το activity καταστρέφεται για να αποφύγουμε διαρροές μνήμης(memory leaks).
     @Override
     public void onDestroy() {
         super.onDestroy();

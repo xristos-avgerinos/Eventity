@@ -46,7 +46,6 @@ public class HobbySelectionModify extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hobby_selection_modify);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
@@ -69,9 +68,10 @@ public class HobbySelectionModify extends AppCompatActivity {
                     ToggleButton toggleButton = (ToggleButton) childView;
                     String buttonText = toggleButton.getText().toString();
 
-                    // Check if the text of the ToggleButton is in the userPreferencesList
+                    // Ελέγχουμε αν το κείμενο του ToggleButton του MusicGridLayout βρίσκεται
+                    // στη λίστα userPreferencesList ωστε να το κανουμε checked
                     if (userPreferencesList.contains(buttonText)) {
-                        toggleButton.setChecked(true); // Set the ToggleButton as checked
+                        toggleButton.setChecked(true);
                     }
                 }
             }
@@ -84,9 +84,10 @@ public class HobbySelectionModify extends AppCompatActivity {
                     ToggleButton toggleButton = (ToggleButton) childView;
                     String buttonText = toggleButton.getText().toString();
 
-                    // Check if the text of the ToggleButton is in the userPreferencesList
+                    // Ελέγχουμε αν το κείμενο του ToggleButton του VibeGridLayout βρίσκεται
+                    // στη λίστα userPreferencesList ωστε να το κανουμε checked
                     if (userPreferencesList.contains(buttonText)) {
-                        toggleButton.setChecked(true); // Set the ToggleButton as checked
+                        toggleButton.setChecked(true);
                     }
                 }
             }
@@ -96,7 +97,6 @@ public class HobbySelectionModify extends AppCompatActivity {
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);

@@ -26,7 +26,7 @@ public class BotFragment extends Fragment {
 
     private WebView webView;
 
-    private View loadingLayout; // Reference to the loading layout
+    private View loadingLayout;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,11 +38,11 @@ public class BotFragment extends Fragment {
 
         loadingLayout = root.findViewById(R.id.loading_layout);
 
-        // Set the desired locale to "en-US"
+        // Ορίζουμε την επιθυμητή τοπική γλώσσα σε "en-US" για να βγάζει σωστά αποτελέσματα το bot
         Locale locale = new Locale("en", "US");
         Locale.setDefault(locale);
 
-        // Create a configuration with the new locale
+        // Δημιουργούμε ενα configuration με τη νέα τοπική γλώσσα
         Configuration config = new Configuration();
         config.locale = locale;
 
@@ -55,7 +55,7 @@ public class BotFragment extends Fragment {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                // Hide the progress bar when the page finishes loading
+                // Απόκρυψη του progress bar όταν ολοκληρωθεί η φόρτωση της σελίδας
                 loadingLayout.setVisibility(View.GONE);
             }
         });
@@ -63,7 +63,7 @@ public class BotFragment extends Fragment {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        // Load the Bot Web Chat URL
+        // Φορτώνουμε το Bot Web Chat URL
         webView.loadUrl("https://webchat.botframework.com/embed/EventityAssistant?s=StQh1uebDpQ.s-q8zDWn8ifwEPaD0c6lpsMpg1FOlMSHVU2Bzwefy2E");
 
 

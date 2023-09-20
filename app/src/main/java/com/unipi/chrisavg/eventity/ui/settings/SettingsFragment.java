@@ -69,8 +69,7 @@ public class SettingsFragment extends Fragment {
     FirebaseUser firebaseUser;
 
     FloatingActionButton floatingActionButton;
-
-    private View loadingLayout; // Reference to the loading layout
+    private View loadingLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize Firebase Auth
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         events = db.collection("Events");
@@ -105,12 +104,12 @@ public class SettingsFragment extends Fragment {
         FullnameTv.setText(mAuth.getCurrentUser().getDisplayName());
         EmailTv.setText(mAuth.getCurrentUser().getEmail());
 
+        // Βρίσκουμε τον αριθμό κλεισμένων εισητηρίων του συνδεμένου user
         reservations.whereEqualTo("userId", mAuth.getUid()).count().get(AggregateSource.SERVER)
                 .addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    // Count fetched successfully
                     AggregateQuerySnapshot snapshot = task.getResult();
                     TicketsCount.setText(String.valueOf(snapshot.getCount()));
                 } else {
@@ -119,15 +118,16 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Get the current datetime
+        // Παίρνουμε την τρέχουσα ημερομηνία
         Date currentDatetime = Calendar.getInstance().getTime();
 
+
+        // Βρίσκουμε τον αριθμό των event που έχουν καταχωρηθεί με date μελλοντικό
         events.whereGreaterThan("Date", currentDatetime).count().get(AggregateSource.SERVER)
                 .addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            // Count fetched successfully
                             AggregateQuerySnapshot snapshot = task.getResult();
                             TotalEvents.setText(String.valueOf(snapshot.getCount()));
                         } else {
@@ -139,9 +139,8 @@ public class SettingsFragment extends Fragment {
 
                 });
 
+        EmailEditText.setKeyListener(null); //Για να μην μπορεί να αλλαξει το email του αφου ειναι στανταρ
 
-
-        EmailEditText.setKeyListener(null);
         EmailEditText.setText(mAuth.getCurrentUser().getEmail());
         FullnameTextView.setText(mAuth.getCurrentUser().getDisplayName());
 
@@ -159,20 +158,21 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Define a DocumentReference to the user's Firestore document
+        // Ορισμός ενός DocumentReference στο document Firestore του χρήστη
         DocumentReference userDocumentRef = users.document(mAuth.getUid());
 
-        // Create a snapshot listener for the user's document
+        // Δημιουργούμε έναν snapshot listener για το document του χρήστη ωστε να ανανεώνει
+        // το gridLayout με τα preferences του χρήστη οταν γυρνάει πισω απο την HobbySelectionModify
         userDocumentRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    // Handle any errors here
                     Log.e(TAG, "Listen failed.", e);
                     return;
                 }
 
                 if(documentSnapshot != null && documentSnapshot.exists()){
+
                     User user = documentSnapshot.toObject(User.class);
                     if (!(user.getPhoneNumber() == null)){
                         PhoneNumberTextView.setText(user.getPhoneNumber());
@@ -182,7 +182,7 @@ public class SettingsFragment extends Fragment {
 
                     for (String userPreference : user.getPreferences()) {
                         ToggleButton toggleButton = new ToggleButton(getContext());
-                        // Set layout parameters
+                        // Ορίζουμε τα layout parameters
                         GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
                         layoutParams.width = GridLayout.LayoutParams.WRAP_CONTENT;
                         layoutParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
@@ -190,7 +190,7 @@ public class SettingsFragment extends Fragment {
                         int marginInPixels = getResources().getDimensionPixelSize(R.dimen.toggle_button_margin);
                         layoutParams.setMargins(marginInPixels, marginInPixels, marginInPixels, marginInPixels);
                         toggleButton.setLayoutParams(layoutParams);
-                        // Set padding
+                        // Οριζουμε το padding
                         int paddingRight = getResources().getDimensionPixelSize(R.dimen.toggle_button_padding_right);
                         int paddingLeft = getResources().getDimensionPixelSize(R.dimen.toggle_button_padding_left);
                         toggleButton.setPadding(paddingLeft, 0, paddingRight, 0);
@@ -198,18 +198,18 @@ public class SettingsFragment extends Fragment {
                         toggleButton.setTextOff(userPreference);
                         toggleButton.setTextOn(userPreference);
                         toggleButton.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                        // Set text size
+                        // Ορίζουμε text size
                         float textSize = getResources().getDimension(R.dimen.toggle_button_text_size);
                         toggleButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
-                        // Set typeface
+                        // Ορίζουμε typeface
                         Typeface typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL);
                         toggleButton.setTypeface(typeface);
-                        // Set clickable
+                        // Το κάνουμε clickable
                         toggleButton.setClickable(false);
                         toggleButton.setTextColor(getResources().getColor(R.color.toggle_buttons_color));
-                        //set background
+                        // Ορίζουμε background
                         toggleButton.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_button_background));
-                        // Set textAllCaps to false
+                        // Ορίζουμε το textAllCaps σε false
                         toggleButton.setAllCaps(false);
 
                         gridLayout.addView(toggleButton);
@@ -244,15 +244,15 @@ public class SettingsFragment extends Fragment {
         builder.setTitle("Your fullname");
 
 
-        // Create a container (LinearLayout) to wrap the EditText
+        // Δημιουργούμε ένα container (LinearLayout) για να τυλίξετε το EditText
         LinearLayout container = new LinearLayout(getContext());
         container.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
 
-        int leftPaddingInDp = 21; // Adjust the left padding as needed
-        int rightPaddingInDp = 21; // Adjust the right padding as needed
+        int leftPaddingInDp = 21;
+        int rightPaddingInDp = 21;
 
         int leftPaddingInPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, leftPaddingInDp, getResources().getDisplayMetrics());
@@ -260,7 +260,7 @@ public class SettingsFragment extends Fragment {
         int rightPaddingInPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, rightPaddingInDp, getResources().getDisplayMetrics());
 
-        // Create an EditText
+        // Δημιουργούμε ενα EditText
         final EditText input = new EditText(getContext());
         input.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -268,10 +268,9 @@ public class SettingsFragment extends Fragment {
         ));
         input.setText(FullnameTextView.getText());
 
-        // Set padding for the container
         container.setPadding(leftPaddingInPx, 0, rightPaddingInPx, 0);
 
-        // Add the EditText to the container
+        // Προσθέτουμε το EditText στο container
         container.addView(input);
 
         builder.setView(container);
@@ -283,11 +282,11 @@ public class SettingsFragment extends Fragment {
                 if (!newText.isEmpty()){
                     FullnameTextView.setText(newText);
                     FullnameTv.setText(newText);
-                    // Create a map to hold the updated data
+                    // Δημιουργούμε έναν χάρτη για να αποθηκεύσουμετα ενημερωμένα δεδομένα (fullname)
                     Map<String, Object> updateData = new HashMap<>();
                     updateData.put("fullname", newText);
 
-                    // Update the document
+                    // Ενημερώνουμε το document
                     users.document(mAuth.getUid()).update(updateData).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -336,15 +335,15 @@ public class SettingsFragment extends Fragment {
         builder.setTitle("Your Phone Number");
 
 
-        // Create a container (LinearLayout) to wrap the EditText
+        // Δημιουργούμε ένα container (LinearLayout) για να τυλίξετε το EditText
         LinearLayout container = new LinearLayout(getContext());
         container.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
 
-        int leftPaddingInDp = 21; // Adjust the left padding as needed
-        int rightPaddingInDp = 21; // Adjust the right padding as needed
+        int leftPaddingInDp = 21;
+        int rightPaddingInDp = 21;
 
         int leftPaddingInPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, leftPaddingInDp, getResources().getDisplayMetrics());
@@ -352,7 +351,6 @@ public class SettingsFragment extends Fragment {
         int rightPaddingInPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, rightPaddingInDp, getResources().getDisplayMetrics());
 
-        // Create an EditText
         final EditText input = new EditText(getContext());
         input.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -361,10 +359,8 @@ public class SettingsFragment extends Fragment {
         input.setText(PhoneNumberTextView.getText());
         input.setHint("Write your phone number");
 
-        // Set padding for the container
         container.setPadding(leftPaddingInPx, 0, rightPaddingInPx, 0);
 
-        // Add the EditText to the container
         container.addView(input);
 
         builder.setView(container);
@@ -380,11 +376,11 @@ public class SettingsFragment extends Fragment {
                 }else{
 
                     PhoneNumberTextView.setText(newText);
-                    // Create a map to hold the updated data
+                    // Δημιουργούμε έναν χάρτη για να αποθηκεύσουμετα ενημερωμένα δεδομένα (phone number)
                     Map<String, Object> updateData = new HashMap<>();
                     updateData.put("phoneNumber", newText);
 
-                    // Update the document
+                    // Ενημερώνουμε το document
                     users.document(mAuth.getUid()).update(updateData).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {

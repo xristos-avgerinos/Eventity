@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class User {
+
     private String fullname;
     private String phoneNumber; //για τις κρατησεις-επικοινωνια με τους organizers
     List<String> preferences = new ArrayList<>();

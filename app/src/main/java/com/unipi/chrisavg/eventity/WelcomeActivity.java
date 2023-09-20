@@ -68,6 +68,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 40;
+
     FirebaseAuth auth;
     CollectionReference users;
     FirebaseFirestore db;
@@ -85,10 +86,10 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().hide(); //hide the title bar
+        getSupportActionBar().hide(); //κρυβουμε τόν τίτλο στο action bar
         setStatusBarWhite(this);
 
-        // Initialize Firebase Auth
+        // Αρχικοποίηση του Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
@@ -105,7 +106,7 @@ public class WelcomeActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(WelcomeActivity.this);
        // AppEventsLogger.activateApp(this);
 
-        // Initialize Facebook Login button
+        // Αρχικοποίηση του κουμπιού σύνδεσης στο Facebook
         mCallbackManager = CallbackManager.Factory.create();
     }
 
@@ -124,7 +125,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
+        // Κάνουμε τα εικονίδια του status bar λευκό χρώμα
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(Color.WHITE);
@@ -140,7 +141,7 @@ public class WelcomeActivity extends AppCompatActivity {
         RL_email.setVisibility(View.VISIBLE);
         btn_email_login.setVisibility(View.GONE);
 
-        continue_btn.setClickable(false); //να ειναι γκρι και να μην μπορει να τον πατησει μεχρι να δωσει εγκυρο email
+        continue_btn.setClickable(false); //Κάνουμε το κουμπί να ειναι γκρι και να μην μπορει να τον πατησει μεχρι να δωσει εγκυρο email
 
         email_editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -203,7 +204,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     } else {
 
                         if(task.getException() instanceof FirebaseNetworkException){
-                            // No internet connection
+                            // Δεν υπάρχει σύνδεση στο διαδίκτυο
                             DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
                         }
                         else {
@@ -325,8 +326,8 @@ public class WelcomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode != RESULT_CANCELED){
-            if (requestCode == RC_SIGN_IN){
+        if(resultCode != RESULT_CANCELED){ //αν δεν πατησε ακυρωση οταν πηγε να συνδεθει με credentials καποιου provider fb-google
+            if (requestCode == RC_SIGN_IN){ //αν είναι απο google credentials
 
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
@@ -337,7 +338,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 } catch (ApiException e) {
                     throw new RuntimeException();
                 }
-            }else if(requestCode == FacebookSdk.getCallbackRequestCodeOffset()){
+            }else if(requestCode == FacebookSdk.getCallbackRequestCodeOffset()){ //αν είναι απο fb credentials
 
                 mCallbackManager.onActivityResult(requestCode, resultCode, data);
             }
