@@ -350,7 +350,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
 
         if (shouldReload) {
             recreate();
-            shouldReload = false; // Reset the flag to prevent continuous reloading
+            shouldReload = false; // Επαναφέρουμε το flag για να αποτρέψουμε τη συνεχή επαναφόρτωση
         }
     }
 
