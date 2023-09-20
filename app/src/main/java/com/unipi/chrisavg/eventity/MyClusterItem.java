@@ -3,7 +3,8 @@ package com.unipi.chrisavg.eventity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
-public class MyClusterItem implements ClusterItem { //Μια κλαση για τα cluster items του map
+//Μια κλαση για τα cluster items του map
+public class MyClusterItem implements ClusterItem {
     private final LatLng position;
     private final String title;
     private final String snippet;

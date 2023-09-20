@@ -127,6 +127,7 @@ public class Tab1Fragment extends Fragment {
 
                                             Date currentDatetime = Calendar.getInstance().getTime();
 
+
                                             Location eventLocation = new Location("");
                                             eventLocation.setLatitude(event.getGeopoint().getLatitude());
                                             eventLocation.setLongitude(event.getGeopoint().getLongitude());

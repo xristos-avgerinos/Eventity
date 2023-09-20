@@ -133,7 +133,7 @@ public class HobbySelectionModify extends AppCompatActivity {
         }
 
         if(selectedCountMusic<3 || selectedCountVibe<3 ){
-            DisplaySnackbar(view,"You have to select at least 3 interests from each category");
+            DisplaySnackbar(view,getString(R.string.select_at_least_3));
         }else{
 
             //αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
@@ -154,19 +154,19 @@ public class HobbySelectionModify extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getApplicationContext(), "Your preferences have been successfully modified!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.preferences_modified), Toast.LENGTH_SHORT).show();
                                         finish();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        DisplaySnackbar(view,"Something went wrong! Try again later.");
+                                        DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                                     }
                                 });
 
                     }else{
-                        DisplaySnackbar(view,"Something went wrong! Try again later.");
+                        DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                     }
                 }
 

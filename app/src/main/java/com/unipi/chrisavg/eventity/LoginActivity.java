@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                                     //logout ωστε να μην τον ανακατευθυνει η σελιδα welcomeActivity στην MainActivity μεσω της onStart
                                     auth.signOut();
                                     LoginManager.getInstance().logOut();
-                                    DisplaySnackbar(view,"Something went wrong!Try again later.");
+                                    DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                                 }
                             }
                         });
@@ -199,21 +199,21 @@ public class LoginActivity extends AppCompatActivity {
                         //αν πηγε κατι λαθος με την συνδεση του χρηστη(με το authentication δηλ
                         // οχι την βαση) ανιχνευουμε το exception και εμφανιζουμε καταλληλο μηνυμα.
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            DisplaySnackbar(view,"The password is invalid or the user does not have a password");
+                            DisplaySnackbar(view,getString(R.string.invalid_password));
 
                         } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                             if (((FirebaseAuthInvalidUserException) task.getException()).getErrorCode().equals("ERROR_USER_DISABLED")) {
                                 // Ο λογαριασμός χρήστη είναι αποκλεισμένος
-                                DisplaySnackbar(view,"User account is blocked");
+                                DisplaySnackbar(view,getString(R.string.account_is_blocked));
                             }
                         }
                         else if(task.getException() instanceof FirebaseNetworkException){
                             // Δεν υπάρχει σύνδεση στο διαδίκτυο
-                            DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
+                            DisplaySnackbar(view,getString(R.string.network_error));
                         }
                         else if(task.getException() instanceof FirebaseTooManyRequestsException){
                             // Όλα τα αιτήματα από αυτήν τη συσκευή έχουν αποκλειστει. Εμφάνιση κατάλληλου μηνύματος στον χρήστη
-                            DisplaySnackbar(view,"The account has been blocked due to unusual activity.You may entered wrong password too many times.Try again later or reset your password.");
+                            DisplaySnackbar(view,getString(R.string.account_has_been_blocked));
 
                         }
                         else {

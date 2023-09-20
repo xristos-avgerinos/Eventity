@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
     <!-- Include the detailed window layout at the bottom -->
     <include
         android:id="@+id/RL_detailed_window"

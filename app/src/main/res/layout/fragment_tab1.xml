@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="There are no upcoming events"
+        android:text="@string/there_are_no_upcoming_events"
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone" />

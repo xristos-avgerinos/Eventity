@@ -362,14 +362,14 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("GPS settings");
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-        alertDialog.setPositiveButton("Settings", (dialog, which) -> {
+        alertDialog.setTitle(getString(R.string.gps_settings));
+        alertDialog.setMessage(getString(R.string.gps_not_enabled));
+        alertDialog.setPositiveButton(getString(R.string.settings), (dialog, which) -> {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivityForResult(intent,LOCATION_SETTINGS_REQUEST);
 
         });
-        alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        alertDialog.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.cancel());
         alertDialog.show();
     }
 
@@ -459,12 +459,12 @@ public class Tab2Fragment extends Fragment implements OnMapReadyCallback, Cluste
         if (requestCode == locationRequestCode) { //ελεγχουμε αν εχει ερθει απο το παραπανω requestPermission με requestCode = 111 που ειναι του CurrentLocationButton
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //Αν ο χρηστης πατησει allow
-                Toast.makeText(getContext(), "Permissions accepted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permissions_accepted), Toast.LENGTH_SHORT).show();
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
             } else {
                 //Αν ο χρηστης αρνηθει τα δικαιωματα εμφανιζω καταλληλο μηνυμα.
-                Toast.makeText(getContext(), "Permissions denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permissions_denied), Toast.LENGTH_SHORT).show();
             }
 
         }

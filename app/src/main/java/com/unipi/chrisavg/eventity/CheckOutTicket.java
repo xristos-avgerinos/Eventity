@@ -78,14 +78,13 @@ public class CheckOutTicket extends AppCompatActivity {
 
     private StorageReference storageRef;
 
-    private View loadingLayout; // Reference to the loading layout
+    private View loadingLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out_ticket);
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         Reservations = db.collection("Reservations");
@@ -93,13 +92,12 @@ public class CheckOutTicket extends AppCompatActivity {
 
         loadingLayout = findViewById(R.id.loading_layout);
 
-        // Initialize the Firebase Storage reference
         storageRef = FirebaseStorage.getInstance().getReference();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // getSupportActionBar().hide(); //hide the title bar
+        // getSupportActionBar().hide();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +124,7 @@ public class CheckOutTicket extends AppCompatActivity {
 
         Title.setText(receivedEvent.getTitle());
 
-        int index = receivedEvent.getDateToCustomFormat().indexOf('•'); // Find the index of the • character
+        int index = receivedEvent.getDateToCustomFormat().indexOf('•');
 
         Date.setText(receivedEvent.getDateToCustomFormat().substring(0, index).trim());
         Time.setText(receivedEvent.getDateToCustomFormat().substring(index+1).trim());
@@ -149,7 +147,7 @@ public class CheckOutTicket extends AppCompatActivity {
                 Address address = addresses.get(0);
                 exLoc = address.getAddressLine(0);
             }else{
-                exLoc = "Untrackable location";
+                exLoc = getString(R.string.untrackable_location);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -176,11 +174,11 @@ public class CheckOutTicket extends AppCompatActivity {
     public void GetTicket(View view){
         if(TextUtils.isEmpty(firstnameEditText.getText().toString().trim())){
             firstnameEditText.requestFocus();
-            DisplaySnackbar(view,"Please fill in your first name");
+            DisplaySnackbar(view,getString(R.string.please_fill_in_your_first_name));
         }
         else if(TextUtils.isEmpty(lastnameEditText.getText().toString().trim())){
             lastnameEditText.requestFocus();
-            DisplaySnackbar(view,"Please fill in your last name");
+            DisplaySnackbar(view,getString(R.string.please_fill_in_your_last_name));
         }else{
             loadingLayout.setVisibility(View.VISIBLE);
 
@@ -192,7 +190,7 @@ public class CheckOutTicket extends AppCompatActivity {
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
-                // Upload QR Code Image to Firebase storage
+                // Ανέβασμα  QRCode image στην αποθήκευση Firebase
                 uploadImageToStorage(bitmap);
 
             } catch (Exception e) {
@@ -203,30 +201,28 @@ public class CheckOutTicket extends AppCompatActivity {
     }
 
     private void uploadImageToStorage(Bitmap bitmap) {
-        // Create a unique filename or document ID for the image in Firestore
+        // Δημιουργουμε ένα μοναδικό όνομα αρχείου για την εικόνα στο Firestore
         String imageName = receivedEvent.getKey() + "-" + auth.getUid();
 
-        // Create a reference to the Firebase Storage location
+        // Δημιουργουμε ενα; reference στη θέση αποθήκευσης Firebase Storage
         StorageReference imageRef = storageRef.child(imageName);
 
-        // Convert the Bitmap to a byte array
+        // Μετατροπή του Bitmap σε πίνακα byte
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        // Upload the image to Firebase Storage
+        // Ανεβάζουμε την εικόνα στο Firebase Storage
         UploadTask uploadTask = imageRef.putBytes(data);
 
-        // Handle the upload success or failure
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Get the download URL of the uploaded image
+                // Λήψη της διεύθυνσης URL λήψης της μεταφορτωμένης εικόνας
                 Task<Uri> downloadUriTask = imageRef.getDownloadUrl();
                 downloadUriTask.addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri downloadUri) {
-                        // Save the download URL to Firestore or use it as needed
                         saveReservationToFirestoreDb(downloadUri.toString());
                     }
                 });
@@ -235,13 +231,12 @@ public class CheckOutTicket extends AppCompatActivity {
     }
 
     private void saveReservationToFirestoreDb(String ticketQRCodeUrl) {
-        //add reserved tickets of event by 1
+        // Προσθέτουμε τα κρατημένα εισιτήρια του event κατά 1
         receivedEvent.setReservedTickets(receivedEvent.getReservedTickets()+1);
 
-        //store the reservation to db
+        //Αποθήκευση της κράτησης στην βαση
         Reservation reservation = new Reservation(receivedEvent.getKey(),auth.getUid(),firstnameEditText.getText().toString(),lastnameEditText.getText().toString(),ticketQRCodeUrl,receivedEvent.getReservedTickets());
 
-        // Create a new document with an auto-generated ID
         DocumentReference newReservationRef = Reservations.document();
         newReservationRef.set(reservation)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -249,19 +244,18 @@ public class CheckOutTicket extends AppCompatActivity {
                     public void onSuccess(Void unused) {
                         String ReservationId = newReservationRef.getId();
 
-                        // Create a map to hold the updated data
                         Map<String, Object> updateData = new HashMap<>();
                         updateData.put("ReservedTickets", receivedEvent.getReservedTickets());
 
-                        // Update the document
+                        // Ενημέρωση του event document
                         Events.document(receivedEvent.getKey()).update(updateData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         SpecificEventDetailedActivity.receivedEvent.setReservedTickets(receivedEvent.getReservedTickets());//inform receivedEvent of SpecificEventDetailedActivity for reserved tickets
-                                        SpecificEventDetailedActivity.shouldReload=true; //so as to if we have sold out not to sell more tickets
+                                        SpecificEventDetailedActivity.shouldReload=true; //έτσι ώστε αν έχουμε sold out να μην πουλήσουμε περισσότερα εισιτήρια
 
-                                        // Event successfully updated
+                                        // Ενημέρωση event με επιτυχία
                                         Intent intent = new Intent(CheckOutTicket.this,UserTicket.class);
                                         intent.putExtra("ReservationID",ReservationId);
                                         intent.putExtra("SendingActivity","CheckOutActivity");

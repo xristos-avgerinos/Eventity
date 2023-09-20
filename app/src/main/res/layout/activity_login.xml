@@ -21,7 +21,7 @@
             android:background="@android:color/transparent"
             android:backgroundTintMode="src_over"
             app:navigationIcon="@drawable/ic_back"
-            app:title="Log In"
+            app:title="@string/log_in"
             app:titleTextAppearance="@style/ToolbarTitleStyle"
             android:elevation="4dp"/>
 
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:text="Email"
+                android:text="@string/email"
                 android:textAlignment="center"
                 android:textColor="#DD696969"
                 android:textSize="16sp"
@@ -67,7 +67,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="130dp"
                 android:onClick="ChangeEmail"
-                android:text="Change"
+                android:text="@string/change"
                 android:textAlignment="center"
                 android:textColor="#345DDA"
                 android:textSize="16sp"
@@ -99,7 +99,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
                         android:padding="3dp"
-                        android:text="Password*"
+                        android:text="@string/password_star"
                         android:textColor="#DA2180F3" />
 
 
@@ -128,7 +128,7 @@
                                 android:drawableStart="@drawable/ic_lock"
                                 android:drawableLeft="@drawable/ic_lock"
                                 android:drawablePadding="12dp"
-                                android:hint="Please enter your password"
+                                android:hint="@string/please_enter_your_password"
                                 android:imeOptions="actionDone"
                                 android:inputType="textPassword"
                                 android:minWidth="320dp"
@@ -182,7 +182,7 @@
                         android:layout_marginEnd="12dp"
                         android:layout_marginBottom="10dp"
                         android:background="@drawable/layer_list"
-                        android:text="Log In"
+                        android:text="@string/log_in"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
                         android:textColor="#FFFFFF"
                         android:textSize="19sp"
@@ -201,7 +201,7 @@
                     android:layout_marginRight="22dp"
                     android:onClick="GoForgetPasswordActivity"
                     android:padding="18dp"
-                    android:text="I forgot my password"
+                    android:text="@string/i_forgot_my_password"
                     android:textColor="@color/underline_color"
                     android:textSize="15sp" />
 

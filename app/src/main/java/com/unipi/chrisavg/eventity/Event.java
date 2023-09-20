@@ -226,4 +226,5 @@ public class Event implements Parcelable {
         dest.writeDouble(Price);
         dest.writeLong(UserMatchScore);
     }
+
 }

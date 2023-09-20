@@ -147,6 +147,7 @@ public class ArrayAdapterClass extends android.widget.ArrayAdapter<String> {
         return tempEventsList;
     }
 
+
     public static boolean containsCommonItem(List<String> list1, List<String> list2) {
         for (String item : list1) {
             if (list2.contains(item)) {

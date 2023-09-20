@@ -5,11 +5,11 @@
     <item
         android:id="@+id/CancelOrder"
         android:icon="@drawable/ic_cancelticket"
-        android:title="Cancel Free Order"
+        android:title="@string/cancel_free_order"
      />
     <item
         android:id="@+id/ContactOrganizer"
         android:icon="@drawable/ic_email"
-        android:title="Contact the organizer"
+        android:title="@string/contact_the_organizer"
       />
 </menu>

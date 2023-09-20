@@ -2,24 +2,43 @@
     <string name="app_name">Eventity</string>
     <string name="title_activity_maps">MapsActivity</string>
 
-    <!-- for login-signUp-forgetPassword-->
-    <string name="hint_fullname">Fullname</string>
-    <string name="hint_password">Password</string>
-    <string name="button_sign_in">Sign in</string>
-    <string name="button_sign_up">Sign up</string>
-    <string name="button_send">Send</string>
-    <string name="text_forgot_password">Forgot password?</string>
-    <string name="text_signin_message">Hello, sign in to your account</string>
-    <string name="text_signin_social_media">Or Sign in using social media</string>
-    <string name="text_signup_social_media">Or Sign up using social media</string>
-    <string name="text_signin_signup">Don\'t have an account? <b>Sign up</b></string>
-    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
-    <string name="text_signup_message">Hello, let\'s set up your account</string>
+    <!-- for Login activity-->
+    <string name="email">Email</string>
+    <string name="change">Change</string>
+    <string name="password_star">Password*</string>
+    <string name="please_enter_your_password">Please enter your password</string>
+    <string name="large_text"> </string>
+    <string name="log_in">Log In</string>
+    <string name="i_forgot_my_password">I forgot my password</string>
+    <string name="something_went_wrong_try_again_later">Something went wrong!Try again later.</string>
+    <string name="invalid_password">The password is invalid or the user does not have a password</string>
+    <string name="account_is_blocked">User account is blocked</string>
+    <string name="network_error">A network error has occurred. Connect to the internet and try again</string>
+    <string name="account_has_been_blocked">The account has been blocked due to unusual activity.You may entered wrong password too many times.Try again later or reset your password.</string>
+
+
+    <!-- for Welcome activity-->
+    <string name="let_s_get_started">Let\'s get started</string>
+    <string name="welcome_eventiity_quote">Sign up or log in to enter our eventity world. After all events come and go, but entities last a lifetime.</string>
+    <string name="please_give_your_email_address">Please give your email address</string>
+    <string name="Continue">Continue</string>
+    <string name="continue_with_email_address">Continue with Email Address</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="Sign_in_using_Google_provider">Sign in using Google provider which is associated with this email address.</string>
+    <string name="Sign_in_using_Facebook_provider">Sign in using Facebook provider which is associated with this email address.</string>
+    <string name="email_error_occured">Error occurred while checking email address</string>
+    <string name="account_exists_with_different_credentials">An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.</string>
+
+    <!-- for ForgotPasswordActivity -->
+    <string name="email_required">Email is required</string>
+    <string name="valid_email">Please enter a valid email</string>
+    <string name="reset_password">Open your emails and reset your password</string>
+    <string name="error">Error</string>
     <string name="text_forgot_password_title">Forgot password? No worries</string>
     <string name="text_forgot_password_message">We will send you a link to reset your password</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_phone">Phone</string>
-    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="button_send">Send</string>
+
 
     <!--for facebook login-->
     <string name="facebook_app_id">1207133706629949</string>
@@ -27,6 +46,13 @@
     <string name="facebook_client_token">bb3e4d63a61dbfe46e3addd64feb5d7f</string>
 
     <!-- for Signup Activity -->
+    <string name="password">Password</string>
+    <string name="text_signup_message">Hello, let\'s set up your account</string>
+    <string name="hint_fullname">Fullname</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="text_signup_terms">By signing up, you agree to our <b>terms and conditions</b></string>
+    <string name="password_required">Password is required</string>
     <string name="fullname_required">Full name is required</string>
     <string name="mobile_required">Mobile phone number is required</string>
     <string name="mobile_length">Mobile phone number must be 10 digits</string>
@@ -34,18 +60,36 @@
     <string name="password_confirmation">Password confirmation is required</string>
     <string name="passwords_dont_match">The passwords do not match</string>
     <string name="user_registered">User registered successfully</string>
-    <string name="gps_necessary">GPS is necessary for signing up. Do you want to go to settings menu?</string>
+    <string name="error_occured_while_signing_up">Error occurred while signing you up.</string>
+    <string name="text_signup_social_media">Or Sign up using social media</string>
+    <string name="new_account">New Account</string>
 
-    <!-- for ForgotPasswordActivity -->
-    <string name="email_required">Email is required</string>
-    <string name="valid_email">Please enter a valid email</string>
-    <string name="reset_password">Open your emails and reset your password</string>
-    <string name="error">Error</string>
 
-    <!-- for LoginActivity -->
-    <string name="password_required">Password is required</string>
-    <string name="no_role">This user does not have a role.</string>
-    <string name="user_not_exists">User does not exist or is no longer valid.</string>
+    <!-- for Check Out Activity -->
+    <string name="checkout">Checkout</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="approximate_location">Approximate Location</string>
+    <string name="exact_location">Exact Location</string>
+    <string name="contact_information">Contact Information</string>
+    <string name="star">"* "</string>
+    <string name="required">Required</string>
+    <string name="first_name">"First Name "</string>
+    <string name="give_your_first_name">Give your first name</string>
+    <string name="last_name">"Last Name "</string>
+    <string name="give_your_last_name">Give your last name</string>
+    <string name="email_address">Email address </string>
+    <string name="test_gmail_com">test@gmail.com</string>
+    <string name="keep_me_updated">Keep me updated on more events and news from this event organizer.</string>
+    <string name="send_me_emails">Send me emails about the best events happening nearby to me.</string>
+    <string name="get_my_ticket">Get My Ticket</string>
+    <string name="untrackable_location">Untrackable location</string>
+    <string name="please_fill_in_your_first_name">Please fill in your first name</string>
+    <string name="please_fill_in_your_last_name">Please fill in your last name</string>
+
+
+    <!-- rest strings -->
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -53,15 +97,114 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_tickets">Tickets</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_bot">Assistant</string>
+    <string name="logout">Logout</string>
+
+
+
+    <!-- for Events Tabbed Activity  -->
     <string name="title_activity_events_tabbed">EventsTabbedActivity</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="location">location</string>
+
+    <!-- for Hobby Selection and Hobby SelectionModify Activity  -->
+    <string name="pick_what_you_really_like">Pick what you really like</string>
+    <string name="minimum_3_from_each_category">(Minimum 3 from each category)</string>
+    <string name="see_more">See More ▼</string>
+    <string name="select_at_least_3">You have to select at least 3 interests from each category</string>
+    <string name="preferences_saved">Your preferences have been successfully saved!</string>
+    <string name="see_less">See Less ▲</string>
+    <string name="select_your_interests">Select your interests</string>
+    <string name="modify_your_interests">Modify your interests</string>
+    <string name="modify">Modify</string>
+    <string name="preferences_modified">Your preferences have been successfully modified!</string>
+
+    <!-- for Specific Event Detailed Activity  -->
+    <string name="organizer">ORGANIZER</string>
+    <string name="name">Name</string>
+    <string name="phone">Phone</string>
+    <string name="related_to_this_event">RELATED TO THIS EVENT</string>
+    <string name="location_caps">LOCATION</string>
+    <string name="free">Free</string>
+    <string name="get_tickets">Get Tickets</string>
+    <string name="see_your_ticket">See your ticket</string>
+    <string name="sold_out">Sold Out</string>
 
 
-    <string name="large_text"> </string>
+    <!-- for User Ticket Activity  -->
+    <string name="check_in_for_this_event">Check in for this event</string>
+    <string name="scan_this_qr_code">Scan this QR code at the event to check in.</string>
+    <string name="purchaser_name">Purchaser Name</string>
+    <string name="ticket_seat">Ticket/Seat</string>
+    <string name="seat">Seat</string>
+    <string name="event">Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_date">Event Date</string>
+    <string name="starts_at">"Starts at: "</string>
+    <string name="location_2">Location</string>
+    <string name="event_location">Event Location</string>
+    <string name="see_map">See map</string>
+    <string name="price">Price</string>
+    <string name="event_price">Event Price</string>
+    <string name="organizer_2">Organizer</string>
+    <string name="event_organizer">Event Organizer</string>
+    <string name="see_you_there">"See you there 😊  "</string>
+    <string name="order_cancelled">Your order has been cancelled!</string>
+
+
+    <!-- for Home Fragment -->
+    <string name="discover_the_magic">DISCOVER THE MAGIC OF LOCAL EVENTS, PERSONALIZED JUST FOR YOU</string>
+    <string name="find_yor_next_event">"    𝔽𝕚𝕟𝕕 𝕪𝕠𝕦𝕣 𝕟𝕖𝕩𝕥 𝕖𝕧𝕖𝕟𝕥"</string>
+    <string name="select_region_first">You have to select a region first to search for events</string>
+    <string name="fing_events_in">Find events in...</string>
+    <string name="permissions_accepted">Permissions accepted</string>
+    <string name="permissions_denied">Permissions denied</string>
+    <string name="gps_settings">GPS settings</string>
+    <string name="gps_not_enabled">GPS is not enabled. Do you want to go to settings menu?</string>
+    <string name="settings">Settings</string>
+    <string name="cancel">Cancel</string>
+
+
+    <!-- for Settings Fragment -->
+    <string name="user_fullname">User fullname</string>
+    <string name="email_small">email</string>
+    <string name="underscore">_</string>
+    <string name="reserved_tickets">Reserved Tickets</string>
+    <string name="total_events">Total Events</string>
+    <string name="gmail_com">_@gmail.com</string>
+    <string name="fullname_small">fullname</string>
+    <string name="write_your_phone_number">Write your phone number</string>
+    <string name="your_interests">Your Interests</string>
+    <string name="your_fullname">Your fullname</string>
+    <string name="give_valid_fullname">Please give a valid fullname!</string>
+    <string name="your_phone_number">Your Phone Number</string>
+    <string name="please_give_a_phone_number">Please give a phone number!</string>
+    <string name="phone_10_digits">Mobile phone number must be 10 digits!</string>
+
+
+    <!-- for Tab1 Fragment -->
+    <string name="there_are_no_upcoming_events">There are no upcoming events</string>
+
+    <!-- for Tickets Fragment -->
+    <string name="there_are_no_reserved_tickets">There are no reserved tickets</string>
+
+    <!-- for layout detailed window -->
+    <string name="details">Details</string>
+
+    <!-- for tracking_button.xml -->
+    <string name="nearby">Nearby</string>
+    <string name="current_location">Current Location</string>
+
+    <!-- for actionbar1.xml -->
+    <string name="share">Share</string>
+    <string name="contact_the_organizer">Contact the organizer</string>
+
+    <!-- for actionbar2.xml -->
+    <string name="cancel_free_order">Cancel Free Order</string>
+
+
 </resources>

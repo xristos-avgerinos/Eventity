@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/abril_fatface"
             android:padding="10dp"
-            android:text="Log In"
+            android:text="@string/log_in"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold" />
 

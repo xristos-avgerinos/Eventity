@@ -187,10 +187,10 @@ public class WelcomeActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         break;
                                     case GoogleAuthProvider.GOOGLE_SIGN_IN_METHOD:
-                                        DisplaySnackbar(view,"Sign in using Google provider which is associated with this email address.");
+                                        DisplaySnackbar(view,getString(R.string.Sign_in_using_Google_provider));
                                         break;
                                     case FacebookAuthProvider.FACEBOOK_SIGN_IN_METHOD:
-                                        DisplaySnackbar(view,"Sign in using Facebook provider which is associated with this email address.");
+                                        DisplaySnackbar(view,getString(R.string.Sign_in_using_Facebook_provider));
                                         break;
                                 }
                             }
@@ -205,11 +205,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
                         if(task.getException() instanceof FirebaseNetworkException){
                             // Δεν υπάρχει σύνδεση στο διαδίκτυο
-                            DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
+                            DisplaySnackbar(view,getString(R.string.network_error));
                         }
                         else {
                             Log.e(TAG, task.getException().getLocalizedMessage());
-                            DisplaySnackbar(view,"Error occurred while checking email address");
+                            DisplaySnackbar(view,getString(R.string.email_error_occured));
                         }
                     }
                 });
@@ -310,7 +310,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         } else {
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
                                 // Ο χρήστης έχει συνδεθεί με άλλο provider
-                                DisplaySnackbar(findViewById(android.R.id.content),"An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address.");
+                                DisplaySnackbar(findViewById(android.R.id.content),getString(R.string.account_exists_with_different_credentials));
                             }
                             else {
                                 // Εάν η σύνδεση αποτύχει, εμφανίζουμε ένα μήνυμα στον χρήστη.

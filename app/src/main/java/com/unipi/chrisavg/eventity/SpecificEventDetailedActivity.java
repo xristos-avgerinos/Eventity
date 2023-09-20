@@ -189,7 +189,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
                 Address address = addresses.get(0);
                 exLoc = address.getAddressLine(0);
             }else{
-                exLoc = "Untrackable location";
+                exLoc = getString(R.string.untrackable_location);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -241,7 +241,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
                     if (task.isSuccessful()) {
                         QuerySnapshot querySnapshot = task.getResult();
                         if (querySnapshot != null && querySnapshot.getDocuments().size() == 1) {
-                            getTicketsButton.setText("See your ticket");
+                            getTicketsButton.setText(R.string.see_your_ticket);
                             getTicketsButton.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -258,7 +258,7 @@ public class SpecificEventDetailedActivity extends AppCompatActivity implements 
                             if (receivedEvent.getCapacity() == receivedEvent.getReservedTickets()){
                                 getTicketsButton.setClickable(false);
                                 getTicketsButton.setEnabled(false);
-                                getTicketsButton.setText("Sold Out");
+                                getTicketsButton.setText(R.string.sold_out);
                                 getTicketsButton.setBackgroundColor(getResources().getColor(com.google.android.material.R.color.material_dynamic_neutral80));
                             }
 

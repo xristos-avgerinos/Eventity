@@ -25,7 +25,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nearby"
+            android:text="@string/nearby"
             android:textColor="@color/underline_color"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Current Location"
+            android:text="@string/current_location"
             android:textColor="@android:color/darker_gray"
             android:textSize="12sp" />
     </LinearLayout>

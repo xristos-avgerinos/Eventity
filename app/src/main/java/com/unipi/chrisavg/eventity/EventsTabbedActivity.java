@@ -84,7 +84,7 @@ public class EventsTabbedActivity extends AppCompatActivity  {
                 Address address = addresses.get(0);
                 cityName = address.getLocality();
             }else{
-                cityName = "Untrackable location";
+                cityName = getString(R.string.untrackable_location);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -264,7 +264,7 @@ public class EventsTabbedActivity extends AppCompatActivity  {
     }
 
 
-    // Helper method to find the original position of a button by its ID
+    // Βοηθητική μέθοδος για την εύρεση της αρχικής θέσης ενός toggle button με βάση το ID του
     private int findOriginalPosition(int buttonId) {
         ToggleButton[] toggleButtons = new ToggleButton[]{
                 findViewById(R.id.student_party),
@@ -286,11 +286,10 @@ public class EventsTabbedActivity extends AppCompatActivity  {
                 return i;
             }
         }
-        return -1; // Button not found
+        return -1; // Το κουμπί δεν βρέθηκε
     }
 
     private void setStatusBarWhite(AppCompatActivity activity){
-        //Make status bar icons color white
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             activity.getWindow().setStatusBarColor(getResources().getColor(R.color.white));

@@ -78,11 +78,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     }else{
                         if(task.getException() instanceof FirebaseNetworkException){
                             // No internet connection
-                            DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again");
+                            DisplaySnackbar(view,getString(R.string.network_error));
                         }
                         else {
                             Log.e(TAG, task.getException().getLocalizedMessage());
-                            DisplaySnackbar(view,"Error occurred while checking email address");
+                            DisplaySnackbar(view,getString(R.string.email_error_occured));
                         }
                     }
                 }

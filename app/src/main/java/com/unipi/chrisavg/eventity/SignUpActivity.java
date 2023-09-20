@@ -176,11 +176,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                             }else { //κατι πηγε λαθος με την δημιουργια του χρηστη στο authentication
                                 if(task.getException() instanceof FirebaseNetworkException){
-                                    DisplaySnackbar(view,"A network error has occurred. Connect to the internet and try again.");
+                                    DisplaySnackbar(view,getString(R.string.network_error));
                                 }
                                 else {
                                     Log.e(TAG, task.getException().getLocalizedMessage());
-                                    DisplaySnackbar(view,"Error occurred while signing you up.");
+                                    DisplaySnackbar(view,getString(R.string.error_occured_while_signing_up));
                                 }
                             }
                         }

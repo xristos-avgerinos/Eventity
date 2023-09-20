@@ -196,7 +196,7 @@ public class UserTicket extends AppCompatActivity {
                                                 } else {
                                                     // Χειρισμός της περίπτωσης όπου δεν έχει εγκατασταθεί καμία εφαρμογή χαρτών
                                                     // Εμφανίζουμε ένα μήνυμα στο χρήστη
-                                                    DisplaySnackbar(v,"Something went wrong!");
+                                                    DisplaySnackbar(v,getString(R.string.something_went_wrong_try_again_later));
                                                 }
                                             }
                                         });
@@ -241,7 +241,7 @@ public class UserTicket extends AppCompatActivity {
                             public void onSuccess(Void aVoid) {
                                 // Διαγραφή εγγράφου απο το reservations collection με επιτυχία
 
-                                //Μειώνοτμε τα ReservedTickets του event κατά ένα
+                                //Μειώνουμε τα ReservedTickets του event κατά ένα
                                 event.setReservedTickets(event.getReservedTickets()-1);
 
                                 // Δημιουργήστε ένος map για να κρατήσουμε τα ενημερωμένα δεδομένα
@@ -264,7 +264,7 @@ public class UserTicket extends AppCompatActivity {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
                                                                 // Η εικόνα διαγράφηκε επιτυχώς
-                                                                Toast.makeText(UserTicket.this, "Your order has been cancelled!", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(UserTicket.this, getString(R.string.order_cancelled), Toast.LENGTH_SHORT).show();
 
                                                                 if (sendingActivity.equals("TicketsFragment")) {
                                                                     Intent intent = new Intent(UserTicket.this,MainActivity.class);
@@ -293,7 +293,7 @@ public class UserTicket extends AppCompatActivity {
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
                                                                 // Χειρισμός σφαλμάτων σε περίπτωση αποτυχίας της διαγραφής
-                                                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(UserTicket.this, getString(R.string.something_went_wrong_try_again_later), Toast.LENGTH_SHORT).show();
                                                             }
                                                         });
                                             }
@@ -301,7 +301,7 @@ public class UserTicket extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(UserTicket.this, getString(R.string.something_went_wrong_try_again_later), Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
@@ -313,7 +313,7 @@ public class UserTicket extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(UserTicket.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserTicket.this, getString(R.string.something_went_wrong_try_again_later), Toast.LENGTH_SHORT).show();
                             }
                         });
                 break;

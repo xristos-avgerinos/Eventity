@@ -5,11 +5,11 @@
     <item
         android:id="@+id/ShareEvent"
         android:icon="@drawable/ic_share"
-        android:title="Share"
+        android:title="@string/share"
      />
     <item
         android:id="@+id/ContactOrganizer"
         android:icon="@drawable/ic_email"
-        android:title="Contact the organizer"
+        android:title="@string/contact_the_organizer"
       />
 </menu>

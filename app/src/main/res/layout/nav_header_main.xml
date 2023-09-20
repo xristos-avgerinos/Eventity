@@ -32,6 +32,7 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
+
     <TextView
         android:id="@+id/textViewHeaderSubtitle"
         android:layout_width="match_parent"

@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
 
                 if (slideToActView.isLocked()){
                     // αν το slide ειναι κλειδωμενο δεν τον αφηνουμε να προχωρησει και του εμφανιζουμε μηνυμα
-                    DisplaySnackbar("You have to select a region first to search for events");
+                    DisplaySnackbar(getString(R.string.select_region_first));
                 }
 
             }
@@ -119,7 +119,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
             Places.initialize(getApplicationContext(), "AIzaSyDeymNueHgieMsY90ebBi90u5wV_Cgxpsg");
         }
 
-        searchView.setQueryHint("Find events in...");
+        searchView.setQueryHint(getString(R.string.fing_events_in));
 
         // Ορίζουμε στο RecyclerView έναν adapter
         adapter = new PlacesAutoCompleteAdapter(this);
@@ -199,11 +199,11 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
         if (requestCode == locationRequestCode) {
             if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 //Αν ο χρηστης πατησει allow
-                Toast.makeText(getContext(), "Permissions accepted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permissions_accepted), Toast.LENGTH_SHORT).show();
                 findUserLocation();
             } else {
                 //Αν ο χρηστης αρνηθει τα δικαιωματα εμφανιζω καταλληλο μηνυμα.
-                Toast.makeText(getContext(), "Permissions denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.permissions_denied), Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -222,14 +222,14 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-        alertDialog.setTitle("GPS settings");
-        alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
-        alertDialog.setPositiveButton("Settings", (dialog, which) -> {
+        alertDialog.setTitle(R.string.gps_settings);
+        alertDialog.setMessage(R.string.gps_not_enabled);
+        alertDialog.setPositiveButton(R.string.settings, (dialog, which) -> {
             Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivityForResult(intent,LOCATION_SETTINGS_REQUEST);
 
         });
-        alertDialog.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        alertDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
 
         // Ορίζουμε ένα OnCancelListener για να ανιχνεύσουμε αν ο χρήστης πάτησε "Cancel"
         alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -313,7 +313,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
                 })
                 .addOnFailureListener((exception) -> {
                     // Χειρισμός τυχόν σφαλμάτων που προέκυψαν κατά τη διάρκεια της αίτησης
-                    DisplaySnackbar("Something went wrong!");
+                    DisplaySnackbar(getString(R.string.something_went_wrong_try_again_later));
                 });
     }
 
@@ -356,7 +356,7 @@ public class HomeFragment extends Fragment implements SlideToActView.OnSlideComp
                 })
                 .addOnFailureListener((exception) -> {
                     // Χειρισμός τυχόν σφαλμάτων που προέκυψαν κατά τη διάρκεια της αίτησης
-                    DisplaySnackbar("Something went wrong!");
+                    DisplaySnackbar(getString(R.string.something_went_wrong_try_again_later));
                 });
     }
 

@@ -227,7 +227,7 @@ public class SettingsFragment extends Fragment {
 
                 }
                 else{
-                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.something_went_wrong_try_again_later), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -241,7 +241,7 @@ public class SettingsFragment extends Fragment {
 
     private void openEditDialogForFullname() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Your fullname");
+        builder.setTitle(R.string.your_fullname);
 
 
         // Δημιουργούμε ένα container (LinearLayout) για να τυλίξετε το EditText
@@ -290,7 +290,7 @@ public class SettingsFragment extends Fragment {
                     users.document(mAuth.getUid()).update(updateData).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            DisplaySnackbar("Something went wrong!");
+                            DisplaySnackbar(getString(R.string.something_went_wrong_try_again_later));
                         }
                     });
 
@@ -314,13 +314,13 @@ public class SettingsFragment extends Fragment {
                                 });
                     }
                 }else{
-                    DisplaySnackbar("Please give a valid fullname!");
+                    DisplaySnackbar(getString(R.string.give_valid_fullname));
                 }
                 dialog.dismiss();
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -332,7 +332,7 @@ public class SettingsFragment extends Fragment {
 
     private void openEditDialogForPhoneNumber() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Your Phone Number");
+        builder.setTitle(R.string.your_phone_number);
 
 
         // Δημιουργούμε ένα container (LinearLayout) για να τυλίξετε το EditText
@@ -357,7 +357,7 @@ public class SettingsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         input.setText(PhoneNumberTextView.getText());
-        input.setHint("Write your phone number");
+        input.setHint(getString(R.string.write_your_phone_number));
 
         container.setPadding(leftPaddingInPx, 0, rightPaddingInPx, 0);
 
@@ -370,9 +370,9 @@ public class SettingsFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 String newText = input.getText().toString();
                 if (newText.isEmpty()) {
-                    DisplaySnackbar("Please give a phone number!");
+                    DisplaySnackbar(getString(R.string.please_give_a_phone_number));
                 }else if(!newText.matches("\\d+") || newText.length() !=10){
-                    DisplaySnackbar("Mobile phone number must be 10 digits!");
+                    DisplaySnackbar(getString(R.string.phone_10_digits));
                 }else{
 
                     PhoneNumberTextView.setText(newText);
@@ -384,7 +384,7 @@ public class SettingsFragment extends Fragment {
                     users.document(mAuth.getUid()).update(updateData).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            DisplaySnackbar("Something went wrong!");
+                            DisplaySnackbar(getString(R.string.something_went_wrong_try_again_later));
                         }
                     });
 
@@ -393,7 +393,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

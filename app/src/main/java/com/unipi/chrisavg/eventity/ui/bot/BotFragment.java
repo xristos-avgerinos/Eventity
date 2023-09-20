@@ -25,9 +25,7 @@ public class BotFragment extends Fragment {
     private FragmentBotBinding binding;
 
     private WebView webView;
-
     private View loadingLayout;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

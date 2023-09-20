@@ -59,7 +59,7 @@ android:background="@color/white">
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15sp"
                     android:fontFamily="sans-serif-light"
-                    android:text="User fullname"
+                    android:text="@string/user_fullname"
                     android:textColor="@color/white"
                     android:textSize="32sp" />
 
@@ -71,7 +71,7 @@ android:background="@color/white">
                     android:layout_below="@+id/FullnameTv"
                     android:layout_centerHorizontal="true"
                     android:fontFamily="sans-serif"
-                    android:text="email"
+                    android:text="@string/email_small"
                     android:textAllCaps="false"
                     android:textColor="@color/address"
                     android:textSize="14sp" />
@@ -106,7 +106,7 @@ android:background="@color/white">
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="_"
+                            android:text="@string/underscore"
                             android:textColor="@color/white"
                             android:textSize="25sp" />
 
@@ -114,7 +114,7 @@ android:background="@color/white">
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="Reserved Tickets"
+                            android:text="@string/reserved_tickets"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:textSize="13sp" />
@@ -144,7 +144,7 @@ android:background="@color/white">
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="_"
+                            android:text="@string/underscore"
                             android:textColor="@color/white"
                             android:textSize="25sp" />
 
@@ -152,7 +152,7 @@ android:background="@color/white">
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="Total Events"
+                            android:text="@string/total_events"
                             android:textAllCaps="true"
                             android:textColor="@color/white"
                             android:textSize="13sp" />
@@ -187,7 +187,7 @@ android:background="@color/white">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Email"
+                            android:text="@string/email"
                             android:textColor="@color/headings"
                             android:textSize="14sp" />
 
@@ -199,7 +199,7 @@ android:background="@color/white">
                             android:clickable="false"
                             android:fontFamily="sans-serif-light"
                             android:inputType="textPersonName|textEmailSubject"
-                            android:text="_@gmail.com"
+                            android:text="@string/gmail_com"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -216,7 +216,7 @@ android:background="@color/white">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fullname"
+                            android:text="@string/hint_fullname"
                             android:textColor="@color/headings"
                             android:textSize="14sp" />
 
@@ -228,7 +228,7 @@ android:background="@color/white">
                             android:background="@android:color/transparent"
                             android:clickable="false"
                             android:fontFamily="sans-serif-light"
-                            android:text="fullname"
+                            android:text="@string/fullname_small"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -245,7 +245,7 @@ android:background="@color/white">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Phone"
+                            android:text="@string/phone"
                             android:textColor="@color/headings"
                             android:textSize="14sp" />
 
@@ -256,7 +256,7 @@ android:background="@color/white">
                             android:background="@android:color/transparent"
                             android:clickable="false"
                             android:fontFamily="sans-serif-light"
-                            android:hint="Write your phone number"
+                            android:hint="@string/write_your_phone_number"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
@@ -286,7 +286,7 @@ android:background="@color/white">
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginRight="8sp"
                                 android:fontFamily="@font/abril_fatface"
-                                android:text="Your Interests"
+                                android:text="@string/your_interests"
                                 android:textColor="#92000000"
                                 android:textSize="22sp"
                                 android:textStyle="bold" />
@@ -336,23 +336,6 @@ android:background="@color/white">
 
 
                         </GridLayout>
-
-                      <!--  <Button
-                            android:id="@+id/Continue_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:paddingRight="40dp"
-                            android:paddingLeft="40dp"
-                            android:layout_marginBottom="2dp"
-                            android:background="@drawable/button1_bg"
-                            android:onClick="ContinueButton"
-                            android:text="Modify"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                            android:textColor="#FFFFFF"
-                            android:textSize="19sp"
-                            android:layout_gravity="center"
-                            android:gravity="center"/>-->
 
 
                     </LinearLayout>

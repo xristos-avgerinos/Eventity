@@ -14,7 +14,7 @@
         android:background="@android:color/transparent"
         android:backgroundTintMode="src_over"
         app:navigationIcon="@drawable/ic_back"
-        app:title="New Account"
+        app:title="@string/new_account"
         app:titleTextAppearance="@style/ToolbarTitleStyle"
         android:elevation="4dp"/>
 
@@ -95,7 +95,7 @@
                         android:drawablePadding="12dp"
                         android:enabled="false"
                         android:fontFamily="sans-serif-black"
-                        android:hint="@string/hint_email"
+                        android:hint="@string/email"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:minWidth="320dp"
@@ -169,7 +169,7 @@
                             android:drawableStart="@drawable/ic_lock"
                             android:drawableLeft="@drawable/ic_lock"
                             android:drawablePadding="12dp"
-                            android:hint="@string/hint_password"
+                            android:hint="@string/password"
                             android:imeOptions="actionNext"
                             android:inputType="textPassword"
                             android:minWidth="320dp"

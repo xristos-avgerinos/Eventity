@@ -110,7 +110,7 @@ public class HobbySelection extends AppCompatActivity {
 
         // Πρέπει να έχει επιλέξει 3 τουλάχιστον προτιμήσεις απο κάθε GridLayout(κατηγορία)
         if(selectedCountMusic<3 || selectedCountVibe<3 ){
-            DisplaySnackbar(view,"You have to select at least 3 interests from each category");
+            DisplaySnackbar(view,getString(R.string.select_at_least_3));
         }else{
 
             //Αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
@@ -131,7 +131,7 @@ public class HobbySelection extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(getApplicationContext(), "Your preferences have been successfully saved!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), getString(R.string.preferences_saved), Toast.LENGTH_SHORT).show();
                                         // Ενημερωνουμε τα SharedPreferences οτι ο χρηστης εχει επιλεξει τις προτιμησεις του
                                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("preferencesSelected", "True").apply();
                                         Intent intent = new Intent(HobbySelection.this,MainActivity.class);
@@ -142,12 +142,12 @@ public class HobbySelection extends AppCompatActivity {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        DisplaySnackbar(view,"Something went wrong! Try again later.");
+                                        DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                                     }
                                 });
 
                     }else{
-                        DisplaySnackbar(view,"Something went wrong! Try again later.");
+                        DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                     }
                 }
 
@@ -165,10 +165,10 @@ public class HobbySelection extends AppCompatActivity {
         }
         if (gridLayout==MusicGridLayout){
             MusicGridLayoutExpanded = false;
-            music_expand.setText("See More ▼");
+            music_expand.setText(getString(R.string.see_more));
         }else if (gridLayout==VibeGridLayout){
             VibeGridLayoutExpanded = false;
-            vibe_expand.setText("See More ▼");
+            vibe_expand.setText(getString(R.string.see_more));
         }
     }
 
@@ -182,10 +182,10 @@ public class HobbySelection extends AppCompatActivity {
 
         if (gridLayout==MusicGridLayout){
             MusicGridLayoutExpanded = true;
-            music_expand.setText("See Less ▲");
+            music_expand.setText(R.string.see_less);
         }else if (gridLayout==VibeGridLayout){
             VibeGridLayoutExpanded = true;
-            vibe_expand.setText("See Less ▲");
+            vibe_expand.setText(R.string.see_less);
         }
 
     }

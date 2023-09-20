@@ -68,5 +68,6 @@ public class Reservation {
     public void setSeat(int seat) {
         Seat = seat;
     }
+
 }
 

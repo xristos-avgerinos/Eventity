@@ -69,4 +69,5 @@ public class ArrayAdapterClass2 extends android.widget.ArrayAdapter<String> {
         return row;
     }
 
+
 }

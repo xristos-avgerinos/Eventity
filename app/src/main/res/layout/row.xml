@@ -32,7 +32,7 @@
             android:layout_marginRight="3dp"
             android:layout_marginBottom="3dp"
             android:fontFamily="sans-serif"
-            android:text="Title"
+            android:text="@string/title"
             android:textColor="#B9000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -54,7 +54,7 @@
                 android:id="@+id/Date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date"
+                android:text="@string/date"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="2dp"
                 android:layout_marginBottom="2dp"
@@ -80,7 +80,7 @@
                 android:id="@+id/Location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="@string/location_2"
                 android:layout_marginLeft="1dp"
                 android:layout_marginRight="2dp"
                 android:layout_gravity="center_vertical"
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="4dp"
-                android:text="Details"
+                android:text="@string/details"
                 android:textAllCaps="false"
                 android:textSize="14dp" />
 

@@ -7,17 +7,6 @@
     android:background="@color/colorBackground"
     tools:context=".SpecificEventDetailedActivity">
 
-    <!--<androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:backgroundTintMode="src_over"
-        app:title="Checkout"
-        app:navigationIcon="@drawable/ic_back"
-        app:titleTextAppearance="@style/ToolbarTitleStyle2"
-        android:elevation="4dp"/>-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -30,7 +19,7 @@
                 android:id="@+id/titleTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Checkout"
+                android:text="@string/checkout"
                 android:textAppearance="@style/ToolbarTitleStyle2"
                 android:gravity="center"
                 android:layout_marginRight="64dp"/>
@@ -76,7 +65,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/abril_fatface"
-                    android:text="Title"
+                    android:text="@string/title"
                     android:textColor="#B9000000"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -120,7 +109,7 @@
                             android:id="@+id/Date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Date"
+                            android:text="@string/date"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -130,7 +119,7 @@
                             android:id="@+id/Time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Time"
+                            android:text="@string/time"
                             android:textColor="#8A8787"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -174,7 +163,7 @@
                             android:id="@+id/ApproximateLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Approximate Location"
+                            android:text="@string/approximate_location"
                             android:textColor="@color/black"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -184,7 +173,7 @@
                             android:id="@+id/ExactLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Exact Location"
+                            android:text="@string/exact_location"
                             android:textColor="#8A8787"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -208,7 +197,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/abril_fatface"
-                    android:text="Contact Information"
+                    android:text="@string/contact_information"
                     android:textColor="#B9000000"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -225,13 +214,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* "
+                        android:text="@string/star"
                         android:textSize="13sp"
                         android:textColor="@color/custom_red_for_buttons"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Required"
+                        android:text="@string/required"
                         android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -264,13 +253,13 @@
                             android:id="@+id/firstnameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="First Name"
+                            android:text="@string/first_name"
                             android:textColor="@color/underline_color"
                             android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" *"
+                            android:text="@string/star"
                             android:textSize="13sp"
                             android:textColor="@color/custom_red_for_buttons">
 
@@ -285,7 +274,7 @@
                         android:layout_below="@id/firstnameLL"
                         android:background="@android:color/transparent"
                         android:fontFamily="sans-serif-condensed-medium"
-                        android:hint="Give your first name"
+                        android:hint="@string/give_your_first_name"
                         android:inputType="textPersonName"
                         android:textColor="#B9000000"
                         android:textSize="17sp" />
@@ -310,13 +299,13 @@
                             android:id="@+id/lastnameTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Last Name"
+                            android:text="@string/last_name"
                             android:textColor="@color/underline_color"
                             android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" *"
+                            android:text="@string/star"
                             android:textSize="13sp"
                             android:textColor="@color/custom_red_for_buttons">
 
@@ -330,7 +319,7 @@
                         android:layout_below="@id/lastnameLL"
                         android:background="@android:color/transparent"
                         android:fontFamily="sans-serif-condensed-medium"
-                        android:hint="Give your last name"
+                        android:hint="@string/give_your_last_name"
                         android:inputType="textPersonName"
                         android:textColor="#B9000000"
                         android:textSize="17sp" />
@@ -358,13 +347,13 @@
                             android:id="@+id/emailTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Email address"
+                            android:text="@string/email_address"
                             android:textColor="@color/gray"
                             android:textSize="13sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=" *"
+                            android:text="@string/star"
                             android:textSize="13sp"
                             android:textColor="@color/custom_red_for_buttons">
 
@@ -380,7 +369,7 @@
                         android:background="@android:color/transparent"
                         android:fontFamily="sans-serif-condensed-medium"
                         android:inputType="textPersonName"
-                        android:text="test@gmail.com"
+                        android:text="@string/test_gmail_com"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="#B9000000"
                         android:textSize="17sp"
@@ -400,7 +389,7 @@
                     android:checked="true"
                     android:fontFamily="sans-serif-condensed"
                     android:paddingLeft="8dp"
-                    android:text="Keep me updated on more events and news from this event organizer."
+                    android:text="@string/keep_me_updated"
                     android:textColor="#B9000000"
                     android:textSize="17sp"
                     android:textStyle="italic"
@@ -418,7 +407,7 @@
                     android:checked="true"
                     android:fontFamily="sans-serif-condensed"
                     android:paddingLeft="8dp"
-                    android:text="Send me emails about the best events happening nearby to me."
+                    android:text="@string/send_me_emails"
                     android:textColor="#B9000000"
                     android:textSize="17sp"
                     android:textStyle="italic"
@@ -433,7 +422,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/layer_list"
-                    android:text="Get My Ticket"
+                    android:text="@string/get_my_ticket"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="#FFFFFF"
                     android:textSize="19sp"

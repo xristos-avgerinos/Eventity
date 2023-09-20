@@ -182,7 +182,6 @@ public class TicketsFragment extends Fragment {
             }
         });
 
-
         return root;
     }
 

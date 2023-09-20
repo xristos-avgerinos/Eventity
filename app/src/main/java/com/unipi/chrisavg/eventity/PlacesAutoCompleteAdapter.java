@@ -95,5 +95,4 @@ public class PlacesAutoCompleteAdapter extends RecyclerView.Adapter<PlacesAutoCo
         }
     }
 
-
 }
