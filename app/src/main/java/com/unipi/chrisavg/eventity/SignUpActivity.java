@@ -51,6 +51,8 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
 
+    private View loadingLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
         password=findViewById(R.id.et_password);
         confirmPassword=findViewById(R.id.et_confirm_password);
 
+        loadingLayout = findViewById(R.id.loading_layout);
 
         //Βαζουμε το email του user που δοθηκε απο την welcomeActivity
         Intent intent = getIntent();
@@ -118,6 +121,8 @@ public class SignUpActivity extends AppCompatActivity {
             confirmPassword.clearComposingText();
         }
         else{
+            loadingLayout.setVisibility(View.VISIBLE);
+
             //Κανουμε ολους τους ελεγχους σε αυτον τον listener. Γινεται και ελεγχος αν το email ειναι μοναδικο
             mAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -170,11 +175,13 @@ public class SignUpActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() { //κατι πηγε λαθος με το γραψιμο του χρηστη στη βαση
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
+                                                loadingLayout.setVisibility(View.GONE);
                                                 DisplaySnackbar(view,e.getLocalizedMessage());
                                             }
                                         });
 
                             }else { //κατι πηγε λαθος με την δημιουργια του χρηστη στο authentication
+                                loadingLayout.setVisibility(View.GONE);
                                 if(task.getException() instanceof FirebaseNetworkException){
                                     DisplaySnackbar(view,getString(R.string.network_error));
                                 }
@@ -183,6 +190,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     DisplaySnackbar(view,getString(R.string.error_occured_while_signing_up));
                                 }
                             }
+
+
                         }
                     });
 

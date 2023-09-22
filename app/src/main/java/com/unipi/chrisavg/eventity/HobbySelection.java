@@ -46,6 +46,8 @@ public class HobbySelection extends AppCompatActivity {
     CollectionReference users;
     FirebaseFirestore db;
 
+    private View loadingLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,8 @@ public class HobbySelection extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         users = db.collection("Users");
+
+        loadingLayout = findViewById(R.id.loading_layout);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -112,6 +116,7 @@ public class HobbySelection extends AppCompatActivity {
         if(selectedCountMusic<3 || selectedCountVibe<3 ){
             DisplaySnackbar(view,getString(R.string.select_at_least_3));
         }else{
+            loadingLayout.setVisibility(View.VISIBLE);
 
             //Αποθηκεύουμε στη βαση τις επιλεγμένες προτιμήσεις του χρήστη δημιουργοντας τη λιστα preferencesList που ειναι ο συνδυασμος των αλλων δυο λιστων
             List<String> preferencesList = new ArrayList<>();
@@ -142,11 +147,13 @@ public class HobbySelection extends AppCompatActivity {
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        loadingLayout.setVisibility(View.GONE);
                                         DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                                     }
                                 });
 
                     }else{
+                        loadingLayout.setVisibility(View.GONE);
                         DisplaySnackbar(view,getString(R.string.something_went_wrong_try_again_later));
                     }
                 }
