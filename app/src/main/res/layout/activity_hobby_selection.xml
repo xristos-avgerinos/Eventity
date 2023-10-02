@@ -23,7 +23,8 @@
         android:id="@id/underline"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#8ACCCCCC" />
+        android:background="#8ACCCCCC"
+        android:layout_below="@id/toolbar"/>
 
     <ScrollView
         android:layout_below="@id/toolbar"
