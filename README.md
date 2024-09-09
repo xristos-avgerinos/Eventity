@@ -6,4 +6,4 @@ easily purchase a ticket. Additionally, the app offers a smart Chatbot built wit
 every user can get help, make reservations and access booking information in their preferred language, not only through the app where it is directly accessible
 but also on various social media platforms such as MS Teams, Facebook and other. Eventity also provides to the events' organizers a user-friendly online environment
 for efficient event management. In addition, the inclusion of QRCodes as e-tickets ensures fast and hassle-free entry to events. Eventity is here to transform the way 
-guests experience events by offering a complete solution for both them and event organizers.
+guests experience events by offering a complete solution for both them and event organizers. This repository represents the Eventity Android Application for simple Users.
